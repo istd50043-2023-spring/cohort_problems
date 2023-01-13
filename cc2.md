@@ -1,7 +1,7 @@
 # 50.043 Cohort class 2
 
 
-## Learning Objectives
+## Learning Outcomes
 
 By this end of this cohort class you should be able to 
 
