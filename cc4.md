@@ -149,13 +149,13 @@ Given a relation $R$ and a set of FDs $F$. The algorithm of decomposing $R$ into
 #### A slightly more optimized algorithm
 
 1. def $normalize(R)$
-1.1. Let $C = attr(R)$
-1.2. find an attribute set $X$ such that $X^+ \neq X$ and $X^+ \neq C$.
-1.2.1. if $X$ is not found, then $R$ is in BCNF
-1.2.2. else 
-1.2.2.1. decompose $R$ into $R_1(X^+)$ and $R_2(C-X^+ \cup X)$
-1.2.2.2. $normalize(R_1)$
-1.2.2.3. $normalize(R_2)$
+    1. Let $C = attr(R)$
+    2. find an attribute set $X$ such that $X^+ \neq X$ and $X^+ \neq C$.
+        1. if $X$ is not found, then $R$ is in BCNF
+        2. else 
+            1. decompose $R$ into $R_1(X^+)$ and $R_2(C-X^+ \cup X)$
+            2. $normalize(R_1)$
+            3. $normalize(R_2)$
 2. $normalize(R)$
 
 
@@ -163,10 +163,12 @@ Given a relation $R$ and a set of FDs $F$. The algorithm of decomposing $R$ into
 
 Given the relation $R(A,B,C,D,E)$ with the following FDs:​
 
-$$\{
-A \rightarrow C​, 
-C \rightarrow DE, ​
-B \rightarrow AE\} $$
+$$
+\{
+A \rightarrow C​,
+C \rightarrow DE,
+B \rightarrow AE\}
+$$
 
 * is $R$ in 2NF?
 
@@ -178,10 +180,12 @@ B \rightarrow AE\} $$
 
 Given the relation $R(A,B,C,D,E,F,G)$ with the following FDs:​
 
-$$ \{ E \rightarrow C,  ​
-G \rightarrow AD, ​
+$$ 
+\{ E \rightarrow C,
+G \rightarrow AD,
 B \rightarrow E,​
-C \rightarrow BF \}$$      ​
+C \rightarrow BF \}
+$$      ​
 
 Decompose R into BCNF
 
