@@ -74,7 +74,7 @@ It follows that for any set of FDs, we can convert it into an equivalent set wit
 Let $F$ denote a set of FDs, we say $F_c$ is the canonical cover iff 
 1. All FDs in $F_c$ are in standard form; and
 2. $F_c^+ \subseteq F^+ \wedge F^+ \subseteq F_c^+$; and
-3. $\neg \exist G \subset F_c$ such that  $ G^+ \subseteq F^+ \wedge F^+ \subseteq G^+$
+3. $\neg \exists G \subset F_c$ such that  $ G^+ \subseteq F^+ \wedge F^+ \subseteq G^+$
 
 ### Algorithm to compute $F_c$
 
@@ -88,7 +88,7 @@ Let $F$ denote a set of FDs, we say $F_c$ is the canonical cover iff
 Canonical cover is very useful. We can use it to reduce the number of constraints (which is expensive to verified). We leverage on Canonical cover to identify candidate key for a relation.
 
 
-#### Some extra temrinlogy - different kinds of keys
+#### Some extra terminologies - different kinds of keys
 
 In database, we call a set of attribute of a relation as a
 * Super key if it functionally determines all other attributes 
