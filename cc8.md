@@ -5,10 +5,8 @@
 
 By the end of this class, you should be able to
 
-1.
-1.
-1.
-1.
+1. apply relational algebra rewriting rules to generate alternative logical query plan
+1. estimate the cost of physical query plan given statistics
 
 ## Exercise 1 
 
