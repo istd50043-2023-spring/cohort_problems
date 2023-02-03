@@ -5,8 +5,8 @@
 
 1. apply undo, redo, undo/redo logging to recover database from crashes
 1. apply undo, redo, undo/redo logging with nonquiescent checkpoints to recover database from crashes.
-1. 
-1.
+1. apply conflict serializability check to schedules.
+1. apply 2PL to generate conflict serialzable schedules.
 
 
 ## Recap Undo Logging 
