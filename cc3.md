@@ -119,14 +119,14 @@ Make sure you have MySQL installed.
 ```sh
 sudo apt install python3-pip
 sudo pip install gdown​
-gdown https://drive.google.com/uc?id=1YVykVzeiBXEKP1fNKr0tut_WwweKpOsD​
+gdown "https://drive.google.com/uc?id=1g_4t-hf5PQIDpEdm5jhC5lnDxAWSnHSw"
 ```
 2. If you are using Mac
 
 ```sh
 brew install python3-pip
 pip3 install install gdown
-gdown https://drive.google.com/uc?id=1YVykVzeiBXEKP1fNKr0tut_WwweKpOsD​
+gdown "https://drive.google.com/uc?id=1g_4t-hf5PQIDpEdm5jhC5lnDxAWSnHSw"
 ```
 
 3. Alternative, you can manually download that file https://drive.google.com/uc?id=1YVykVzeiBXEKP1fNKr0tut_WwweKpOsD​ using browser.

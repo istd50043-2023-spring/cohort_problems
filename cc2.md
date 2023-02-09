@@ -117,7 +117,7 @@ Relationa algebra defines a set of operators that manipulate data in a relation.
 5. A difference operation $R - S$ returns a relation containing all tuples from $R$ that are not in $S$, assuming $R$ and $S$ sharing a common schema.
 6. A cartesian product operation $R \times S$ returns a relation containing all possible combination of some tuple from $R$ and some tuple from $S$. (Note that $R$ and $S$ might have different schema.)
 7. The inner join operator $(R \bowtie_{R.A = S.B, R.C=S.D,...} S)$, returns a relation that containing tuples from $R\times S$ that satisfy $R.A = S.B, R.C=S.D,...$.
-8. The nature join operator $(R \bowtie S)$, returns a relation that containing tuples from $R\times S$ that satisfy $R.A = S.A, R.B=S.B,...$, where $A$, $B$, ... are the common attributes between $R$ and $S$.
+8. The natural join operator $(R \bowtie S)$, returns a relation that containing tuples from $R\times S$ that satisfy $R.A = S.A, R.B=S.B,...$, where $A$, $B$, ... are the common attributes between $R$ and $S$.
 9. Right outer join $R ⟖_{R.A=S.B} S$ produces a relation containing all entries from the inner join and all the remaining tupel from $S$ which we could not find a match from $R$, whose attributes will be filled up with NULL. Likewise for Left outer join.
 10. Renaming operation $\rho_{R'(A_1,...,A_n)}(R)$ produces a new relation $R'(A_1,...,A_n)$ containing all tuples from $R$, assuming the $S_R$ and $S_{R'}$ share the same types.
 11. Aggregation operation $_{A_1,...,A_n} \gamma_{F_1(B_1),F_2(B_2),...} (R)$ produces a new relation $R'$ which contains
