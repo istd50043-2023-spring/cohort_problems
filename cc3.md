@@ -129,7 +129,7 @@ pip3 install install gdown
 gdown "https://drive.google.com/uc?id=1g_4t-hf5PQIDpEdm5jhC5lnDxAWSnHSw"
 ```
 
-3. Alternative, you can manually download that file https://drive.google.com/uc?id=1YVykVzeiBXEKP1fNKr0tut_WwweKpOsD​ using browser.
+3. Alternative, you can manually download that file https://drive.google.com/uc?id=1g_4t-hf5PQIDpEdm5jhC5lnDxAWSnHSw​ using browser.
 
 
 ## Exercise 0 - create database and tables
