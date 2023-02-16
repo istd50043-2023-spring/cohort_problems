@@ -74,7 +74,7 @@ It follows that for any set of FDs, we can convert it into an equivalent set wit
 Let $F$ denote a set of FDs, we say $F_c$ is the canonical cover iff 
 1. All FDs in $F_c$ are in standard form; and
 2. $F_c^+ \subseteq F^+ \wedge F^+ \subseteq F_c^+$; and
-3. $\neg \exists G \subset F_c$ such that  $ G^+ \subseteq F^+ \wedge F^+ \subseteq G^+$
+3. $\neg \exists G \subset F_c$ such that  $G^+ \subseteq F^+ \wedge F^+ \subseteq G^+$
 
 ### Algorithm to compute $F_c$
 
@@ -180,7 +180,7 @@ $$
 
 Given the relation $R(A,B,C,D,E,F,G)$ with the following FDs:​
 
-$$ 
+$$
 \{ E \rightarrow C,
 G \rightarrow AD,
 B \rightarrow E,​
