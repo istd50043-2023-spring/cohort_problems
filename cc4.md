@@ -183,9 +183,9 @@ Given the relation $R(A,B,C,D,E,F,G)$ with the following FDs:​
 $$
 \{ E \rightarrow C,
 G \rightarrow AD,
-B \rightarrow E,​
+B \rightarrow E,
 C \rightarrow BF \}
-$$      ​
+$$
 
 Decompose R into BCNF
 
