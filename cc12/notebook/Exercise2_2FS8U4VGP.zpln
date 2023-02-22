@@ -1,0 +1,1974 @@
+{
+  "paragraphs": [
+    {
+      "text": "%md\n\n# Exercise 2\n\nIn this exercise we use PySpark to build a binary classifier to classify a given tweet is about KPOP or other topics using a supervised machine learning technique, SVM.\n\nFor parts marked with **[CODE CHANGE REQUIRED]** you need to modify or complete the code before execution.\nFor parts without **[CODE CHANGE REQUIRED]** , you can just run the given code.\n\nThe task here is to build a classifier to differentiate the KPOP tweets or otherwise.\n\nFor example, the following tweet message falls into the category of Korean Pop because it seems talking about someone from korea \n```text\ncrazy cool jae s lee\u0027s pic of street singer reflected in raindrops tuesday on 2nd ave  \n```\nOn the other hand, the following tweet is not revelant to KPOP. \n```text\naccident closes jae valley rd drivers advised to avoid area seek alternate routes\n```\nTo achieve the goal, we need to develop a classifier, which is a supervised machine learning technique. In this example, we consider using Support Vector Machine (SVM) as the classifier algorithm. On the higher level, we need to \"train\" the model with some manually labelled data and perform some tests against the trained model. As part of the input requirement the SVM expect the input data to represented as a label (either yes or no, 1 or 0) accompanied by the feature vector. The feature vector is a vector of values which uniquely differentiate one entry from another ideally. In the machine learning context, features have to be fixed by the programmers. \n\n",
+      "user": "anonymous",
+      "dateUpdated": "2021-11-04 01:30:42.604",
+      "progress": 0,
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": false,
+        "results": {},
+        "editorSetting": {
+          "language": "markdown",
+          "editOnDblClick": true,
+          "completionKey": "TAB",
+          "completionSupport": false
+        },
+        "editorMode": "ace/mode/markdown",
+        "editorHide": true,
+        "tableHide": false
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "HTML",
+            "data": "\u003cdiv class\u003d\"markdown-body\"\u003e\n\u003ch1\u003eExercise 2\u003c/h1\u003e\n\u003cp\u003eIn this exercise we use PySpark to build a binary classifier to classify a given tweet is about KPOP or other topics using a supervised machine learning technique, SVM.\u003c/p\u003e\n\u003cp\u003eFor parts marked with \u003cstrong\u003e[CODE CHANGE REQUIRED]\u003c/strong\u003e you need to modify or complete the code before execution.\u003cbr /\u003e\nFor parts without \u003cstrong\u003e[CODE CHANGE REQUIRED]\u003c/strong\u003e , you can just run the given code.\u003c/p\u003e\n\u003cp\u003eThe task here is to build a classifier to differentiate the KPOP tweets or otherwise.\u003c/p\u003e\n\u003cp\u003eFor example, the following tweet message falls into the category of Korean Pop because it seems talking about someone from korea\u003c/p\u003e\n\u003cpre\u003e\u003ccode class\u003d\"language-text\"\u003ecrazy cool jae s lee\u0027s pic of street singer reflected in raindrops tuesday on 2nd ave  \n\u003c/code\u003e\u003c/pre\u003e\n\u003cp\u003eOn the other hand, the following tweet is not revelant to KPOP.\u003c/p\u003e\n\u003cpre\u003e\u003ccode class\u003d\"language-text\"\u003eaccident closes jae valley rd drivers advised to avoid area seek alternate routes\n\u003c/code\u003e\u003c/pre\u003e\n\u003cp\u003eTo achieve the goal, we need to develop a classifier, which is a supervised machine learning technique. In this example, we consider using Support Vector Machine (SVM) as the classifier algorithm. On the higher level, we need to \u0026ldquo;train\u0026rdquo; the model with some manually labelled data and perform some tests against the trained model. As part of the input requirement the SVM expect the input data to represented as a label (either yes or no, 1 or 0) accompanied by the feature vector. The feature vector is a vector of values which uniquely differentiate one entry from another ideally. In the machine learning context, features have to be fixed by the programmers.\u003c/p\u003e\n\n\u003c/div\u003e"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1605178429551_2115660037",
+      "id": "paragraph_1605178429551_2115660037",
+      "dateCreated": "2020-11-12 18:53:49.551",
+      "dateStarted": "2021-11-04 01:30:34.424",
+      "dateFinished": "2021-11-04 01:30:34.454",
+      "status": "FINISHED"
+    },
+    {
+      "text": "%md\n## Uploading the data\n\n**[CODE CHANGE REQUIRED]** \nModify the following bash cell according to your environment and upload the data.\n\nIn case running the below taking too long thus Zeppelin killed it. e.g. \n\n```text\nParagraph received a SIGTERM\nExitValue: 143\n```\n\nYou may copy, paste and run the commands in a terminal (via ssh).\n\nHowever due to a bug with hadoop version 3.3.x, we still see the following warning, which is fine.\n\n```text\n2021-11-03 14:39:57,306 WARN hdfs.DataStreamer: Caught exception\njava.lang.InterruptedException\n\tat java.lang.Object.wait(Native Method)\n\tat java.lang.Thread.join(Thread.java:1252)\n\tat java.lang.Thread.join(Thread.java:1326)\n\tat org.apache.hadoop.hdfs.DataStreamer.closeResponder(DataStreamer.java:986)\n\tat org.apache.hadoop.hdfs.DataStreamer.endBlock(DataStreamer.java:640)\n\tat org.apache.hadoop.hdfs.DataStreamer.run(DataStreamer.java:810)\n```",
+      "user": "anonymous",
+      "dateUpdated": "2021-11-04 01:31:10.832",
+      "progress": 0,
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": false,
+        "results": {},
+        "editorSetting": {
+          "language": "markdown",
+          "editOnDblClick": true,
+          "completionKey": "TAB",
+          "completionSupport": false
+        },
+        "editorMode": "ace/mode/markdown",
+        "editorHide": true,
+        "tableHide": false
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "HTML",
+            "data": "\u003cdiv class\u003d\"markdown-body\"\u003e\n\u003ch2\u003eUploading the data\u003c/h2\u003e\n\u003cp\u003e\u003cstrong\u003e[CODE CHANGE REQUIRED]\u003c/strong\u003e\u003cbr /\u003e\nModify the following bash cell according to your environment and upload the data.\u003c/p\u003e\n\u003cp\u003eIn case running the below taking too long thus Zeppelin killed it. e.g.\u003c/p\u003e\n\u003cpre\u003e\u003ccode class\u003d\"language-text\"\u003eParagraph received a SIGTERM\nExitValue: 143\n\u003c/code\u003e\u003c/pre\u003e\n\u003cp\u003eYou may copy, paste and run the commands in a terminal (via ssh).\u003c/p\u003e\n\u003cp\u003eHowever due to a bug with hadoop version 3.3.x, we still see the following warning, which is fine.\u003c/p\u003e\n\u003cpre\u003e\u003ccode class\u003d\"language-text\"\u003e2021-11-03 14:39:57,306 WARN hdfs.DataStreamer: Caught exception\njava.lang.InterruptedException\n\tat java.lang.Object.wait(Native Method)\n\tat java.lang.Thread.join(Thread.java:1252)\n\tat java.lang.Thread.join(Thread.java:1326)\n\tat org.apache.hadoop.hdfs.DataStreamer.closeResponder(DataStreamer.java:986)\n\tat org.apache.hadoop.hdfs.DataStreamer.endBlock(DataStreamer.java:640)\n\tat org.apache.hadoop.hdfs.DataStreamer.run(DataStreamer.java:810)\n\u003c/code\u003e\u003c/pre\u003e\n\n\u003c/div\u003e"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1605180791304_1414349089",
+      "id": "paragraph_1605180791304_1414349089",
+      "dateCreated": "2020-11-12 19:33:11.304",
+      "dateStarted": "2021-11-04 01:31:05.388",
+      "dateFinished": "2021-11-04 01:31:05.408",
+      "status": "FINISHED"
+    },
+    {
+      "text": "%sh\nexport PATH\u003d$PATH:/home/ec2-user/hadoop/bin/\n\nnamenode\u003dip-172-31-86-18 # TODO:change me\n\nhdfs dfs -rm -r hdfs://$namenode:9000/lab12/ex2/\nhdfs dfs -mkdir -p hdfs://$namenode:9000/lab12/ex2/\nhdfs dfs -put /home/ec2-user/git/50043-labs/lab12/data/ex2/label_data hdfs://$namenode:9000/lab12/ex2/\n",
+      "user": "anonymous",
+      "dateUpdated": "2021-11-04 01:20:01.806",
+      "progress": 0,
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "sh",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": false
+        },
+        "editorMode": "ace/mode/sh"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "INCOMPLETE",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "rm: `hdfs://ip-172-31-86-18:9000/lab12/ex2/\u0027: No such file or directory\n2021-11-03 23:39:30,023 WARN hdfs.DataStreamer: Caught exception\njava.lang.InterruptedException\n\tat java.lang.Object.wait(Native Method)\n\tat java.lang.Thread.join(Thread.java:1252)\n\tat java.lang.Thread.join(Thread.java:1326)\n\tat org.apache.hadoop.hdfs.DataStreamer.closeResponder(DataStreamer.java:986)\n\tat org.apache.hadoop.hdfs.DataStreamer.endBlock(DataStreamer.java:640)\n\tat org.apache.hadoop.hdfs.DataStreamer.run(DataStreamer.java:810)\n2021-11-03 23:39:30,197 WARN hdfs.DataStreamer: Caught exception\njava.lang.InterruptedException\n\tat java.lang.Object.wait(Native Method)\n\tat java.lang.Thread.join(Thread.java:1252)\n\tat java.lang.Thread.join(Thread.java:1326)\n\tat org.apache.hadoop.hdfs.DataStreamer.closeResponder(DataStreamer.java:986)\n\tat org.apache.hadoop.hdfs.DataStreamer.endBlock(DataStreamer.java:640)\n\tat org.apache.hadoop.hdfs.DataStreamer.run(DataStreamer.java:810)\n2021-11-03 23:39:30,365 WARN hdfs.DataStreamer: Caught exception\njava.lang.InterruptedException\n\tat java.lang.Object.wait(Native Method)\n\tat java.lang.Thread.join(Thread.java:1252)\n\tat java.lang.Thread.join(Thread.java:1326)\n\tat org.apache.hadoop.hdfs.DataStreamer.closeResponder(DataStreamer.java:986)\n\tat org.apache.hadoop.hdfs.DataStreamer.endBlock(DataStreamer.java:640)\n\tat org.apache.hadoop.hdfs.DataStreamer.run(DataStreamer.java:810)\n2021-11-03 23:39:31,155 WARN hdfs.DataStreamer: Caught exception\njava.lang.InterruptedException\n\tat java.lang.Object.wait(Native Method)\n\tat java.lang.Thread.join(Thread.java:1252)\n\tat java.lang.Thread.join(Thread.java:1326)\n\tat org.apache.hadoop.hdfs.DataStreamer.closeResponder(DataStreamer.java:986)\n\tat org.apache.hadoop.hdfs.DataStreamer.endBlock(DataStreamer.java:640)\n\tat org.apache.hadoop.hdfs.DataStreamer.run(DataStreamer.java:810)\n2021-11-03 23:39:31,329 WARN hdfs.DataStreamer: Caught exception\njava.lang.InterruptedException\n\tat java.lang.Object.wait(Native Method)\n\tat java.lang.Thread.join(Thread.java:1252)\n\tat java.lang.Thread.join(Thread.java:1326)\n\tat org.apache.hadoop.hdfs.DataStreamer.closeResponder(DataStreamer.java:986)\n\tat org.apache.hadoop.hdfs.DataStreamer.endBlock(DataStreamer.java:640)\n\tat org.apache.hadoop.hdfs.DataStreamer.run(DataStreamer.java:810)\n2021-11-03 23:39:31,425 WARN hdfs.DataStreamer: Caught exception\njava.lang.InterruptedException\n\tat java.lang.Object.wait(Native Method)\n\tat java.lang.Thread.join(Thread.java:1252)\n\tat java.lang.Thread.join(Thread.java:1326)\n\tat org.apache.hadoop.hdfs.DataStreamer.closeResponder(DataStreamer.java:986)\n\tat org.apache.hadoop.hdfs.DataStreamer.endBlock(DataStreamer.java:640)\n\tat org.apache.hadoop.hdfs.DataStreamer.run(DataStreamer.java:810)\n2021-11-03 23:39:31,556 WARN hdfs.DataStreamer: Caught exception\njava.lang.InterruptedException\n\tat java.lang.Object.wait(Native Method)\n\tat java.lang.Thread.join(Thread.java:1252)\n\tat java.lang.Thread.join(Thread.java:1326)\n\tat org.apache.hadoop.hdfs.DataStreamer.closeResponder(DataStreamer.java:986)\n\tat org.apache.hadoop.hdfs.DataStreamer.endBlock(DataStreamer.java:640)\n\tat org.apache.hadoop.hdfs.DataStreamer.run(DataStreamer.java:810)\n2021-11-03 23:39:32,226 WARN hdfs.DataStreamer: Caught exception\njava.lang.InterruptedException\n\tat java.lang.Object.wait(Native Method)\n\tat java.lang.Thread.join(Thread.java:1252)\n\tat java.lang.Thread.join(Thread.java:1326)\n\tat org.apache.hadoop.hdfs.DataStreamer.closeResponder(DataStreamer.java:986)\n\tat org.apache.hadoop.hdfs.DataStreamer.endBlock(DataStreamer.java:640)\n\tat org.apache.hadoop.hdfs.DataStreamer.run(DataStreamer.java:810)\n2021-11-03 23:39:32,597 WARN hdfs.DataStreamer: Caught exception\njava.lang.InterruptedException\n\tat java.lang.Object.wait(Native Method)\n\tat java.lang.Thread.join(Thread.java:1252)\n\tat java.lang.Thread.join(Thread.java:1326)\n\tat org.apache.hadoop.hdfs.DataStreamer.closeResponder(DataStreamer.java:986)\n\tat org.apache.hadoop.hdfs.DataStreamer.endBlock(DataStreamer.java:640)\n\tat org.apache.hadoop.hdfs.DataStreamer.run(DataStreamer.java:810)\n2021-11-03 23:39:32,640 WARN hdfs.DataStreamer: Caught exception\njava.lang.InterruptedException\n\tat java.lang.Object.wait(Native Method)\n\tat java.lang.Thread.join(Thread.java:1252)\n\tat java.lang.Thread.join(Thread.java:1326)\n\tat org.apache.hadoop.hdfs.DataStreamer.closeResponder(DataStreamer.java:986)\n\tat org.apache.hadoop.hdfs.DataStreamer.endBlock(DataStreamer.java:640)\n\tat org.apache.hadoop.hdfs.DataStreamer.run(DataStreamer.java:810)\n2021-11-03 23:39:32,705 WARN hdfs.DataStreamer: Caught exception\njava.lang.InterruptedException\n\tat java.lang.Object.wait(Native Method)\n\tat java.lang.Thread.join(Thread.java:1252)\n\tat java.lang.Thread.join(Thread.java:1326)\n\tat org.apache.hadoop.hdfs.DataStreamer.closeResponder(DataStreamer.java:986)\n\tat org.apache.hadoop.hdfs.DataStreamer.endBlock(DataStreamer.java:640)\n\tat org.apache.hadoop.hdfs.DataStreamer.run(DataStreamer.java:810)\n2021-11-03 23:39:33,491 WARN hdfs.DataStreamer: Caught exception\njava.lang.InterruptedException\n\tat java.lang.Object.wait(Native Method)\n\tat java.lang.Thread.join(Thread.java:1252)\n\tat java.lang.Thread.join(Thread.java:1326)\n\tat org.apache.hadoop.hdfs.DataStreamer.closeResponder(DataStreamer.java:986)\n\tat org.apache.hadoop.hdfs.DataStreamer.endBlock(DataStreamer.java:640)\n\tat org.apache.hadoop.hdfs.DataStreamer.run(DataStreamer.java:810)\n2021-11-03 23:39:33,716 WARN hdfs.DataStreamer: Caught exception\njava.lang.InterruptedException\n\tat java.lang.Object.wait(Native Method)\n\tat java.lang.Thread.join(Thread.java:1252)\n\tat java.lang.Thread.join(Thread.java:1326)\n\tat org.apache.hadoop.hdfs.DataStreamer.closeResponder(DataStreamer.java:986)\n\tat org.apache.hadoop.hdfs.DataStreamer.endBlock(DataStreamer.java:640)\n\tat org.apache.hadoop.hdfs.DataStreamer.run(DataStreamer.java:810)\n2021-11-03 23:39:34,376 WARN hdfs.DataStreamer: Caught exception\njava.lang.InterruptedException\n\tat java.lang.Object.wait(Native Method)\n\tat java.lang.Thread.join(Thread.java:1252)\n\tat java.lang.Thread.join(Thread.java:1326)\n\tat org.apache.hadoop.hdfs.DataStreamer.closeResponder(DataStreamer.java:986)\n\tat org.apache.hadoop.hdfs.DataStreamer.endBlock(DataStreamer.java:640)\n\tat org.apache.hadoop.hdfs.DataStreamer.run(DataStreamer.java:810)\n2021-11-03 23:39:34,451 WARN hdfs.DataStreamer: Caught exception\njava.lang.InterruptedException\n\tat java.lang.Object.wait(Native Method)\n\tat java.lang.Thread.join(Thread.java:1252)\n\tat java.lang.Thread.join(Thread.java:1326)\n\tat org.apache.hadoop.hdfs.DataStreamer.closeResponder(DataStreamer.java:986)\n\tat org.apache.hadoop.hdfs.DataStreamer.endBlock(DataStreamer.java:640)\n\tat org.apache.hadoop.hdfs.DataStreamer.run(DataStreamer.java:810)\n2021-11-03 23:39:34,886 WARN hdfs.DataStreamer: Caught exception\njava.lang.InterruptedException\n\tat java.lang.Object.wait(Native Method)\n\tat java.lang.Thread.join(Thread.java:1252)\n\tat java.lang.Thread.join(Thread.java:1326)\n\tat org.apache.hadoop.hdfs.DataStreamer.closeResponder(DataStreamer.java:986)\n\tat org.apache.hadoop.hdfs.DataStreamer.endBlock(DataStreamer.java:640)\n\tat org.apache.hadoop.hdfs.DataStreamer.run(DataStreamer.java:810)\n2021-11-03 23:39:35,080 WARN hdfs.DataStreamer: Caught exception\njava.lang.InterruptedException\n\tat java.lang.Object.wait(Native Method)\n\tat java.lang.Thread.join(Thread.java:1252)\n\tat java.lang.Thread.join(Thread.java:1326)\n\tat org.apache.hadoop.hdfs.DataStreamer.closeResponder(DataStreamer.java:986)\n\tat org.apache.hadoop.hdfs.DataStreamer.endBlock(DataStreamer.java:640)\n\tat org.apache.hadoop.hdfs.DataStreamer.run(DataStreamer.java:810)\n2021-11-03 23:39:35,172 WARN hdfs.DataStreamer: Caught exception\njava.lang.InterruptedException\n\tat java.lang.Object.wait(Native Method)\n\tat java.lang.Thread.join(Thread.java:1252)\n\tat java.lang.Thread.join(Thread.java:1326)\n\tat org.apache.hadoop.hdfs.DataStreamer.closeResponder(DataStreamer.java:986)\n\tat org.apache.hadoop.hdfs.DataStreamer.endBlock(DataStreamer.java:640)\n\tat org.apache.hadoop.hdfs.DataStreamer.run(DataStreamer.java:810)\n2021-11-03 23:39:35,233 WARN hdfs.DataStreamer: Caught exception\njava.lang.InterruptedException\n\tat java.lang.Object.wait(Native Method)\n\tat java.lang.Thread.join(Thread.java:1252)\n\tat java.lang.Thread.join(Thread.java:1326)\n\tat org.apache.hadoop.hdfs.DataStreamer.closeResponder(DataStreamer.java:986)\n\tat org.apache.hadoop.hdfs.DataStreamer.endBlock(DataStreamer.java:640)\n\tat org.apache.hadoop.hdfs.DataStreamer.run(DataStreamer.java:810)\n2021-11-03 23:39:35,565 WARN hdfs.DataStreamer: Caught exception\njava.lang.InterruptedException\n\tat java.lang.Object.wait(Native Method)\n\tat java.lang.Thread.join(Thread.java:1252)\n\tat java.lang.Thread.join(Thread.java:1326)\n\tat org.apache.hadoop.hdfs.DataStreamer.closeResponder(DataStreamer.java:986)\n\tat org.apache.hadoop.hdfs.DataStreamer.endBlock(DataStreamer.java:640)\n\tat org.apache.hadoop.hdfs.DataStreamer.run(DataStreamer.java:810)\n2021-11-03 23:39:35,979 WARN hdfs.DataStreamer: Caught exception\njava.lang.InterruptedException\n\tat java.lang.Object.wait(Native Method)\n\tat java.lang.Thread.join(Thread.java:1252)\n\tat java.lang.Thread.join(Thread.java:1326)\n\tat org.apache.hadoop.hdfs.DataStreamer.closeResponder(DataStreamer.java:986)\n\tat org.apache.hadoop.hdfs.DataStreamer.endBlock(DataStreamer.java:640)\n\tat org.apache.hadoop.hdfs.DataStreamer.run(DataStreamer.java:810)\n2021-11-03 23:39:37,384 WARN hdfs.DataStreamer: Caught exception\njava.lang.InterruptedException\n\tat java.lang.Object.wait(Native Method)\n\tat java.lang.Thread.join(Thread.java:1252)\n\tat java.lang.Thread.join(Thread.java:1326)\n\tat org.apache.hadoop.hdfs.DataStreamer.closeResponder(DataStreamer.java:986)\n\tat org.apache.hadoop.hdfs.DataStreamer.endBlock(DataStreamer.java:640)\n\tat org.apache.hadoop.hdfs.DataStreamer.run(DataStreamer.java:810)\n2021-11-03 23:39:37,637 WARN hdfs.DataStreamer: Caught exception\njava.lang.InterruptedException\n\tat java.lang.Object.wait(Native Method)\n\tat java.lang.Thread.join(Thread.java:1252)\n\tat java.lang.Thread.join(Thread.java:1326)\n\tat org.apache.hadoop.hdfs.DataStreamer.closeResponder(DataStreamer.java:986)\n\tat org.apache.hadoop.hdfs.DataStreamer.endBlock(DataStreamer.java:640)\n\tat org.apache.hadoop.hdfs.DataStreamer.run(DataStreamer.java:810)\n2021-11-03 23:39:39,373 WARN hdfs.DataStreamer: Caught exception\njava.lang.InterruptedException\n\tat java.lang.Object.wait(Native Method)\n\tat java.lang.Thread.join(Thread.java:1252)\n\tat java.lang.Thread.join(Thread.java:1326)\n\tat org.apache.hadoop.hdfs.DataStreamer.closeResponder(DataStreamer.java:986)\n\tat org.apache.hadoop.hdfs.DataStreamer.endBlock(DataStreamer.java:640)\n\tat org.apache.hadoop.hdfs.DataStreamer.run(DataStreamer.java:810)\n2021-11-03 23:39:39,631 WARN hdfs.DataStreamer: Caught exception\njava.lang.InterruptedException\n\tat java.lang.Object.wait(Native Method)\n\tat java.lang.Thread.join(Thread.java:1252)\n\tat java.lang.Thread.join(Thread.java:1326)\n\tat org.apache.hadoop.hdfs.DataStreamer.closeResponder(DataStreamer.java:986)\n\tat org.apache.hadoop.hdfs.DataStreamer.endBlock(DataStreamer.java:640)\n\tat org.apache.hadoop.hdfs.DataStreamer.run(DataStreamer.java:810)\n2021-11-03 23:39:39,793 WARN hdfs.DataStreamer: Caught exception\njava.lang.InterruptedException\n\tat java.lang.Object.wait(Native Method)\n\tat java.lang.Thread.join(Thread.java:1252)\n\tat java.lang.Thread.join(Thread.java:1326)\n\tat org.apache.hadoop.hdfs.DataStreamer.closeResponder(DataStreamer.java:986)\n\tat org.apache.hadoop.hdfs.DataStreamer.endBlock(DataStreamer.java:640)\n\tat org.apache.hadoop.hdfs.DataStreamer.run(DataStreamer.java:810)\n2021-11-03 23:39:41,268 WARN hdfs.DataStreamer: Caught exception\njava.lang.InterruptedException\n\tat java.lang.Object.wait(Native Method)\n\tat java.lang.Thread.join(Thread.java:1252)\n\tat java.lang.Thread.join(Thread.java:1326)\n\tat org.apache.hadoop.hdfs.DataStreamer.closeResponder(DataStreamer.java:986)\n\tat org.apache.hadoop.hdfs.DataStreamer.endBlock(DataStreamer.java:640)\n\tat org.apache.hadoop.hdfs.DataStreamer.run(DataStreamer.java:810)\n2021-11-03 23:39:42,016 WARN hdfs.DataStreamer: Caught exception\njava.lang.InterruptedException\n\tat java.lang.Object.wait(Native Method)\n\tat java.lang.Thread.join(Thread.java:1252)\n\tat java.lang.Thread.join(Thread.java:1326)\n\tat org.apache.hadoop.hdfs.DataStreamer.closeResponder(DataStreamer.java:986)\n\tat org.apache.hadoop.hdfs.DataStreamer.endBlock(DataStreamer.java:640)\n\tat org.apache.hadoop.hdfs.DataStreamer.run(DataStreamer.java:810)\n2021-11-03 23:39:42,769 WARN hdfs.DataStreamer: Caught exception\njava.lang.InterruptedException\n\tat java.lang.Object.wait(Native Method)\n\tat java.lang.Thread.join(Thread.java:1252)\n\tat java.lang.Thread.join(Thread.java:1326)\n\tat org.apache.hadoop.hdfs.DataStreamer.closeResponder(DataStreamer.java:986)\n\tat org.apache.hadoop.hdfs.DataStreamer.endBlock(DataStreamer.java:640)\n\tat org.apache.hadoop.hdfs.DataStreamer.run(DataStreamer.java:810)\n2021-11-03 23:39:42,857 WARN hdfs.DataStreamer: Caught exception\njava.lang.InterruptedException\n\tat java.lang.Object.wait(Native Method)\n\tat java.lang.Thread.join(Thread.java:1252)\n\tat java.lang.Thread.join(Thread.java:1326)\n\tat org.apache.hadoop.hdfs.DataStreamer.closeResponder(DataStreamer.java:986)\n\tat org.apache.hadoop.hdfs.DataStreamer.endBlock(DataStreamer.java:640)\n\tat org.apache.hadoop.hdfs.DataStreamer.run(DataStreamer.java:810)\n2021-11-03 23:39:43,395 WARN hdfs.DataStreamer: Caught exception\njava.lang.InterruptedException\n\tat java.lang.Object.wait(Native Method)\n\tat java.lang.Thread.join(Thread.java:1252)\n\tat java.lang.Thread.join(Thread.java:1326)\n\tat org.apache.hadoop.hdfs.DataStreamer.closeResponder(DataStreamer.java:986)\n\tat org.apache.hadoop.hdfs.DataStreamer.endBlock(DataStreamer.java:640)\n\tat org.apache.hadoop.hdfs.DataStreamer.run(DataStreamer.java:810)\n2021-11-03 23:39:44,128 WARN hdfs.DataStreamer: Caught exception\njava.lang.InterruptedException\n\tat java.lang.Object.wait(Native Method)\n\tat java.lang.Thread.join(Thread.java:1252)\n\tat java.lang.Thread.join(Thread.java:1326)\n\tat org.apache.hadoop.hdfs.DataStreamer.closeResponder(DataStreamer.java:986)\n\tat org.apache.hadoop.hdfs.DataStreamer.endBlock(DataStreamer.java:640)\n\tat org.apache.hadoop.hdfs.DataStreamer.run(DataStreamer.java:810)\n2021-11-03 23:39:44,197 WARN hdfs.DataStreamer: Caught exception\njava.lang.InterruptedException\n\tat java.lang.Object.wait(Native Method)\n\tat java.lang.Thread.join(Thread.java:1252)\n\tat java.lang.Thread.join(Thread.java:1326)\n\tat org.apache.hadoop.hdfs.DataStreamer.closeResponder(DataStreamer.java:986)\n\tat org.apache.hadoop.hdfs.DataStreamer.endBlock(DataStreamer.java:640)\n\tat org.apache.hadoop.hdfs.DataStreamer.run(DataStreamer.java:810)\n2021-11-03 23:39:44,962 WARN hdfs.DataStreamer: Caught exception\njava.lang.InterruptedException\n\tat java.lang.Object.wait(Native Method)\n\tat java.lang.Thread.join(Thread.java:1252)\n\tat java.lang.Thread.join(Thread.java:1326)\n\tat org.apache.hadoop.hdfs.DataStreamer.closeResponder(DataStreamer.java:986)\n\tat org.apache.hadoop.hdfs.DataStreamer.endBlock(DataStreamer.java:640)\n\tat org.apache.hadoop.hdfs.DataStreamer.run(DataStreamer.java:810)\n2021-11-03 23:39:45,529 WARN hdfs.DataStreamer: Caught exception\njava.lang.InterruptedException\n\tat java.lang.Object.wait(Native Method)\n\tat java.lang.Thread.join(Thread.java:1252)\n\tat java.lang.Thread.join(Thread.java:1326)\n\tat org.apache.hadoop.hdfs.DataStreamer.closeResponder(DataStreamer.java:986)\n\tat org.apache.hadoop.hdfs.DataStreamer.endBlock(DataStreamer.java:640)\n\tat org.apache.hadoop.hdfs.DataStreamer.run(DataStreamer.java:810)\n2021-11-03 23:39:46,110 WARN hdfs.DataStreamer: Caught exception\njava.lang.InterruptedException\n\tat java.lang.Object.wait(Native Method)\n\tat java.lang.Thread.join(Thread.java:1252)\n\tat java.lang.Thread.join(Thread.java:1326)\n\tat org.apache.hadoop.hdfs.DataStreamer.closeResponder(DataStreamer.java:986)\n\tat org.apache.hadoop.hdfs.DataStreamer.endBlock(DataStreamer.java:640)\n\tat org.apache.hadoop.hdfs.DataStreamer.run(DataStreamer.java:810)\n2021-11-03 23:39:46,301 WARN hdfs.DataStreamer: Caught exception\njava.lang.InterruptedException\n\tat java.lang.Object.wait(Native Method)\n\tat java.lang.Thread.join(Thread.java:1252)\n\tat java.lang.Thread.join(Thread.java:1326)\n\tat org.apache.hadoop.hdfs.DataStreamer.closeResponder(DataStreamer.java:986)\n\tat org.apache.hadoop.hdfs.DataStreamer.endBlock(DataStreamer.java:640)\n\tat org.apache.hadoop.hdfs.DataStreamer.run(DataStreamer.java:810)\n2021-11-03 23:39:46,344 WARN hdfs.DataStreamer: Caught exception\njava.lang.InterruptedException\n\tat java.lang.Object.wait(Native Method)\n\tat java.lang.Thread.join(Thread.java:1252)\n\tat java.lang.Thread.join(Thread.java:1326)\n\tat org.apache.hadoop.hdfs.DataStreamer.closeResponder(DataStreamer.java:986)\n\tat org.apache.hadoop.hdfs.DataStreamer.endBlock(DataStreamer.java:640)\n\tat org.apache.hadoop.hdfs.DataStreamer.run(DataStreamer.java:810)\n2021-11-03 23:39:47,625 WARN hdfs.DataStreamer: Caught exception\njava.lang.InterruptedException\n\tat java.lang.Object.wait(Native Method)\n\tat java.lang.Thread.join(Thread.java:1252)\n\tat java.lang.Thread.join(Thread.java:1326)\n\tat org.apache.hadoop.hdfs.DataStreamer.closeResponder(DataStreamer.java:986)\n\tat org.apache.hadoop.hdfs.DataStreamer.endBlock(DataStreamer.java:640)\n\tat org.apache.hadoop.hdfs.DataStreamer.run(DataStreamer.java:810)\n2021-11-03 23:39:47,672 WARN hdfs.DataStreamer: Caught exception\njava.lang.InterruptedException\n\tat java.lang.Object.wait(Native Method)\n\tat java.lang.Thread.join(Thread.java:1252)\n\tat java.lang.Thread.join(Thread.java:1326)\n\tat org.apache.hadoop.hdfs.DataStreamer.closeResponder(DataStreamer.java:986)\n\tat org.apache.hadoop.hdfs.DataStreamer.endBlock(DataStreamer.java:640)\n\tat org.apache.hadoop.hdfs.DataStreamer.run(DataStreamer.java:810)\n2021-11-03 23:39:47,740 WARN hdfs.DataStreamer: Caught exception\njava.lang.InterruptedException\n\tat java.lang.Object.wait(Native Method)\n\tat java.lang.Thread.join(Thread.java:1252)\n\tat java.lang.Thread.join(Thread.java:1326)\n\tat org.apache.hadoop.hdfs.DataStreamer.closeResponder(DataStreamer.java:986)\n\tat org.apache.hadoop.hdfs.DataStreamer.endBlock(DataStreamer.java:640)\n\tat org.apache.hadoop.hdfs.DataStreamer.run(DataStreamer.java:810)\n2021-11-03 23:39:50,838 WARN hdfs.DataStreamer: Caught exception\njava.lang.InterruptedException\n\tat java.lang.Object.wait(Native Method)\n\tat java.lang.Thread.join(Thread.java:1252)\n\tat java.lang.Thread.join(Thread.java:1326)\n\tat org.apache.hadoop.hdfs.DataStreamer.closeResponder(DataStreamer.java:986)\n\tat org.apache.hadoop.hdfs.DataStreamer.endBlock(DataStreamer.java:640)\n\tat org.apache.hadoop.hdfs.DataStreamer.run(DataStreamer.java:810)\n2021-11-03 23:39:52,984 WARN hdfs.DataStreamer: Caught exception\njava.lang.InterruptedException\n\tat java.lang.Object.wait(Native Method)\n\tat java.lang.Thread.join(Thread.java:1252)\n\tat java.lang.Thread.join(Thread.java:1326)\n\tat org.apache.hadoop.hdfs.DataStreamer.closeResponder(DataStreamer.java:986)\n\tat org.apache.hadoop.hdfs.DataStreamer.endBlock(DataStreamer.java:640)\n\tat org.apache.hadoop.hdfs.DataStreamer.run(DataStreamer.java:810)\n2021-11-03 23:39:54,204 WARN hdfs.DataStreamer: Caught exception\njava.lang.InterruptedException\n\tat java.lang.Object.wait(Native Method)\n\tat java.lang.Thread.join(Thread.java:1252)\n\tat java.lang.Thread.join(Thread.java:1326)\n\tat org.apache.hadoop.hdfs.DataStreamer.closeResponder(DataStreamer.java:986)\n\tat org.apache.hadoop.hdfs.DataStreamer.endBlock(DataStreamer.java:640)\n\tat org.apache.hadoop.hdfs.DataStreamer.run(DataStreamer.java:810)\n2021-11-03 23:39:55,287 WARN hdfs.DataStreamer: Caught exception\njava.lang.InterruptedException\n\tat java.lang.Object.wait(Native Method)\n\tat java.lang.Thread.join(Thread.java:1252)\n\tat java.lang.Thread.join(Thread.java:1326)\n\tat org.apache.hadoop.hdfs.DataStreamer.closeResponder(DataStreamer.java:986)\n\tat org.apache.hadoop.hdfs.DataStreamer.endBlock(DataStreamer.java:640)\n\tat org.apache.hadoop.hdfs.DataStreamer.run(DataStreamer.java:810)\n2021-11-03 23:39:55,840 WARN hdfs.DataStreamer: Caught exception\njava.lang.InterruptedException\n\tat java.lang.Object.wait(Native Method)\n\tat java.lang.Thread.join(Thread.java:1252)\n\tat java.lang.Thread.join(Thread.java:1326)\n\tat org.apache.hadoop.hdfs.DataStreamer.closeResponder(DataStreamer.java:986)\n\tat org.apache.hadoop.hdfs.DataStreamer.endBlock(DataStreamer.java:640)\n\tat org.apache.hadoop.hdfs.DataStreamer.run(DataStreamer.java:810)\n2021-11-03 23:39:57,840 WARN hdfs.DataStreamer: Caught exception\njava.lang.InterruptedException\n\tat java.lang.Object.wait(Native Method)\n\tat java.lang.Thread.join(Thread.java:1252)\n\tat java.lang.Thread.join(Thread.java:1326)\n\tat org.apache.hadoop.hdfs.DataStreamer.closeResponder(DataStreamer.java:986)\n\tat org.apache.hadoop.hdfs.DataStreamer.endBlock(DataStreamer.java:640)\n\tat org.apache.hadoop.hdfs.DataStreamer.run(DataStreamer.java:810)\n2021-11-03 23:39:58,308 WARN hdfs.DataStreamer: Caught exception\njava.lang.InterruptedException\n\tat java.lang.Object.wait(Native Method)\n\tat java.lang.Thread.join(Thread.java:1252)\n\tat java.lang.Thread.join(Thread.java:1326)\n\tat org.apache.hadoop.hdfs.DataStreamer.closeResponder(DataStreamer.java:986)\n\tat org.apache.hadoop.hdfs.DataStreamer.endBlock(DataStreamer.java:640)\n\tat org.apache.hadoop.hdfs.DataStreamer.run(DataStreamer.java:810)\n2021-11-03 23:40:01,576 WARN hdfs.DataStreamer: Caught exception\njava.lang.InterruptedException\n\tat java.lang.Object.wait(Native Method)\n\tat java.lang.Thread.join(Thread.java:1252)\n\tat java.lang.Thread.join(Thread.java:1326)\n\tat org.apache.hadoop.hdfs.DataStreamer.closeResponder(DataStreamer.java:986)\n\tat org.apache.hadoop.hdfs.DataStreamer.endBlock(DataStreamer.java:640)\n\tat org.apache.hadoop.hdfs.DataStreamer.run(DataStreamer.java:810)\n2021-11-03 23:40:02,229 WARN hdfs.DataStreamer: Caught exception\njava.lang.InterruptedException\n\tat java.lang.Object.wait(Native Method)\n\tat java.lang.Thread.join(Thread.java:1252)\n\tat java.lang.Thread.join(Thread.java:1326)\n\tat org.apache.hadoop.hdfs.DataStreamer.closeResponder(DataStreamer.java:986)\n\tat org.apache.hadoop.hdfs.DataStreamer.endBlock(DataStreamer.java:640)\n\tat org.apache.hadoop.hdfs.DataStreamer.run(DataStreamer.java:810)\n2021-11-03 23:40:09,222 WARN hdfs.DataStreamer: Caught exception\njava.lang.InterruptedException\n\tat java.lang.Object.wait(Native Method)\n\tat java.lang.Thread.join(Thread.java:1252)\n\tat java.lang.Thread.join(Thread.java:1326)\n\tat org.apache.hadoop.hdfs.DataStreamer.closeResponder(DataStreamer.java:986)\n\tat org.apache.hadoop.hdfs.DataStreamer.endBlock(DataStreamer.java:640)\n\tat org.apache.hadoop.hdfs.DataStreamer.run(DataStreamer.java:810)\n2021-11-03 23:40:10,961 WARN hdfs.DataStreamer: Caught exception\njava.lang.InterruptedException\n\tat java.lang.Object.wait(Native Method)\n\tat java.lang.Thread.join(Thread.java:1252)\n\tat java.lang.Thread.join(Thread.java:1326)\n\tat org.apache.hadoop.hdfs.DataStreamer.closeResponder(DataStreamer.java:986)\n\tat org.apache.hadoop.hdfs.DataStreamer.endBlock(DataStreamer.java:640)\n\tat org.apache.hadoop.hdfs.DataStreamer.run(DataStreamer.java:810)\n"
+          },
+          {
+            "type": "TEXT",
+            "data": "Paragraph received a SIGTERM\nExitValue: 143"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1605180805891_423222708",
+      "id": "paragraph_1605180805891_423222708",
+      "dateCreated": "2020-11-12 19:33:25.891",
+      "dateStarted": "2021-11-03 23:39:12.629",
+      "dateFinished": "2021-11-03 23:40:16.085",
+      "status": "FINISHED"
+    },
+    {
+      "text": "%md\n## Importing and Setup\n\n**[CODE CHANGE REQUIRED]**\n\nLet\u0027s import all the require libraries and set the hadoop file system name node IP.\n\nWe make use of `numpy` a python library for numeric computation,\nIf Python complains about `numpy not found`, go to terminal and run in all the data nodes that you have in the cluster\n\n```bash\n$ sudo pip3 install numpy sets\n```\n\nAlternatively, you may can also use flintrock to issue the above command to all the nodes in your cluster\n\n```bash\n$ flintrock run-command my_test_cluster \u0027sudo pip3 install sets numpy\u0027\n```",
+      "user": "anonymous",
+      "dateUpdated": "2021-11-04 01:31:26.988",
+      "progress": 0,
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": false,
+        "results": {},
+        "editorSetting": {
+          "language": "markdown",
+          "editOnDblClick": true,
+          "completionKey": "TAB",
+          "completionSupport": false
+        },
+        "editorMode": "ace/mode/markdown",
+        "editorHide": true,
+        "tableHide": false
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "HTML",
+            "data": "\u003cdiv class\u003d\"markdown-body\"\u003e\n\u003ch2\u003eImporting and Setup\u003c/h2\u003e\n\u003cp\u003e\u003cstrong\u003e[CODE CHANGE REQUIRED]\u003c/strong\u003e\u003c/p\u003e\n\u003cp\u003eLet\u0026rsquo;s import all the require libraries and set the hadoop file system name node IP.\u003c/p\u003e\n\u003cp\u003eWe make use of \u003ccode\u003enumpy\u003c/code\u003e a python library for numeric computation,\u003cbr /\u003e\nIf Python complains about \u003ccode\u003enumpy not found\u003c/code\u003e, go to terminal and run in all the data nodes that you have in the cluster\u003c/p\u003e\n\u003cpre\u003e\u003ccode class\u003d\"language-bash\"\u003e$ sudo pip3 install numpy sets\n\u003c/code\u003e\u003c/pre\u003e\n\u003cp\u003eAlternatively, you may can also use flintrock to issue the above command to all the nodes in your cluster\u003c/p\u003e\n\u003cpre\u003e\u003ccode class\u003d\"language-bash\"\u003e$ flintrock run-command my_test_cluster \u0027sudo pip3 install sets numpy\u0027\n\u003c/code\u003e\u003c/pre\u003e\n\n\u003c/div\u003e"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1605180403945_532175899",
+      "id": "paragraph_1605180403945_532175899",
+      "dateCreated": "2020-11-12 19:26:43.945",
+      "dateStarted": "2021-11-04 01:31:20.265",
+      "dateFinished": "2021-11-04 01:31:20.282",
+      "status": "FINISHED"
+    },
+    {
+      "text": "%pyspark\n\n\nimport re\nimport sets, math\nimport numpy # make sure numpy is installed on all datanodes using the command pip3 install numpy\n\nfrom pyspark.sql import SQLContext\nfrom pyspark.mllib import *\nfrom pyspark.mllib.regression import LabeledPoint\nfrom pyspark.mllib.linalg import Vectors\nfrom pyspark.mllib.classification import SVMWithSGD\nfrom pyspark.mllib.evaluation import BinaryClassificationMetrics\n\nsparkSession \u003d SparkSession.builder.appName(\"SVM notebook\").getOrCreate()\nsc \u003d sparkSession.sparkContext\n\nhdfs_nn \u003d \"ip-172-31-86-18\" # TODO: fixme\n\n\n",
+      "user": "anonymous",
+      "dateUpdated": "2021-11-04 01:21:35.680",
+      "progress": 0,
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "python",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/python"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": []
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1605179067285_567379070",
+      "id": "paragraph_1605179067285_567379070",
+      "dateCreated": "2020-11-12 19:04:27.285",
+      "dateStarted": "2021-11-03 23:42:23.367",
+      "dateFinished": "2021-11-03 23:43:05.526",
+      "status": "FINISHED"
+    },
+    {
+      "text": "%md\n\n## Loading the data\nWe load the data from the HDFS. The `.sample(False,0.1)` is to perform sampling on the input dataset. If you are to run it on a full cluster, feel free to remove the sampling\n\nThe first argument is boolean flag is called `withReplacement`. When it is `True`, it allows the same element to appear more than once. \nThe second argument is the fraction of elements in the sampled results. `0.1` means we expect 10% of the entire data set in the samples. You might set it to a lower ratio if it takes too long to run in t2.micro.\n\n",
+      "user": "anonymous",
+      "dateUpdated": "2021-11-04 01:30:29.384",
+      "progress": 0,
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "markdown",
+          "editOnDblClick": true,
+          "completionKey": "TAB",
+          "completionSupport": false
+        },
+        "editorMode": "ace/mode/markdown",
+        "editorHide": true,
+        "tableHide": false
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "HTML",
+            "data": "\u003cdiv class\u003d\"markdown-body\"\u003e\n\u003ch2\u003eLoading the data\u003c/h2\u003e\n\u003cp\u003eWe load the data from the HDFS. The \u003ccode\u003e.sample(False,0.1)\u003c/code\u003e is to perform sampling on the input dataset. If you are to run it on a full cluster, feel free to remove the sampling\u003c/p\u003e\n\u003cp\u003eThe first argument is boolean flag is called \u003ccode\u003ewithReplacement\u003c/code\u003e. When it is \u003ccode\u003eTrue\u003c/code\u003e, it allows the same element to appear more than once.\u003cbr /\u003e\nThe second argument is the fraction of elements in the sampled results. \u003ccode\u003e0.1\u003c/code\u003e means we expect 10% of the entire data set in the samples. You might set it to a lower ratio if it takes too long to run in t2.micro.\u003c/p\u003e\n\n\u003c/div\u003e"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1605232208177_523565523",
+      "id": "paragraph_1605232208177_523565523",
+      "dateCreated": "2020-11-13 09:50:08.177",
+      "dateStarted": "2021-11-04 01:30:29.402",
+      "dateFinished": "2021-11-04 01:30:29.415",
+      "status": "FINISHED"
+    },
+    {
+      "text": "%pyspark\ndef remove_punct(tweet):\n    return re.sub(\u0027[\\\u0027\".,!#]\u0027,\u0027\u0027,tweet)\n\nposTXT \u003d sc.textFile(\"hdfs://%s:9000/lab12/ex2/label_data/Kpop/*.txt\" % hdfs_nn).sample(False,0.1).map(remove_punct)\nnegTXT \u003d sc.textFile(\"hdfs://%s:9000/lab12/ex2/label_data/othertweet/*.txt\" % hdfs_nn).sample(False,0.1).map(remove_punct)\n\n",
+      "user": "anonymous",
+      "dateUpdated": "2021-11-04 00:36:08.261",
+      "progress": 0,
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "python",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/python"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": []
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1605232417247_368212173",
+      "id": "paragraph_1605232417247_368212173",
+      "dateCreated": "2020-11-13 09:53:37.247",
+      "dateStarted": "2021-11-04 00:36:08.310",
+      "dateFinished": "2021-11-04 00:36:09.665",
+      "status": "FINISHED"
+    },
+    {
+      "text": "%md \n\n## Exercise 2.1 Build a language model using TFIDF\n\nIn Natural Language Procoessing, we often model a language using bags of words model. The idea is to represent text in terms of vectors.\n\nOne of the simple and effective method is to use Term-Frequency Inversed Document Frequency.\n\n$$\nTFIDF(w) \u003d TF(w) * log(NDoc/DF(w))\n$$\n\nwhere *NDoc* is the number of documents.\n\n\n*  TF is actually the word count. For instance, consider the following text data.\n```text\napple smart phones made by apple\nandroid smart phones made by others\n```\nWe assume that each line is a document, hence there are two documents here.\n\n* The term frequency is\n```text\napple, 2\nandroid, 1\nphones, 2\nsmart, 2\nmade, 2\nby, 2\nothers, 1\n```\nThe term frequency is basically the word count, i.e. the number of occurances of a word across all document.\n\n* The document frequency is \n\n```text\napple, 1\nandroid, 1\nphones, 2\nsmart, 2\nmade, 2\nby, 2\nothers, 1\n```\n\nThe document frequency is the number of documents a word is mentioned.\n\n\n* IDF is is the total number of documents/records divided by the total number of the documents/records containing the words. We apply logarithmic to the quotient. The IDF for the above example is\n```text\napple, log(2/1)\nandroid, log(2/1)\nphones, log(2/2)\nsmart, log(2/2)\nmade, log(2/2)\nby, log(2/2)\nothers, log(2/1)\n```\nthat is\n```text\napple, 0.693\nandroid, 0.693\nphones, 0\nsmart, 0\nmade, 0\nby, 0\nothers, 0.693\n```\n\n* TF-IDF is obtained by multiplying the TF with the IDF.\n```text\napple, 1.386\nandroid, 0.693\nphones, 0\nsmart, 0\nmade, 0\nby, 0\nothers, 0.693\n```\n\n",
+      "user": "anonymous",
+      "dateUpdated": "2021-11-04 01:30:22.552",
+      "progress": 0,
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "markdown",
+          "editOnDblClick": true,
+          "completionKey": "TAB",
+          "completionSupport": false
+        },
+        "editorMode": "ace/mode/markdown",
+        "editorHide": true,
+        "tableHide": false
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "HTML",
+            "data": "\u003cdiv class\u003d\"markdown-body\"\u003e\n\u003ch2\u003eExercise 2.1 Build a language model using TFIDF\u003c/h2\u003e\n\u003cp\u003eIn Natural Language Procoessing, we often model a language using bags of words model. The idea is to represent text in terms of vectors.\u003c/p\u003e\n\u003cp\u003eOne of the simple and effective method is to use Term-Frequency Inversed Document Frequency.\u003c/p\u003e\n\u003cp\u003e$$\u003cbr /\u003e\nTFIDF(w) \u003d TF(w) * log(NDoc/DF(w))\u003cbr /\u003e\n$$\u003c/p\u003e\n\u003cp\u003ewhere \u003cem\u003eNDoc\u003c/em\u003e is the number of documents.\u003c/p\u003e\n\u003cul\u003e\n\u003cli\u003eTF is actually the word count. For instance, consider the following text data.\u003c/li\u003e\n\u003c/ul\u003e\n\u003cpre\u003e\u003ccode class\u003d\"language-text\"\u003eapple smart phones made by apple\nandroid smart phones made by others\n\u003c/code\u003e\u003c/pre\u003e\n\u003cp\u003eWe assume that each line is a document, hence there are two documents here.\u003c/p\u003e\n\u003cul\u003e\n\u003cli\u003eThe term frequency is\u003c/li\u003e\n\u003c/ul\u003e\n\u003cpre\u003e\u003ccode class\u003d\"language-text\"\u003eapple, 2\nandroid, 1\nphones, 2\nsmart, 2\nmade, 2\nby, 2\nothers, 1\n\u003c/code\u003e\u003c/pre\u003e\n\u003cp\u003eThe term frequency is basically the word count, i.e. the number of occurances of a word across all document.\u003c/p\u003e\n\u003cul\u003e\n\u003cli\u003eThe document frequency is\u003c/li\u003e\n\u003c/ul\u003e\n\u003cpre\u003e\u003ccode class\u003d\"language-text\"\u003eapple, 1\nandroid, 1\nphones, 2\nsmart, 2\nmade, 2\nby, 2\nothers, 1\n\u003c/code\u003e\u003c/pre\u003e\n\u003cp\u003eThe document frequency is the number of documents a word is mentioned.\u003c/p\u003e\n\u003cul\u003e\n\u003cli\u003eIDF is is the total number of documents/records divided by the total number of the documents/records containing the words. We apply logarithmic to the quotient. The IDF for the above example is\u003c/li\u003e\n\u003c/ul\u003e\n\u003cpre\u003e\u003ccode class\u003d\"language-text\"\u003eapple, log(2/1)\nandroid, log(2/1)\nphones, log(2/2)\nsmart, log(2/2)\nmade, log(2/2)\nby, log(2/2)\nothers, log(2/1)\n\u003c/code\u003e\u003c/pre\u003e\n\u003cp\u003ethat is\u003c/p\u003e\n\u003cpre\u003e\u003ccode class\u003d\"language-text\"\u003eapple, 0.693\nandroid, 0.693\nphones, 0\nsmart, 0\nmade, 0\nby, 0\nothers, 0.693\n\u003c/code\u003e\u003c/pre\u003e\n\u003cul\u003e\n\u003cli\u003eTF-IDF is obtained by multiplying the TF with the IDF.\u003c/li\u003e\n\u003c/ul\u003e\n\u003cpre\u003e\u003ccode class\u003d\"language-text\"\u003eapple, 1.386\nandroid, 0.693\nphones, 0\nsmart, 0\nmade, 0\nby, 0\nothers, 0.693\n\u003c/code\u003e\u003c/pre\u003e\n\n\u003c/div\u003e"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1605232726270_1724353295",
+      "id": "paragraph_1605232726270_1724353295",
+      "dateCreated": "2020-11-13 09:58:46.270",
+      "dateStarted": "2021-11-04 01:30:22.552",
+      "dateFinished": "2021-11-04 01:30:22.581",
+      "status": "FINISHED"
+    },
+    {
+      "text": "%md\n### Define `tf`\n**[CODE CHANGE REQUIRED]** \nComplete the following snippet to define `tf`\n\n\n\u003cstyle\u003e\n    div.hidecode + pre {display: none}\n\u003c/style\u003e\n\u003cscript\u003e\ndoclick\u003dfunction(e) {\n    e.nextSibling.nextSibling.style.display\u003d\"block\";\n}\n\u003c/script\u003e\n\n\u003cdiv class\u003d\"hidecode\" onclick\u003d\"doclick(this);\"\u003e[Show Hint]\u003c/div\u003e\n\n```text\ntf is the same as word count\n```",
+      "user": "anonymous",
+      "dateUpdated": "2021-11-04 01:30:20.302",
+      "progress": 0,
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "markdown",
+          "editOnDblClick": true,
+          "completionKey": "TAB",
+          "completionSupport": false
+        },
+        "editorMode": "ace/mode/markdown",
+        "editorHide": true,
+        "tableHide": false
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "HTML",
+            "data": "\u003cdiv class\u003d\"markdown-body\"\u003e\n\u003ch3\u003eDefine \u003ccode\u003etf\u003c/code\u003e\u003c/h3\u003e\n\u003cp\u003e\u003cstrong\u003e[CODE CHANGE REQUIRED]\u003c/strong\u003e\u003cbr /\u003e\nComplete the following snippet to define \u003ccode\u003etf\u003c/code\u003e\u003c/p\u003e\n\u003cstyle\u003e\n    div.hidecode + pre {display: none}\n\u003c/style\u003e\n\u003cscript\u003e\ndoclick\u003dfunction(e) {\n    e.nextSibling.nextSibling.style.display\u003d\"block\";\n}\n\u003c/script\u003e\n\u003cdiv class\u003d\"hidecode\" onclick\u003d\"doclick(this);\"\u003e[Show Hint]\u003c/div\u003e\n\u003cpre\u003e\u003ccode class\u003d\"language-text\"\u003etf is the same as word count\n\u003c/code\u003e\u003c/pre\u003e\n\n\u003c/div\u003e"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1605234231611_806747453",
+      "id": "paragraph_1605234231611_806747453",
+      "dateCreated": "2020-11-13 10:23:51.611",
+      "dateStarted": "2021-11-04 01:30:20.308",
+      "dateFinished": "2021-11-04 01:30:20.325",
+      "status": "FINISHED"
+    },
+    {
+      "text": "%pyspark\ndef tf(terms): \n    \u0027\u0027\u0027\n    input\n    terms :  a RDD of lists of terms (words)\n    output\n    a RDD of pairs i.e. (word, tf_score)\n    \u0027\u0027\u0027\n    # TODO\n    return None\n",
+      "user": "anonymous",
+      "dateUpdated": "2021-11-04 01:32:06.585",
+      "progress": 0,
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "python",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/python"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": []
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1605179483069_2099191288",
+      "id": "paragraph_1605179483069_2099191288",
+      "dateCreated": "2020-11-12 19:11:23.070",
+      "dateStarted": "2021-11-03 23:44:45.835",
+      "dateFinished": "2021-11-03 23:44:45.868",
+      "status": "FINISHED"
+    },
+    {
+      "text": "%md\n\n### Sample answer \n\n\n\n\u003cdiv class\u003d\"hidecode\" onclick\u003d\"doclick(this);\"\u003e[Show Hint]\u003c/div\u003e\n\n```python\ndef tf(terms): \n    \u0027\u0027\u0027\n    input\n    terms :  a RDD of lists of terms (words)\n    output\n    a RDD of pairs i.e. (word, tf_score)\n    \u0027\u0027\u0027\n    # ANSWER\n    return terms.flatMap(lambda seq: map(lambda w:(w,1), seq)).reduceByKey(lambda x,y:x + y)\n\n```\n\n",
+      "user": "anonymous",
+      "dateUpdated": "2021-11-04 01:43:00.477",
+      "progress": 0,
+      "config": {
+        "tableHide": true,
+        "editorSetting": {
+          "language": "markdown",
+          "editOnDblClick": true,
+          "completionKey": "TAB",
+          "completionSupport": false
+        },
+        "colWidth": 12.0,
+        "editorMode": "ace/mode/markdown",
+        "fontSize": 9.0,
+        "editorHide": false,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "HTML",
+            "data": "\u003cdiv class\u003d\"markdown-body\"\u003e\n\u003ch3\u003eSample answer\u003c/h3\u003e\n\u003cdiv class\u003d\"hidecode\" onclick\u003d\"doclick(this);\"\u003e[Show Hint]\u003c/div\u003e\n\u003cpre\u003e\u003ccode class\u003d\"language-python\"\u003edef tf(terms): \n    \u0027\u0027\u0027\n    input\n    terms :  a RDD of lists of terms (words)\n    output\n    a RDD of pairs i.e. (word, tf_score)\n    \u0027\u0027\u0027\n    # ANSWER\n    return terms.flatMap(lambda seq: map(lambda w:(w,1), seq)).reduceByKey(lambda x,y:x + y)\n\n\u003c/code\u003e\u003c/pre\u003e\n\n\u003c/div\u003e"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1635988997031_1126584342",
+      "id": "paragraph_1635988997031_1126584342",
+      "dateCreated": "2021-11-04 01:23:17.032",
+      "dateStarted": "2021-11-04 01:30:13.596",
+      "dateFinished": "2021-11-04 01:30:13.610",
+      "status": "FINISHED"
+    },
+    {
+      "text": "%md\n\n### Test Case for `tf`\n\nRun the following cell, you should see\n\n```\n[(\u0027apple\u0027, 2), (\u0027by\u0027, 2), (\u0027android\u0027, 1), (\u0027smart\u0027, 2), (\u0027made\u0027, 2), (\u0027phones\u0027, 2), (\u0027others\u0027, 1)]\n```\n\n",
+      "user": "anonymous",
+      "dateUpdated": "2021-11-04 01:30:16.326",
+      "progress": 0,
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "markdown",
+          "editOnDblClick": true,
+          "completionKey": "TAB",
+          "completionSupport": false
+        },
+        "editorMode": "ace/mode/markdown",
+        "editorHide": true,
+        "tableHide": false
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "HTML",
+            "data": "\u003cdiv class\u003d\"markdown-body\"\u003e\n\u003ch3\u003eTest Case for \u003ccode\u003etf\u003c/code\u003e\u003c/h3\u003e\n\u003cp\u003eRun the following cell, you should see\u003c/p\u003e\n\u003cpre\u003e\u003ccode\u003e[(\u0027apple\u0027, 2), (\u0027by\u0027, 2), (\u0027android\u0027, 1), (\u0027smart\u0027, 2), (\u0027made\u0027, 2), (\u0027phones\u0027, 2), (\u0027others\u0027, 1)]\n\u003c/code\u003e\u003c/pre\u003e\n\n\u003c/div\u003e"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1605235266288_1311314818",
+      "id": "paragraph_1605235266288_1311314818",
+      "dateCreated": "2020-11-13 10:41:06.288",
+      "dateStarted": "2021-11-04 01:30:16.334",
+      "dateFinished": "2021-11-04 01:30:16.345",
+      "status": "FINISHED"
+    },
+    {
+      "text": "%pyspark\n\n\ndef one_grams(s):\n    return s.split()\n\n\ntest_terms \u003d [one_grams(\"apple smart phones made by apple\"), one_grams(\"android smart phones made by others\")]\ntest_tf \u003d tf(sc.parallelize(test_terms))\ntest_tf.collect()",
+      "user": "anonymous",
+      "dateUpdated": "2021-11-03 23:44:48.170",
+      "progress": 0,
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "python",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/python"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "[(\u0027apple\u0027, 2), (\u0027smart\u0027, 2), (\u0027phones\u0027, 2), (\u0027made\u0027, 2), (\u0027by\u0027, 2), (\u0027android\u0027, 1), (\u0027others\u0027, 1)]\n"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {
+        "jobUrl": {
+          "propertyName": "jobUrl",
+          "label": "SPARK JOB",
+          "tooltip": "View in Spark web UI",
+          "group": "spark",
+          "values": [
+            {
+              "jobUrl": "http://ec2-54-84-131-234.compute-1.amazonaws.com:4040/jobs/job?id\u003d0"
+            }
+          ],
+          "interpreterSettingId": "spark"
+        }
+      },
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1605235280114_459821824",
+      "id": "paragraph_1605235280114_459821824",
+      "dateCreated": "2020-11-13 10:41:20.114",
+      "dateStarted": "2021-11-03 23:44:48.198",
+      "dateFinished": "2021-11-03 23:44:53.194",
+      "status": "FINISHED"
+    },
+    {
+      "text": "%md\n\n### Define `df`\n\n**[CODE CHANGE REQUIRED]** \n\nComplete the following snippet to define `df`\n\n\n\u003cstyle\u003e\n    div.hidecode + pre {display: none}\n\u003c/style\u003e\n\u003cscript\u003e\ndoclick\u003dfunction(e) {\n    e.nextSibling.nextSibling.style.display\u003d\"block\";\n}\n\u003c/script\u003e\n\n\u003cdiv class\u003d\"hidecode\" onclick\u003d\"doclick(this);\"\u003e[Show Hint]\u003c/div\u003e\n\n```text\ndf differs from tf with a little bit. Instead of outputting (word,1) for every word in a tweet directly, we should remove the duplicating words (within the same tweet) first.\n```",
+      "user": "anonymous",
+      "dateUpdated": "2021-11-04 01:25:19.936",
+      "progress": 0,
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "markdown",
+          "editOnDblClick": true,
+          "completionKey": "TAB",
+          "completionSupport": false
+        },
+        "editorMode": "ace/mode/markdown",
+        "editorHide": true,
+        "tableHide": false
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "HTML",
+            "data": "\u003cdiv class\u003d\"markdown-body\"\u003e\n\u003ch3\u003eDefine \u003ccode\u003edf\u003c/code\u003e\u003c/h3\u003e\n\u003cp\u003e\u003cstrong\u003e[CODE CHANGE REQUIRED]\u003c/strong\u003e\u003c/p\u003e\n\u003cp\u003eComplete the following snippet to define \u003ccode\u003edf\u003c/code\u003e\u003c/p\u003e\n\u003cstyle\u003e\n    div.hidecode + pre {display: none}\n\u003c/style\u003e\n\u003cscript\u003e\ndoclick\u003dfunction(e) {\n    e.nextSibling.nextSibling.style.display\u003d\"block\";\n}\n\u003c/script\u003e\n\u003cdiv class\u003d\"hidecode\" onclick\u003d\"doclick(this);\"\u003e[Show Hint]\u003c/div\u003e\n\u003cpre\u003e\u003ccode class\u003d\"language-text\"\u003edf differs from tf with a little bit. Instead of outputting (word,1) for every word in a tweet directly, we should remove the duplicating words (within the same tweet) first.\n\u003c/code\u003e\u003c/pre\u003e\n\n\u003c/div\u003e"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1605234282079_479103327",
+      "id": "paragraph_1605234282079_479103327",
+      "dateCreated": "2020-11-13 10:24:42.080",
+      "dateStarted": "2021-11-04 01:25:19.939",
+      "dateFinished": "2021-11-04 01:25:20.115",
+      "status": "FINISHED"
+    },
+    {
+      "text": "%pyspark\ndef df(terms): \n    \u0027\u0027\u0027\n    input\n    terms :  a RDD of lists of terms (words)\n    output\n    a RDD of pairs i.e. (word, df_score)\n    \u0027\u0027\u0027\n    # TODO\n    return None\n",
+      "user": "anonymous",
+      "dateUpdated": "2021-11-04 01:32:17.231",
+      "progress": 0,
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "python",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/python"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": []
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1605179487492_435846692",
+      "id": "paragraph_1605179487492_435846692",
+      "dateCreated": "2020-11-12 19:11:27.492",
+      "dateStarted": "2021-11-03 23:44:54.411",
+      "dateFinished": "2021-11-03 23:44:54.439",
+      "status": "FINISHED"
+    },
+    {
+      "text": "%md\n\n### Test Case for `df`\n\nRun the following cell, you will see\n\n```\n[(\u0027apple\u0027, 1), (\u0027by\u0027, 2), (\u0027android\u0027, 1), (\u0027smart\u0027, 2), (\u0027made\u0027, 2), (\u0027phones\u0027, 2), (\u0027others\u0027, 1)]\n```\n",
+      "user": "anonymous",
+      "dateUpdated": "2021-11-04 01:25:31.655",
+      "progress": 0,
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "markdown",
+          "editOnDblClick": true,
+          "completionKey": "TAB",
+          "completionSupport": false
+        },
+        "editorMode": "ace/mode/markdown",
+        "editorHide": true,
+        "tableHide": false
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "HTML",
+            "data": "\u003cdiv class\u003d\"markdown-body\"\u003e\n\u003ch3\u003eTest Case for \u003ccode\u003edf\u003c/code\u003e\u003c/h3\u003e\n\u003cp\u003eRun the following cell, you will see\u003c/p\u003e\n\u003cpre\u003e\u003ccode\u003e[(\u0027apple\u0027, 1), (\u0027by\u0027, 2), (\u0027android\u0027, 1), (\u0027smart\u0027, 2), (\u0027made\u0027, 2), (\u0027phones\u0027, 2), (\u0027others\u0027, 1)]\n\u003c/code\u003e\u003c/pre\u003e\n\n\u003c/div\u003e"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1605235480613_427430793",
+      "id": "paragraph_1605235480613_427430793",
+      "dateCreated": "2020-11-13 10:44:40.613",
+      "dateStarted": "2021-11-04 01:25:31.658",
+      "dateFinished": "2021-11-04 01:25:31.687",
+      "status": "FINISHED"
+    },
+    {
+      "text": "%pyspark\ntest_terms \u003d [one_grams(\"apple smart phones made by apple\"), one_grams(\"android smart phones made by others\")]\ntest_df \u003d df(sc.parallelize(test_terms))\ntest_df.collect()",
+      "user": "anonymous",
+      "dateUpdated": "2021-11-03 23:44:57.445",
+      "progress": 0,
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "python",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/python"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "[(\u0027made\u0027, 2), (\u0027apple\u0027, 1), (\u0027phones\u0027, 2), (\u0027smart\u0027, 2), (\u0027by\u0027, 2), (\u0027android\u0027, 1), (\u0027others\u0027, 1)]\n"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {
+        "jobUrl": {
+          "propertyName": "jobUrl",
+          "label": "SPARK JOB",
+          "tooltip": "View in Spark web UI",
+          "group": "spark",
+          "values": [
+            {
+              "jobUrl": "http://ec2-54-84-131-234.compute-1.amazonaws.com:4040/jobs/job?id\u003d1"
+            }
+          ],
+          "interpreterSettingId": "spark"
+        }
+      },
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1605235477579_1943833912",
+      "id": "paragraph_1605235477579_1943833912",
+      "dateCreated": "2020-11-13 10:44:37.579",
+      "dateStarted": "2021-11-03 23:44:57.748",
+      "dateFinished": "2021-11-03 23:44:58.259",
+      "status": "FINISHED"
+    },
+    {
+      "text": "%md\n### Sample answer\n\n\n\n\u003cdiv class\u003d\"hidecode\" onclick\u003d\"doclick(this);\"\u003e[Show Hint]\u003c/div\u003e\n\n```python\ndef df(terms): \n    \u0027\u0027\u0027\n    input\n    terms :  a RDD of lists of terms (words)\n    output\n    a RDD of pairs i.e. (word, df_score)\n    \u0027\u0027\u0027\n    # ANSWER\n    return terms.flatMap(lambda seq: list(set(map(lambda w:(w,1), seq)))).reduceByKey(lambda x,y:x + y)\n```\n\n",
+      "user": "anonymous",
+      "dateUpdated": "2021-11-04 01:32:19.577",
+      "progress": 0,
+      "config": {
+        "editorSetting": {
+          "language": "text",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "colWidth": 12.0,
+        "editorMode": "ace/mode/text",
+        "fontSize": 9.0,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "HTML",
+            "data": "\u003cdiv class\u003d\"markdown-body\"\u003e\n\u003ch3\u003eSample answer\u003c/h3\u003e\n\u003cdiv class\u003d\"hidecode\" onclick\u003d\"doclick(this);\"\u003e[Show Hint]\u003c/div\u003e\n\u003cpre\u003e\u003ccode class\u003d\"language-python\"\u003edef df(terms): \n    \u0027\u0027\u0027\n    input\n    terms :  a RDD of lists of terms (words)\n    output\n    a RDD of pairs i.e. (word, df_score)\n    \u0027\u0027\u0027\n    # ANSWER\n    return terms.flatMap(lambda seq: list(set(map(lambda w:(w,1), seq)))).reduceByKey(lambda x,y:x + y)\n\u003c/code\u003e\u003c/pre\u003e\n\n\u003c/div\u003e"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1635989138618_1738479822",
+      "id": "paragraph_1635989138618_1738479822",
+      "dateCreated": "2021-11-04 01:25:38.623",
+      "dateStarted": "2021-11-04 01:32:19.597",
+      "dateFinished": "2021-11-04 01:32:19.609",
+      "status": "FINISHED"
+    },
+    {
+      "text": "%md\n\n### Define `tfidf`\n\n**[CODE CHANGE REQUIRED]** \n\nComplete the following snippet to define `tfidf`\n\n\n\u003cstyle\u003e\n    div.hidecode + pre {display: none}\n\u003c/style\u003e\n\u003cscript\u003e\ndoclick\u003dfunction(e) {\n    e.nextSibling.nextSibling.style.display\u003d\"block\";\n}\n\u003c/script\u003e\n\n\u003cdiv class\u003d\"hidecode\" onclick\u003d\"doclick(this);\"\u003e[Show Hint]\u003c/div\u003e\n\n```text\nLet r be an RDD. r.count() returns the size of r.\nLet r1, r2 be RDDs of key-value pairs. r1.join(r2) joins two RDDs by keys.\n```",
+      "user": "anonymous",
+      "dateUpdated": "2021-11-04 01:28:51.678",
+      "progress": 0,
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "markdown",
+          "editOnDblClick": true,
+          "completionKey": "TAB",
+          "completionSupport": false
+        },
+        "editorMode": "ace/mode/markdown",
+        "editorHide": true,
+        "tableHide": false
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "HTML",
+            "data": "\u003cdiv class\u003d\"markdown-body\"\u003e\n\u003ch3\u003eDefine \u003ccode\u003etfidf\u003c/code\u003e\u003c/h3\u003e\n\u003cp\u003e\u003cstrong\u003e[CODE CHANGE REQUIRED]\u003c/strong\u003e\u003c/p\u003e\n\u003cp\u003eComplete the following snippet to define \u003ccode\u003etfidf\u003c/code\u003e\u003c/p\u003e\n\u003cstyle\u003e\n    div.hidecode + pre {display: none}\n\u003c/style\u003e\n\u003cscript\u003e\ndoclick\u003dfunction(e) {\n    e.nextSibling.nextSibling.style.display\u003d\"block\";\n}\n\u003c/script\u003e\n\u003cdiv class\u003d\"hidecode\" onclick\u003d\"doclick(this);\"\u003e[Show Hint]\u003c/div\u003e\n\u003cpre\u003e\u003ccode class\u003d\"language-text\"\u003eLet r be an RDD. r.count() returns the size of r.\nLet r1, r2 be RDDs of key-value pairs. r1.join(r2) joins two RDDs by keys.\n\u003c/code\u003e\u003c/pre\u003e\n\n\u003c/div\u003e"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1605234414509_1351659785",
+      "id": "paragraph_1605234414509_1351659785",
+      "dateCreated": "2020-11-13 10:26:54.509",
+      "dateStarted": "2021-11-04 01:28:51.681",
+      "dateFinished": "2021-11-04 01:28:51.726",
+      "status": "FINISHED"
+    },
+    {
+      "text": "%pyspark\ndef tfidf(terms): \n    \u0027\u0027\u0027\n    input\n    terms:  a RDD of lists of terms (words)\n    output\n    a RDD of pairs i.e. (words, tfidf_score) sorted by tfidf_score in descending order.\n    \u0027\u0027\u0027\n    # TODO\n    return None\n    \n\n",
+      "user": "anonymous",
+      "dateUpdated": "2021-11-04 01:32:36.016",
+      "progress": 0,
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "python",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/python"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": []
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1605179527860_2127881722",
+      "id": "paragraph_1605179527860_2127881722",
+      "dateCreated": "2020-11-12 19:12:07.860",
+      "dateStarted": "2021-11-03 23:45:01.203",
+      "dateFinished": "2021-11-03 23:45:01.224",
+      "status": "FINISHED"
+    },
+    {
+      "text": "%md\n\n### Sample answer\n\n\n\n\u003cdiv class\u003d\"hidecode\" onclick\u003d\"doclick(this);\"\u003e[Show Hint]\u003c/div\u003e\n\n```python\ndef tfidf(terms): \n    \u0027\u0027\u0027\n    input\n    terms:  a RDD of lists of terms (words)\n    output\n    a RDD of pairs i.e. (words, tfidf_score) sorted by tfidf_score in descending order.\n    \u0027\u0027\u0027\n    # ANSWER\n    dCount \u003d terms.count()\n    tfreq \u003d tf(terms)\n    dfreq \u003d df(terms)\n    return tfreq.join(dfreq).map(lambda p :(p[0], p[1][0] * math.log(dCount/p[1][1]))).sortBy( lambda p : - p[1])\n```\n\n\n\n",
+      "user": "anonymous",
+      "dateUpdated": "2021-11-04 01:32:36.530",
+      "progress": 0,
+      "config": {
+        "editorSetting": {
+          "language": "text",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "colWidth": 12.0,
+        "editorMode": "ace/mode/text",
+        "fontSize": 9.0,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "HTML",
+            "data": "\u003cdiv class\u003d\"markdown-body\"\u003e\n\u003ch3\u003eSample answer\u003c/h3\u003e\n\u003cdiv class\u003d\"hidecode\" onclick\u003d\"doclick(this);\"\u003e[Show Hint]\u003c/div\u003e\n\u003cpre\u003e\u003ccode class\u003d\"language-python\"\u003edef tfidf(terms): \n    \u0027\u0027\u0027\n    input\n    terms:  a RDD of lists of terms (words)\n    output\n    a RDD of pairs i.e. (words, tfidf_score) sorted by tfidf_score in descending order.\n    \u0027\u0027\u0027\n    # ANSWER\n    dCount \u003d terms.count()\n    tfreq \u003d tf(terms)\n    dfreq \u003d df(terms)\n    return tfreq.join(dfreq).map(lambda p :(p[0], p[1][0] * math.log(dCount/p[1][1]))).sortBy( lambda p : - p[1])\n\u003c/code\u003e\u003c/pre\u003e\n\n\u003c/div\u003e"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1635983055395_1918324490",
+      "id": "paragraph_1635983055395_1918324490",
+      "dateCreated": "2021-11-03 23:44:15.421",
+      "dateStarted": "2021-11-04 01:32:36.545",
+      "dateFinished": "2021-11-04 01:32:36.553",
+      "status": "FINISHED"
+    },
+    {
+      "text": "%md\n\n### Test case for `tfidf`\n\nRun the following cell you will see\n\n```\n[(\u0027apple\u0027, 1.3862943611198906), (\u0027android\u0027, 0.6931471805599453), (\u0027others\u0027, 0.6931471805599453), (\u0027by\u0027, 0.0), (\u0027smart\u0027, 0.0), (\u0027made\u0027, 0.0), (\u0027phones\u0027, 0.0)]\n```\n",
+      "user": "anonymous",
+      "dateUpdated": "2021-11-04 01:30:05.620",
+      "progress": 0,
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "markdown",
+          "editOnDblClick": true,
+          "completionKey": "TAB",
+          "completionSupport": false
+        },
+        "editorMode": "ace/mode/markdown",
+        "editorHide": true,
+        "tableHide": false
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "HTML",
+            "data": "\u003cdiv class\u003d\"markdown-body\"\u003e\n\u003ch3\u003eTest case for \u003ccode\u003etfidf\u003c/code\u003e\u003c/h3\u003e\n\u003cp\u003eRun the following cell you will see\u003c/p\u003e\n\u003cpre\u003e\u003ccode\u003e[(\u0027apple\u0027, 1.3862943611198906), (\u0027android\u0027, 0.6931471805599453), (\u0027others\u0027, 0.6931471805599453), (\u0027by\u0027, 0.0), (\u0027smart\u0027, 0.0), (\u0027made\u0027, 0.0), (\u0027phones\u0027, 0.0)]\n\u003c/code\u003e\u003c/pre\u003e\n\n\u003c/div\u003e"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1605235637913_949701721",
+      "id": "paragraph_1605235637913_949701721",
+      "dateCreated": "2020-11-13 10:47:17.913",
+      "dateStarted": "2021-11-04 01:30:05.625",
+      "dateFinished": "2021-11-04 01:30:05.657",
+      "status": "FINISHED"
+    },
+    {
+      "text": "%pyspark\ntest_terms \u003d [one_grams(\"apple smart phones made by apple\"), one_grams(\"android smart phones made by others\")]\ntest_tfidf \u003d tfidf(sc.parallelize(test_terms))\ntest_tfidf.collect()",
+      "user": "anonymous",
+      "dateUpdated": "2021-11-03 23:45:11.574",
+      "progress": 0,
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "python",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/python"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "[(\u0027apple\u0027, 1.3862943611198906), (\u0027android\u0027, 0.6931471805599453), (\u0027others\u0027, 0.6931471805599453), (\u0027smart\u0027, 0.0), (\u0027phones\u0027, 0.0), (\u0027made\u0027, 0.0), (\u0027by\u0027, 0.0)]\n"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {
+        "jobUrl": {
+          "propertyName": "jobUrl",
+          "label": "SPARK JOB",
+          "tooltip": "View in Spark web UI",
+          "group": "spark",
+          "values": [
+            {
+              "jobUrl": "http://ec2-54-84-131-234.compute-1.amazonaws.com:4040/jobs/job?id\u003d2"
+            },
+            {
+              "jobUrl": "http://ec2-54-84-131-234.compute-1.amazonaws.com:4040/jobs/job?id\u003d3"
+            }
+          ],
+          "interpreterSettingId": "spark"
+        }
+      },
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1605235636171_1140499598",
+      "id": "paragraph_1605235636171_1140499598",
+      "dateCreated": "2020-11-13 10:47:16.171",
+      "dateStarted": "2021-11-03 23:45:11.588",
+      "dateFinished": "2021-11-03 23:45:12.711",
+      "status": "FINISHED"
+    },
+    {
+      "text": "%md\n\n## Exercise 2.2 Defining the Label points\n\nRecall that each label point is a decimal value (the label) with a vector. \n\n* For all positive tweets (KPop tweets) the label will be `1` and for all negative tweets we set `0` as the label. \n* For the vector parts, we build them using the tweet messages and the top 150 TFIDF\n",
+      "user": "anonymous",
+      "dateUpdated": "2021-11-04 01:39:42.978",
+      "progress": 0,
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "markdown",
+          "editOnDblClick": true,
+          "completionKey": "TAB",
+          "completionSupport": false
+        },
+        "editorMode": "ace/mode/markdown",
+        "editorHide": true,
+        "tableHide": false
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "HTML",
+            "data": "\u003cdiv class\u003d\"markdown-body\"\u003e\n\u003ch2\u003eExercise 2.2 Defining the Label points\u003c/h2\u003e\n\u003cp\u003eRecall that each label point is a decimal value (the label) with a vector.\u003c/p\u003e\n\u003cul\u003e\n\u003cli\u003eFor all positive tweets (KPop tweets) the label will be \u003ccode\u003e1\u003c/code\u003e and for all negative tweets we set \u003ccode\u003e0\u003c/code\u003e as the label.\u003c/li\u003e\n\u003cli\u003eFor the vector parts, we build them using the tweet messages and the top 150 TFIDF\u003c/li\u003e\n\u003c/ul\u003e\n\n\u003c/div\u003e"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1605235148663_387429256",
+      "id": "paragraph_1605235148663_387429256",
+      "dateCreated": "2020-11-13 10:39:08.663",
+      "dateStarted": "2021-11-04 01:39:42.984",
+      "dateFinished": "2021-11-04 01:39:43.002",
+      "status": "FINISHED"
+    },
+    {
+      "text": "%pyspark\n# You don\u0027t need to modify this cell\ndef buildTopTFIDF(tweets,tokenizer):\n    \u0027\u0027\u0027\n    input\n    tweets: an RDD of texts|\n    tokenizer: a function turns a string into list of tokens\n    \n    output\n    a list containing top 150 tfidf terms\n    \u0027\u0027\u0027\n    terms \u003d tweets.map(tokenizer)\n    return map(lambda p:p[0], tfidf(terms).take(150))\n    ",
+      "user": "anonymous",
+      "dateUpdated": "2021-11-03 23:45:16.060",
+      "progress": 0,
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "python",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/python",
+        "editorHide": false,
+        "tableHide": false
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": []
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1605235760088_2054597265",
+      "id": "paragraph_1605235760088_2054597265",
+      "dateCreated": "2020-11-13 10:49:20.088",
+      "dateStarted": "2021-11-03 23:45:16.078",
+      "dateFinished": "2021-11-03 23:45:16.098",
+      "status": "FINISHED"
+    },
+    {
+      "text": "%md\n### Tokenizer\n**[CODE CHANGE REQUIRED]** \nWe\u0027ve been using single word tokens for the test cases. However sometime using a multi-word tokenizer will help improving the performance by taking the neighboring word into account. \nDefine a `two_grams` tokenizer\n\n",
+      "user": "anonymous",
+      "dateUpdated": "2021-11-04 01:27:56.737",
+      "progress": 0,
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "markdown",
+          "editOnDblClick": true,
+          "completionKey": "TAB",
+          "completionSupport": false
+        },
+        "editorMode": "ace/mode/markdown",
+        "editorHide": true,
+        "tableHide": false
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "HTML",
+            "data": "\u003cdiv class\u003d\"markdown-body\"\u003e\n\u003ch3\u003eTokenizer\u003c/h3\u003e\n\u003cp\u003e\u003cstrong\u003e[CODE CHANGE REQUIRED]\u003c/strong\u003e\u003cbr /\u003e\nWe\u0026rsquo;ve been using single word tokens for the test cases. However sometime using a multi-word tokenizer will help improving the performance by taking the neighboring word into account.\u003cbr /\u003e\nDefine a \u003ccode\u003etwo_grams\u003c/code\u003e tokenizer\u003c/p\u003e\n\n\u003c/div\u003e"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1605239020058_1392438533",
+      "id": "paragraph_1605239020058_1392438533",
+      "dateCreated": "2020-11-13 11:43:40.059",
+      "dateStarted": "2021-11-04 01:27:56.744",
+      "dateFinished": "2021-11-04 01:27:57.238",
+      "status": "FINISHED"
+    },
+    {
+      "text": "%pyspark\nfrom functools import reduce\n\ndef two_grams(str):\n   \u0027\u0027\u0027\n    input\n     str : a string\n    output\n     a list of strings (each string contains two consecutive words seperated by space)\n   \u0027\u0027\u0027\n   return None # TODO: fixme \n\n",
+      "user": "anonymous",
+      "dateUpdated": "2021-11-04 01:35:05.643",
+      "progress": 0,
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "python",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/python"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": []
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1605239137806_1086427717",
+      "id": "paragraph_1605239137806_1086427717",
+      "dateCreated": "2020-11-13 11:45:37.806",
+      "dateStarted": "2021-11-03 23:45:42.367",
+      "dateFinished": "2021-11-03 23:45:42.396",
+      "status": "FINISHED"
+    },
+    {
+      "text": "%md\n\n### Sample answer\n\n\n\n\u003cdiv class\u003d\"hidecode\" onclick\u003d\"doclick(this);\"\u003e[Show Hint]\u003c/div\u003e\n\n```python\ndef to_ngrams(str, n):\n    words \u003d str.split()\n    tokens \u003d [words] * (n-1) # replicate the list of words for n-1 times\n    dropped \u003d map(lambda p: p[0][p[1]:], zip(tokens, range(1,n)))\n    return reduce(lambda acc,ts:map(lambda p : p[0] + \" \" + p[1], zip(acc,ts)), dropped, words)\n\ndef two_grams(str):\n    return to_ngrams(str, 2)\n\n\n```\n\n",
+      "user": "anonymous",
+      "dateUpdated": "2021-11-04 01:35:06.532",
+      "progress": 0,
+      "config": {
+        "editorSetting": {
+          "language": "text",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "colWidth": 12.0,
+        "editorMode": "ace/mode/text",
+        "fontSize": 9.0,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "HTML",
+            "data": "\u003cdiv class\u003d\"markdown-body\"\u003e\n\u003ch3\u003eSample answer\u003c/h3\u003e\n\u003cdiv class\u003d\"hidecode\" onclick\u003d\"doclick(this);\"\u003e[Show Hint]\u003c/div\u003e\n\u003cpre\u003e\u003ccode class\u003d\"language-python\"\u003edef to_ngrams(str, n):\n    words \u003d str.split()\n    tokens \u003d [words] * (n-1) # replicate the list of words for n-1 times\n    dropped \u003d map(lambda p: p[0][p[1]:], zip(tokens, range(1,n)))\n    return reduce(lambda acc,ts:map(lambda p : p[0] + \u0026quot; \u0026quot; + p[1], zip(acc,ts)), dropped, words)\n\ndef two_grams(str):\n    return to_ngrams(str, 2)\n\n\n\u003c/code\u003e\u003c/pre\u003e\n\n\u003c/div\u003e"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1635989599958_1932701258",
+      "id": "paragraph_1635989599958_1932701258",
+      "dateCreated": "2021-11-04 01:33:19.982",
+      "dateStarted": "2021-11-04 01:35:06.549",
+      "dateFinished": "2021-11-04 01:35:06.578",
+      "status": "FINISHED"
+    },
+    {
+      "text": "%md\n\n### Test Case for `two_grams`\n\nRun the following you should see \n\n```text\n[\u0027The virus\u0027, \u0027virus that\u0027, \u0027that causes\u0027, \u0027causes COVID-19\u0027, \u0027COVID-19 is\u0027, \u0027is mainly\u0027, \u0027mainly transmitted\u0027, \u0027transmitted through\u0027, \u0027through droplets\u0027]\n```\n",
+      "user": "anonymous",
+      "dateUpdated": "2021-11-04 01:33:14.150",
+      "progress": 0,
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": false,
+        "results": {},
+        "editorSetting": {
+          "language": "markdown",
+          "editOnDblClick": true,
+          "completionKey": "TAB",
+          "completionSupport": false
+        },
+        "editorMode": "ace/mode/markdown",
+        "editorHide": true,
+        "tableHide": false
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "HTML",
+            "data": "\u003cdiv class\u003d\"markdown-body\"\u003e\n\u003ch3\u003eTest Case for \u003ccode\u003etwo_grams\u003c/code\u003e\u003c/h3\u003e\n\u003cp\u003eRun the following you should see\u003c/p\u003e\n\u003cpre\u003e\u003ccode class\u003d\"language-text\"\u003e[\u0027The virus\u0027, \u0027virus that\u0027, \u0027that causes\u0027, \u0027causes COVID-19\u0027, \u0027COVID-19 is\u0027, \u0027is mainly\u0027, \u0027mainly transmitted\u0027, \u0027transmitted through\u0027, \u0027through droplets\u0027]\n\u003c/code\u003e\u003c/pre\u003e\n\n\u003c/div\u003e"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1605239394387_638254085",
+      "id": "paragraph_1605239394387_638254085",
+      "dateCreated": "2020-11-13 11:49:54.387",
+      "dateStarted": "2021-11-04 01:33:07.725",
+      "dateFinished": "2021-11-04 01:33:07.747",
+      "status": "FINISHED"
+    },
+    {
+      "text": "%pyspark\n\ns \u003d \"The virus that causes COVID-19 is mainly  transmitted through droplets\"\nlist(two_grams(s))\n",
+      "user": "anonymous",
+      "dateUpdated": "2021-11-03 23:46:03.578",
+      "progress": 0,
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "python",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/python"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "[\u0027The virus\u0027, \u0027virus that\u0027, \u0027that causes\u0027, \u0027causes COVID-19\u0027, \u0027COVID-19 is\u0027, \u0027is mainly\u0027, \u0027mainly transmitted\u0027, \u0027transmitted through\u0027, \u0027through droplets\u0027]\n"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1605239392461_1348676149",
+      "id": "paragraph_1605239392461_1348676149",
+      "dateCreated": "2020-11-13 11:49:52.461",
+      "dateStarted": "2021-11-03 23:46:03.607",
+      "dateFinished": "2021-11-03 23:46:03.632",
+      "status": "FINISHED"
+    },
+    {
+      "text": "%md\n\nThe following cells build the top 150 TFIDF from the data that we loaded, you don\u0027t need to change anything. It might take a while to run (~ 25 mins on my t2.micro cluster)\n",
+      "user": "anonymous",
+      "dateUpdated": "2021-11-04 01:35:55.931",
+      "progress": 0,
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "markdown",
+          "editOnDblClick": true,
+          "completionKey": "TAB",
+          "completionSupport": false
+        },
+        "editorMode": "ace/mode/markdown",
+        "editorHide": true,
+        "tableHide": false
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "HTML",
+            "data": "\u003cdiv class\u003d\"markdown-body\"\u003e\n\u003cp\u003eThe following cells build the top 150 TFIDF from the data that we loaded, you don\u0026rsquo;t need to change anything. It might take a while to run (~ 25 mins on my t2.micro cluster)\u003c/p\u003e\n\n\u003c/div\u003e"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1605239765196_96339045",
+      "id": "paragraph_1605239765196_96339045",
+      "dateCreated": "2020-11-13 11:56:05.196",
+      "dateStarted": "2021-11-04 01:35:55.932",
+      "dateFinished": "2021-11-04 01:35:55.951",
+      "status": "FINISHED"
+    },
+    {
+      "text": "%pyspark\ntopTFIDF \u003d  buildTopTFIDF(posTXT + negTXT,two_grams)",
+      "user": "anonymous",
+      "dateUpdated": "2021-11-04 00:36:29.926",
+      "progress": 0,
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "python",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/python"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "ERROR",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "Fail to execute line 2: topTFIDF \u003d  buildTopTFIDF(posTXT + negTXT,two_grams)\nTraceback (most recent call last):\n  File \"/tmp/1635982980699-0/zeppelin_python.py\", line 158, in \u003cmodule\u003e\n    exec(code, _zcUserQueryNameSpace)\n  File \"\u003cstdin\u003e\", line 2, in \u003cmodule\u003e\n  File \"\u003cstdin\u003e\", line 13, in buildTopTFIDF\n  File \"\u003cstdin\u003e\", line 16, in tfidf\n  File \"/home/ec2-user/spark/python/pyspark/rdd.py\", line 812, in sortBy\n    return self.keyBy(keyfunc).sortByKey(ascending, numPartitions).values()\n  File \"/home/ec2-user/spark/python/pyspark/rdd.py\", line 783, in sortByKey\n    samples \u003d self.sample(False, fraction, 1).map(lambda kv: kv[0]).collect()\n  File \"/home/ec2-user/spark/python/pyspark/rdd.py\", line 949, in collect\n    sock_info \u003d self.ctx._jvm.PythonRDD.collectAndServe(self._jrdd.rdd())\n  File \"/home/ec2-user/spark/python/lib/py4j-0.10.9-src.zip/py4j/java_gateway.py\", line 1303, in __call__\n    answer \u003d self.gateway_client.send_command(command)\n  File \"/home/ec2-user/spark/python/lib/py4j-0.10.9-src.zip/py4j/java_gateway.py\", line 1033, in send_command\n    response \u003d connection.send_command(command)\n  File \"/home/ec2-user/spark/python/lib/py4j-0.10.9-src.zip/py4j/java_gateway.py\", line 1200, in send_command\n    answer \u003d smart_decode(self.stream.readline()[:-1])\n  File \"/usr/lib64/python3.7/socket.py\", line 589, in readinto\n    return self._sock.recv_into(b)\n  File \"/home/ec2-user/spark/python/pyspark/context.py\", line 285, in signal_handler\n    raise KeyboardInterrupt()\nKeyboardInterrupt\n"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {
+        "jobUrl": {
+          "propertyName": "jobUrl",
+          "label": "SPARK JOB",
+          "tooltip": "View in Spark web UI",
+          "group": "spark",
+          "values": [
+            {
+              "jobUrl": "http://ec2-54-84-131-234.compute-1.amazonaws.com:4040/jobs/job?id\u003d4"
+            },
+            {
+              "jobUrl": "http://ec2-54-84-131-234.compute-1.amazonaws.com:4040/jobs/job?id\u003d5"
+            },
+            {
+              "jobUrl": "http://ec2-54-84-131-234.compute-1.amazonaws.com:4040/jobs/job?id\u003d6"
+            }
+          ],
+          "interpreterSettingId": "spark"
+        }
+      },
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1605238979633_829412602",
+      "id": "paragraph_1605238979633_829412602",
+      "dateCreated": "2020-11-13 11:42:59.633",
+      "dateStarted": "2021-11-04 00:36:29.948",
+      "dateFinished": "2021-11-04 01:27:38.748",
+      "status": "ABORT"
+    },
+    {
+      "text": "%pyspark\ntype(topTFIDF)",
+      "user": "anonymous",
+      "dateUpdated": "2021-11-04 00:29:36.860",
+      "progress": 0,
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "python",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/python"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "ERROR",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "Fail to execute line 2: type(topTFIDF)\nTraceback (most recent call last):\n  File \"/tmp/1635982980699-0/zeppelin_python.py\", line 158, in \u003cmodule\u003e\n    exec(code, _zcUserQueryNameSpace)\n  File \"\u003cstdin\u003e\", line 2, in \u003cmodule\u003e\nNameError: name \u0027topTFIDF\u0027 is not defined\n"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1605239727011_1423229505",
+      "id": "paragraph_1605239727011_1423229505",
+      "dateCreated": "2020-11-13 11:55:27.011",
+      "dateStarted": "2021-11-04 00:29:36.995",
+      "dateFinished": "2021-11-04 00:29:37.312",
+      "status": "ERROR"
+    },
+    {
+      "text": "%md \n\n## Defining `computeLP`\n**[CODE CHANGE REQUIRED]** \nComplete the following snippet.\n\nConcretely speaking, the `computeLP` function takes a label `1.0` or `0.0`, a sequence of string i.e. the 2-grams or 3-grams, and a array of top-N TF-IDF.\n\nFor each tf-idf term, let\u0027s say `t` is the i-th top-N TF-IDF term, if `t` is in the sequence of strings, we should put a `1.0` at the i-th position of the output vector, otherwise it should be `0.0`.\n\n\u003cstyle\u003e\n    div.hidecode + pre {display: none}\n\u003c/style\u003e\n\u003cscript\u003e\ndoclick\u003dfunction(e) {\n    e.nextSibling.nextSibling.style.display\u003d\"block\";\n}\n\u003c/script\u003e\n\n\u003cdiv class\u003d\"hidecode\" onclick\u003d\"doclick(this);\"\u003e[Show Hint]\u003c/div\u003e\n\n```text\nConvert all the words in the input text into a set instead of a list.\nThe output vector should be of the same dimension as topTerms (AKA top 150 TFIDF).\n```",
+      "user": "anonymous",
+      "dateUpdated": "2021-11-04 01:36:03.007",
+      "progress": 0,
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "markdown",
+          "editOnDblClick": true,
+          "completionKey": "TAB",
+          "completionSupport": false
+        },
+        "editorMode": "ace/mode/markdown",
+        "editorHide": true,
+        "tableHide": false
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "HTML",
+            "data": "\u003cdiv class\u003d\"markdown-body\"\u003e\n\u003ch2\u003eDefining \u003ccode\u003ecomputeLP\u003c/code\u003e\u003c/h2\u003e\n\u003cp\u003e\u003cstrong\u003e[CODE CHANGE REQUIRED]\u003c/strong\u003e\u003cbr /\u003e\nComplete the following snippet.\u003c/p\u003e\n\u003cp\u003eConcretely speaking, the \u003ccode\u003ecomputeLP\u003c/code\u003e function takes a label \u003ccode\u003e1.0\u003c/code\u003e or \u003ccode\u003e0.0\u003c/code\u003e, a sequence of string i.e. the 2-grams or 3-grams, and a array of top-N TF-IDF.\u003c/p\u003e\n\u003cp\u003eFor each tf-idf term, let\u0026rsquo;s say \u003ccode\u003et\u003c/code\u003e is the i-th top-N TF-IDF term, if \u003ccode\u003et\u003c/code\u003e is in the sequence of strings, we should put a \u003ccode\u003e1.0\u003c/code\u003e at the i-th position of the output vector, otherwise it should be \u003ccode\u003e0.0\u003c/code\u003e.\u003c/p\u003e\n\u003cstyle\u003e\n    div.hidecode + pre {display: none}\n\u003c/style\u003e\n\u003cscript\u003e\ndoclick\u003dfunction(e) {\n    e.nextSibling.nextSibling.style.display\u003d\"block\";\n}\n\u003c/script\u003e\n\u003cdiv class\u003d\"hidecode\" onclick\u003d\"doclick(this);\"\u003e[Show Hint]\u003c/div\u003e\n\u003cpre\u003e\u003ccode class\u003d\"language-text\"\u003eConvert all the words in the input text into a set instead of a list.\nThe output vector should be of the same dimension as topTerms (AKA top 150 TFIDF).\n\u003c/code\u003e\u003c/pre\u003e\n\n\u003c/div\u003e"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1605239798765_1070077038",
+      "id": "paragraph_1605239798765_1070077038",
+      "dateCreated": "2020-11-13 11:56:38.765",
+      "dateStarted": "2021-11-04 01:36:03.025",
+      "dateFinished": "2021-11-04 01:36:03.121",
+      "status": "FINISHED"
+    },
+    {
+      "text": "%pyspark\n\n\ndef computeLP(label,text,tokenizer,topTerms):\n    \u0027\u0027\u0027\n    input\n    label : label 1 or 0\n    text : the text (String type)\n    tokenizer : the tokenizer\n    topTerms: the top TFIDF terms\n    \n    output:\n    a label point.\n    \u0027\u0027\u0027\n    seqSet \u003d set(tokenizer(text))\n    scores \u003d [0.0] * 150 # TODO: fixme\n    return LabeledPoint(label, Vectors.dense(scores))",
+      "user": "anonymous",
+      "dateUpdated": "2021-11-04 01:37:52.005",
+      "progress": 0,
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "python",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/python",
+        "editorHide": false,
+        "tableHide": false
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": []
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1605235720192_1443219265",
+      "id": "paragraph_1605235720192_1443219265",
+      "dateCreated": "2020-11-13 10:48:40.192",
+      "dateStarted": "2021-11-03 15:44:01.011",
+      "dateFinished": "2021-11-03 15:44:01.100",
+      "status": "FINISHED"
+    },
+    {
+      "text": "%md\n\n### Sample answer\n\n\n\u003cdiv class\u003d\"hidecode\" onclick\u003d\"doclick(this);\"\u003e[Show Hint]\u003c/div\u003e\n\n\n```python\ndef computeLP(label,text,tokenizer,topTerms):\n    \u0027\u0027\u0027\n    input\n    label : label 1 or 0\n    text : the text (String type)\n    tokenizer : the tokenizer\n    topTerms: the top TFIDF terms\n    \n    output:\n    a label point.\n    \u0027\u0027\u0027\n    seqSet \u003d set(tokenizer(text))\n    # ANSWER\n    scores \u003d map(lambda t: 1.0 if t in seqSet else 0.0, list(topTerms))\n    return LabeledPoint(label, Vectors.dense(scores))\n````",
+      "user": "anonymous",
+      "dateUpdated": "2021-11-04 01:38:09.356",
+      "progress": 0,
+      "config": {
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "colWidth": 12.0,
+        "editorMode": "ace/mode/scala",
+        "fontSize": 9.0,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "HTML",
+            "data": "\u003cdiv class\u003d\"markdown-body\"\u003e\n\u003ch3\u003eSample answer\u003c/h3\u003e\n\u003cdiv class\u003d\"hidecode\" onclick\u003d\"doclick(this);\"\u003e[Show Hint]\u003c/div\u003e\n\u003cpre\u003e\u003ccode class\u003d\"language-python\"\u003edef computeLP(label,text,tokenizer,topTerms):\n    \u0027\u0027\u0027\n    input\n    label : label 1 or 0\n    text : the text (String type)\n    tokenizer : the tokenizer\n    topTerms: the top TFIDF terms\n    \n    output:\n    a label point.\n    \u0027\u0027\u0027\n    seqSet \u003d set(tokenizer(text))\n    # ANSWER\n    scores \u003d map(lambda t: 1.0 if t in seqSet else 0.0, list(topTerms))\n    return LabeledPoint(label, Vectors.dense(scores))\n\u003c/code\u003e\u003c/pre\u003e\n\n\u003c/div\u003e"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1635989772361_1134484841",
+      "id": "paragraph_1635989772361_1134484841",
+      "dateCreated": "2021-11-04 01:36:12.362",
+      "dateStarted": "2021-11-04 01:38:09.384",
+      "dateFinished": "2021-11-04 01:38:09.393",
+      "status": "FINISHED"
+    },
+    {
+      "text": "%md\n\n### Test Case for `computeLP`\n\nRun the following cell, you should see\n\n```\nLabeledPoint(1.0, [0.0,1.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0])\n```\n\n",
+      "user": "anonymous",
+      "dateUpdated": "2021-11-04 01:36:14.827",
+      "progress": 0,
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "markdown",
+          "editOnDblClick": true,
+          "completionKey": "TAB",
+          "completionSupport": false
+        },
+        "editorMode": "ace/mode/markdown",
+        "editorHide": true,
+        "tableHide": false
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "HTML",
+            "data": "\u003cdiv class\u003d\"markdown-body\"\u003e\n\u003ch3\u003eTest Case for \u003ccode\u003ecomputeLP\u003c/code\u003e\u003c/h3\u003e\n\u003cp\u003eRun the following cell, you should see\u003c/p\u003e\n\u003cpre\u003e\u003ccode\u003eLabeledPoint(1.0, [0.0,1.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0])\n\u003c/code\u003e\u003c/pre\u003e\n\n\u003c/div\u003e"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1605240192287_1936336307",
+      "id": "paragraph_1605240192287_1936336307",
+      "dateCreated": "2020-11-13 12:03:12.287",
+      "dateStarted": "2021-11-04 01:36:14.830",
+      "dateFinished": "2021-11-04 01:36:14.997",
+      "status": "FINISHED"
+    },
+    {
+      "text": "%pyspark\ncomputeLP(1.0, \"I love yoo jae suk\", two_grams, topTFIDF)",
+      "user": "anonymous",
+      "dateUpdated": "2021-11-03 15:44:09.601",
+      "progress": 0,
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "python",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/python"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "ERROR",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "Fail to execute line 2: computeLP(1.0, \"I love yoo jae suk\", two_grams, topTFIDF)\nTraceback (most recent call last):\n  File \"/tmp/1635952418754-0/zeppelin_python.py\", line 158, in \u003cmodule\u003e\n    exec(code, _zcUserQueryNameSpace)\n  File \"\u003cstdin\u003e\", line 2, in \u003cmodule\u003e\n  File \"\u003cstdin\u003e\", line 19, in computeLP\n  File \"/home/ec2-user/spark/python/pyspark/mllib/linalg/__init__.py\", line 914, in dense\n    return DenseVector(elements)\n  File \"/home/ec2-user/spark/python/pyspark/mllib/linalg/__init__.py\", line 283, in __init__\n    ar \u003d np.array(ar, dtype\u003dnp.float64)\nTypeError: float() argument must be a string or a number, not \u0027map\u0027\n"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1605240088165_1110133447",
+      "id": "paragraph_1605240088165_1110133447",
+      "dateCreated": "2020-11-13 12:01:28.165",
+      "dateStarted": "2021-11-03 15:44:09.648",
+      "dateFinished": "2021-11-03 15:44:09.717",
+      "status": "ERROR"
+    },
+    {
+      "text": "%md\n\n## Training the model\n\nLet\u0027s train our model. The codes are written for you, you don\u0027t need to change anything\n",
+      "user": "anonymous",
+      "dateUpdated": "2020-11-13 12:06:18.681",
+      "progress": 0,
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "markdown",
+          "editOnDblClick": true,
+          "completionKey": "TAB",
+          "completionSupport": false
+        },
+        "editorMode": "ace/mode/markdown",
+        "editorHide": true,
+        "tableHide": false
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "HTML",
+            "data": "\u003cdiv class\u003d\"markdown-body\"\u003e\n\u003ch2\u003eTraining the model\u003c/h2\u003e\n\u003cp\u003eLet\u0026rsquo;s train our model. The codes are written for you, you don\u0026rsquo;t need to change anything\u003c/p\u003e\n\n\u003c/div\u003e"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1605240276004_1406005342",
+      "id": "paragraph_1605240276004_1406005342",
+      "dateCreated": "2020-11-13 12:04:36.004",
+      "dateStarted": "2020-11-13 12:06:18.682",
+      "dateFinished": "2020-11-13 12:06:18.685",
+      "status": "FINISHED"
+    },
+    {
+      "text": "%pyspark\n\nposLP \u003d posTXT.map( lambda twt: computeLP(1.0, twt, two_grams, topTFIDF) )\nnegLP \u003d negTXT.map( lambda twt: computeLP(0.0, twt, two_grams, topTFIDF) )\n\ndata \u003d negLP + posLP\n\n\n# Split data into training (60%) and test (40%).\n\nsplits \u003d data.randomSplit([0.6,0.4],seed \u003d 11L)\ntraining \u003d splits[0].cache()\ntest \u003d splits[1]\n\n# Run training algorithm to build the model\nnum_iteration \u003d 100\nmodel \u003d SVMWithSGD.train(training,num_iteration)\n\n# This will takes about 20 mins on a 4-core intel i7 processor 3.8GHZ with hyperthreading\n",
+      "user": "anonymous",
+      "dateUpdated": "2020-11-13 12:20:09.298",
+      "progress": 0,
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "python",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/python"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": []
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1605179535041_2046301647",
+      "id": "paragraph_1605179535041_2046301647",
+      "dateCreated": "2020-11-12 19:12:15.041",
+      "dateStarted": "2020-11-13 12:06:22.903",
+      "dateFinished": "2020-11-13 12:16:30.688",
+      "status": "FINISHED"
+    },
+    {
+      "text": "%md\n## Exercise 2.3 Evaluating the model\n\nWe apply the trained model to our testing data and evaluate the performance of our model. It should be around 84% accurate.\n\n\n",
+      "user": "anonymous",
+      "dateUpdated": "2021-11-04 01:40:15.576",
+      "progress": 0,
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "markdown",
+          "editOnDblClick": true,
+          "completionKey": "TAB",
+          "completionSupport": false
+        },
+        "editorMode": "ace/mode/markdown",
+        "editorHide": true,
+        "tableHide": false
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "HTML",
+            "data": "\u003cdiv class\u003d\"markdown-body\"\u003e\n\u003ch2\u003eExercise 2.3 Evaluating the model\u003c/h2\u003e\n\u003cp\u003eWe apply the trained model to our testing data and evaluate the performance of our model. It should be around 84% accurate.\u003c/p\u003e\n\n\u003c/div\u003e"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1605240382902_1712743203",
+      "id": "paragraph_1605240382902_1712743203",
+      "dateCreated": "2020-11-13 12:06:22.902",
+      "dateStarted": "2021-11-04 01:40:15.580",
+      "dateFinished": "2021-11-04 01:40:15.589",
+      "status": "FINISHED"
+    },
+    {
+      "text": "\n%pyspark \nmodel.clearThreshold()\n# Compute raw scores on the test set\nscore_and_labels \u003d test.map( lambda point: (float(model.predict(point.features)), point.label) )\n\n\n# Get the evaluation metrics\nmetrics \u003d BinaryClassificationMetrics(score_and_labels)\nau_roc \u003d metrics.areaUnderROC\n\nprint(\"Area under ROC \u003d %s\" % str(au_roc))",
+      "user": "anonymous",
+      "dateUpdated": "2020-11-13 12:20:10.291",
+      "progress": 0,
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "python",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/python"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "Area under ROC \u003d 0.842790060653\n"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1605240439551_792287451",
+      "id": "paragraph_1605240439551_792287451",
+      "dateCreated": "2020-11-13 12:07:19.551",
+      "dateStarted": "2020-11-13 12:20:10.294",
+      "dateFinished": "2020-11-13 12:21:24.915",
+      "status": "FINISHED"
+    },
+    {
+      "text": "%pyspark\nsc.stop()",
+      "user": "anonymous",
+      "dateUpdated": "2020-11-13 12:08:31.840",
+      "progress": 0,
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "python",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/python"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1605240447746_694396597",
+      "id": "paragraph_1605240447746_694396597",
+      "dateCreated": "2020-11-13 12:07:27.746",
+      "status": "READY"
+    },
+    {
+      "text": "%md\n\n## Cleaning up\n**[CODE CHANGE REQUIRED]** \nModify the following to clean up the HDFS\n",
+      "user": "anonymous",
+      "dateUpdated": "2021-11-04 01:38:29.889",
+      "progress": 0,
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "markdown",
+          "editOnDblClick": true,
+          "completionKey": "TAB",
+          "completionSupport": false
+        },
+        "editorMode": "ace/mode/markdown",
+        "editorHide": true,
+        "tableHide": false
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "HTML",
+            "data": "\u003cdiv class\u003d\"markdown-body\"\u003e\n\u003ch2\u003eCleaning up\u003c/h2\u003e\n\u003cp\u003e\u003cstrong\u003e[CODE CHANGE REQUIRED]\u003c/strong\u003e\u003cbr /\u003e\nModify the following to clean up the HDFS\u003c/p\u003e\n\n\u003c/div\u003e"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1605245392089_949534435",
+      "id": "paragraph_1605245392089_949534435",
+      "dateCreated": "2020-11-13 13:29:52.089",
+      "dateStarted": "2021-11-04 01:38:29.891",
+      "dateFinished": "2021-11-04 01:38:29.905",
+      "status": "FINISHED"
+    },
+    {
+      "text": "%sh\nexport PATH\u003d$PATH:/home/ec2-user/hadoop/bin/\n\nnamenode\u003dip-172-31-86-18 # TODO:change me\n\nhdfs dfs -rm -r hdfs://$namenode:9000/lab12/ex2/\n",
+      "user": "anonymous",
+      "dateUpdated": "2021-11-04 01:39:09.038",
+      "progress": 0,
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "sh",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": false
+        },
+        "editorMode": "ace/mode/sh"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "20/11/13 13:39:58 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable\nDeleted /lab13/ex2\n"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1605245404306_140711229",
+      "id": "paragraph_1605245404306_140711229",
+      "dateCreated": "2020-11-13 13:30:04.307",
+      "dateStarted": "2020-11-13 13:39:57.589",
+      "dateFinished": "2020-11-13 13:39:58.902",
+      "status": "FINISHED"
+    },
+    {
+      "text": "%md\n\n# End of Exercise 2\n",
+      "user": "anonymous",
+      "dateUpdated": "2021-11-04 01:39:23.488",
+      "progress": 0,
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "text",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/text"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "HTML",
+            "data": "\u003cdiv class\u003d\"markdown-body\"\u003e\n\u003ch1\u003eEnd of Exercise 2\u003c/h1\u003e\n\n\u003c/div\u003e"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1605245987387_984596966",
+      "id": "paragraph_1605245987387_984596966",
+      "dateCreated": "2020-11-13 13:39:47.387",
+      "dateStarted": "2021-11-04 01:39:23.503",
+      "dateFinished": "2021-11-04 01:39:23.518",
+      "status": "FINISHED"
+    },
+    {
+      "text": "%md\n",
+      "user": "anonymous",
+      "dateUpdated": "2021-11-04 01:39:23.494",
+      "progress": 0,
+      "config": {},
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1635989963494_114454068",
+      "id": "paragraph_1635989963494_114454068",
+      "dateCreated": "2021-11-04 01:39:23.494",
+      "status": "READY"
+    }
+  ],
+  "name": "Exercise2",
+  "id": "2FS8U4VGP",
+  "defaultInterpreterGroup": "spark",
+  "version": "0.9.0-preview2",
+  "noteParams": {},
+  "noteForms": {},
+  "angularObjects": {},
+  "config": {
+    "isZeppelinNotebookCronEnable": false
+  },
+  "info": {}
+}
