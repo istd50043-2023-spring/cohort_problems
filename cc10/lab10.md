@@ -138,7 +138,7 @@ debug: true
 
 ```
 
-4. Export the AWS IAM key id and secret as environment variables, or directly edit the file `~/.aws/credentials`
+4. Export the AWS IAM key id and secret as environment variables, or directly edit the file `~/.aws/credentials`, and copy paste the session information from your aws lab (see video). 
 
 ```bash 
 $ export AWS_ACCESS_KEY_ID=<YOUR_KEY_ID>
@@ -206,6 +206,8 @@ Login with: flintrock login test_cluster
 ```
 
 If you have any issues, make sure all dependencies are installed, your credentials are working (they refresh often), and you double check the video on eDimension so you don't skip any steps. 
+
+You only have to run launch one time to install the cluster. To log in, you just use the instructions in Step 4 below. 
 
 
 ## Step 4: Test drive the cluster
@@ -364,10 +366,10 @@ Assuming we have launch the hadoop cluster using FlintRock
 ```bash
 $ mkdir -p ~/git
 $ cd ~/git
-$ git clone https://github.com/istd50043-2021-fall/50043-labs/ 
+$ git clone https://github.com/istd50043-2023-spring/cohort_problems/ 
 ```
 
-2. transfer the file in `~/git/50043-labs/lab10/data/TheCompleteSherlockHolmes.txt` to the folder `/input/` in HDFS.
+2. transfer the file in `~/git/istd50043-2023-spring/cohort_problems/cc10/data/TheCompleteSherlockHolmes.txt` to the folder `/input/` in HDFS.
 
 After the transfer, you should find the file `TheCompleteSherlockHolmes.txt` in the HDFS folder `/input/`.
 
@@ -383,6 +385,17 @@ Note: you might need to make sure that the output folder DOES NOT exist before t
 4. transfer the result from the folder `/output/` in hdfs back to the linux file system.
 
 
+## Shutdown the session
+
+To safely terminate your cluster, on the master node, run: 
+
+```bash
+/home/ec2-user/hadoop/sbin/stop-all.sh
+/home/ec2-user/spark/sbin/stop-all.sh
+```
+
+Then type `exit` to log out of the flintrock session/ssh. 
+
 
 ## End of Prelude: Terminate the cluster (Do it when you need to)
 
@@ -393,6 +406,7 @@ $ flintrock destroy <your_cluster_name>
 
 ```
 
+Not that you loose everything you installed on the cluster. 
 
 
 
@@ -414,7 +428,10 @@ Leveraging the two combinators, we built the following combinators
 
 # Exercise 1:
 
-Define `min()` and `max()` using `reduce()`.
+The first few exercises are run locally on your machine using the toy library. 
+
+
+Define `min()` and `max()` using `reduce()`. 
 
 Sample test cases
 
@@ -438,7 +455,7 @@ Write a MapReduce job for this task using the toy MapReduce library.
 You may find the toy MapReduce library `mapreduce.py` in `~/git/istd50043-2023-spring/cohort_problems/cc10/ex2/` with some example code
 `wordcount.py`.
 
-Complete the following 
+Complete the following: 
 
 
 ```python
@@ -720,7 +737,7 @@ $ sudo swapon /swapfile
 
 
 ```bash
-$ cd ~/git/50043-labs/lab10/ex5
+$ cd ~/git/istd50043-2023-spring/cohort_problems/cc10/ex5
 $ gradle jar
 $ hadoop jar build/libs/ex5.jar com.sutd50043.WordCount /input /output
 ```
@@ -805,10 +822,10 @@ https://crs4.github.io/pydoop/index.html
 ### Setup PyDoop in your Hadoop cluster 
 
 
-Prerequesite: You have setup your hadoop-spark cluster using flintrock.
+Prerequesite: You have setup your hadoop-spark cluster using flintrock. 
 
-By default, the Hadoop cluster produced by FlintRock does not enable Yarn. Jobs are executed as 
-stand-alone mode. PyDoop cannot run in stand-alone mode. To enable YARN on a FlintRock Hadoop cluster, requires more work. Some of the following steps were adopted from `https://github.com/nchammas/flintrock/issues/175`.
+By default, the Hadoop cluster produced by FlintRock does not enable **Yarn**. Jobs are executed as 
+stand-alone mode. PyDoop cannot run in stand-alone mode. To enable YARN on a FlintRock Hadoop cluster, requires more work. Some of the following steps were adopted from `https://github.com/nchammas/flintrock/issues/175`. **This will be useful for later labs too, so good to install. ** 
 
 1. Check out the script `setup_pydoop.sh` and configuration files
 `yarn-site.xml` and `mapred-site.xml` from the `~/git//istd50043-2023-spring/cohort_problems/cc10/` folder.
@@ -832,7 +849,7 @@ stand-alone mode. PyDoop cannot run in stand-alone mode. To enable YARN on a Fli
 
 ```
 
-3. Run the following
+3. Run the following on you *local* machine. 
 
 ```bash
 $ flintrock copy-file my-test-cluster setup-pydoop.sh /home/ec2-user/
@@ -843,7 +860,7 @@ $ flintrock copy-file my-test-cluster enable-yarn.sh /home/ec2-user/
 $ flintrock run-command my-test-cluster 'sh ~/enable-yarn.sh'
 ```
 
-4. Login to the master node
+4. Login to the master node (flintrock login my-test-cluster)
 
 ```bash 
 $ /home/ec2-user/hadoop/sbin/stop-all.sh
