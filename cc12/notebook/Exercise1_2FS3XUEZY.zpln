@@ -1,0 +1,677 @@
+{
+  "paragraphs": [
+    {
+      "text": "%md\n\n# Prelude: A crash course of Zeppelin Notebook\n\nSimilar to Jupyter Notebook, there are at least two kinds of Cells in a Zeppelin Notebook.\n\n1. Markdown Cell - start with `%md`\n2. Code Cell - starting with `%pyspark`\n\nTo run a cell, press the \"play\" button on its right, or press \"shift-enter\"\n\n",
+      "user": "anonymous",
+      "dateUpdated": "2020-11-12 19:23:19.864",
+      "progress": 0,
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "markdown",
+          "editOnDblClick": true,
+          "completionKey": "TAB",
+          "completionSupport": false
+        },
+        "editorMode": "ace/mode/markdown",
+        "editorHide": true,
+        "tableHide": false
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "HTML",
+            "data": "\u003cdiv class\u003d\"markdown-body\"\u003e\n\u003ch1\u003ePrelude: A crash course of Zeppelin Notebook\u003c/h1\u003e\n\u003cp\u003eSimilar to Jupyter Notebook, there are at least two kinds of Cells in a Zeppelin Notebook.\u003c/p\u003e\n\u003col\u003e\n\u003cli\u003eMarkdown Cell - start with \u003ccode\u003e%md\u003c/code\u003e\u003c/li\u003e\n\u003cli\u003eCode Cell - starting with \u003ccode\u003e%pyspark\u003c/code\u003e\u003c/li\u003e\n\u003c/ol\u003e\n\u003cp\u003eTo run a cell, press the \u0026ldquo;play\u0026rdquo; button on its right, or press \u0026ldquo;shift-enter\u0026rdquo;\u003c/p\u003e\n\n\u003c/div\u003e"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1605180149360_528576522",
+      "id": "paragraph_1605180149360_528576522",
+      "dateCreated": "2020-11-12 19:22:29.360",
+      "dateStarted": "2020-11-12 19:23:19.865",
+      "dateFinished": "2020-11-12 19:23:19.879",
+      "status": "FINISHED"
+    },
+    {
+      "text": "%pyspark\n\nprint(\"This is a code block\")\n\n",
+      "user": "anonymous",
+      "dateUpdated": "2021-11-03 14:14:28.190",
+      "progress": 0,
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "python",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/python"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "This is a code block\n"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1605180196130_219275301",
+      "id": "paragraph_1605180196130_219275301",
+      "dateCreated": "2020-11-12 19:23:16.130",
+      "dateStarted": "2021-11-03 14:14:28.214",
+      "dateFinished": "2021-11-03 14:14:28.356",
+      "status": "FINISHED"
+    },
+    {
+      "text": "%md \n\n# Exercise 1\n\nIn this exercise we are tasked to perform some data transformation using PySpark and RDD.\n\nFor parts marked with **[CODE CHANGE REQUIRED]** you need to modify or complete the code before execution.\nFor parts without **[CODE CHANGE REQUIRED]** , you can just run the given code.",
+      "user": "anonymous",
+      "dateUpdated": "2020-11-13 12:25:10.799",
+      "progress": 0,
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "markdown",
+          "editOnDblClick": true,
+          "completionKey": "TAB",
+          "completionSupport": false
+        },
+        "editorMode": "ace/mode/markdown",
+        "editorHide": true,
+        "tableHide": false
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "HTML",
+            "data": "\u003cdiv class\u003d\"markdown-body\"\u003e\n\u003ch1\u003eExercise 1\u003c/h1\u003e\n\u003cp\u003eIn this exercise we are tasked to perform some data transformation using PySpark and RDD.\u003c/p\u003e\n\u003cp\u003eFor parts marked with \u003cstrong\u003e[CODE CHANGE REQUIRED]\u003c/strong\u003e you need to modify or complete the code before execution.\u003cbr /\u003e\nFor parts without \u003cstrong\u003e[CODE CHANGE REQUIRED]\u003c/strong\u003e , you can just run the given code.\u003c/p\u003e\n\n\u003c/div\u003e"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1605147731364_1305436701",
+      "id": "paragraph_1605147731364_1305436701",
+      "dateCreated": "2020-11-12 10:22:11.364",
+      "dateStarted": "2020-11-13 12:25:10.800",
+      "dateFinished": "2020-11-13 12:25:10.803",
+      "status": "FINISHED"
+    },
+    {
+      "text": "%md\n\n## Input\n\nThe input data are stored in a text file `data/ex1/input.txt` which is a list of 2D coordinates in the following format.\n\n```text\n\u003clabel\u003e 0:\u003cx-value\u003e 1:\u003cy-value\u003e \n...\n\u003clabel\u003e 0:\u003cx-value\u003e 1:\u003cy-value\u003e\n```\n\n## Output\n\nThe expected output of the transformation are two seperate TSV outputs, `ones` and `zeros`. Both are in the following format\n\n```text\n\u003cx-value\u003e \u003cy-value\u003e ...\n\u003cx-value\u003e \u003cy-value\u003e\n```\n\n\nFor example, given the input file as the following\n\n```text\n1 0:102 1:230\n0 0:123 1:56\n0 0:22  1:2\n1 0:74 1:102\n```\nThe output files in `ones` would be \n\n```text\n102 230\n74 102\n```\n\nThe output files in `zeros` would be\n\n```text\n123 56 \n22 2\n```\nwhere the space in between the numbers are tabs",
+      "user": "anonymous",
+      "dateUpdated": "2020-11-12 10:47:42.324",
+      "progress": 0,
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "markdown",
+          "editOnDblClick": true,
+          "completionKey": "TAB",
+          "completionSupport": false
+        },
+        "editorMode": "ace/mode/markdown",
+        "editorHide": true,
+        "tableHide": false
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "HTML",
+            "data": "\u003cdiv class\u003d\"markdown-body\"\u003e\n\u003ch2\u003eInput\u003c/h2\u003e\n\u003cp\u003eThe input data are stored in a text file \u003ccode\u003edata/ex1/input.txt\u003c/code\u003e which is a list of 2D coordinates in the following format.\u003c/p\u003e\n\u003cpre\u003e\u003ccode class\u003d\"language-text\"\u003e\u0026lt;label\u0026gt; 0:\u0026lt;x-value\u0026gt; 1:\u0026lt;y-value\u0026gt; \n...\n\u0026lt;label\u0026gt; 0:\u0026lt;x-value\u0026gt; 1:\u0026lt;y-value\u0026gt;\n\u003c/code\u003e\u003c/pre\u003e\n\u003ch2\u003eOutput\u003c/h2\u003e\n\u003cp\u003eThe expected output of the transformation are two seperate TSV outputs, \u003ccode\u003eones\u003c/code\u003e and \u003ccode\u003ezeros\u003c/code\u003e. Both are in the following format\u003c/p\u003e\n\u003cpre\u003e\u003ccode class\u003d\"language-text\"\u003e\u0026lt;x-value\u0026gt; \u0026lt;y-value\u0026gt; ...\n\u0026lt;x-value\u0026gt; \u0026lt;y-value\u0026gt;\n\u003c/code\u003e\u003c/pre\u003e\n\u003cp\u003eFor example, given the input file as the following\u003c/p\u003e\n\u003cpre\u003e\u003ccode class\u003d\"language-text\"\u003e1 0:102 1:230\n0 0:123 1:56\n0 0:22  1:2\n1 0:74 1:102\n\u003c/code\u003e\u003c/pre\u003e\n\u003cp\u003eThe output files in \u003ccode\u003eones\u003c/code\u003e would be\u003c/p\u003e\n\u003cpre\u003e\u003ccode class\u003d\"language-text\"\u003e102 230\n74 102\n\u003c/code\u003e\u003c/pre\u003e\n\u003cp\u003eThe output files in \u003ccode\u003ezeros\u003c/code\u003e would be\u003c/p\u003e\n\u003cpre\u003e\u003ccode class\u003d\"language-text\"\u003e123 56 \n22 2\n\u003c/code\u003e\u003c/pre\u003e\n\u003cp\u003ewhere the space in between the numbers are tabs\u003c/p\u003e\n\n\u003c/div\u003e"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1605147803016_771164106",
+      "id": "paragraph_1605147803016_771164106",
+      "dateCreated": "2020-11-12 10:23:23.016",
+      "dateStarted": "2020-11-12 10:47:42.324",
+      "dateFinished": "2020-11-12 10:47:42.334",
+      "status": "FINISHED"
+    },
+    {
+      "text": "%md\n\n**[CODE CHANGE REQUIRED]** \nModify and run the following bash cell to upload the input data to HDFS",
+      "user": "anonymous",
+      "dateUpdated": "2020-11-13 12:23:19.778",
+      "progress": 0,
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "markdown",
+          "editOnDblClick": true,
+          "completionKey": "TAB",
+          "completionSupport": false
+        },
+        "editorMode": "ace/mode/markdown",
+        "editorHide": true,
+        "tableHide": false
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "HTML",
+            "data": "\u003cdiv class\u003d\"markdown-body\"\u003e\n\u003cp\u003e\u003cstrong\u003e[CODE CHANGE REQUIRED]\u003c/strong\u003e\u003cbr /\u003e\nModify and run the following bash cell to upload the input data to HDFS\u003c/p\u003e\n\n\u003c/div\u003e"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1605148675195_579845244",
+      "id": "paragraph_1605148675195_579845244",
+      "dateCreated": "2020-11-12 10:37:55.195",
+      "dateStarted": "2020-11-13 12:23:19.778",
+      "dateFinished": "2020-11-13 12:23:19.781",
+      "status": "FINISHED"
+    },
+    {
+      "text": "%sh\nexport PATH\u003d$PATH:/home/ec2-user/hadoop/bin/\n\nnamenode\u003dip-172-31-89-172 # TODO: fixme\n\nhdfs dfs -rm -r hdfs://$namenode:9000/lab12/ex1/input/\nhdfs dfs -mkdir -p hdfs://$namenode:9000/lab12/ex1/input/\n\nhdfs dfs -put /home/ec2-user/git/50043-labs/lab12/data/ex1/input.txt  hdfs://$namenode:9000/lab12/ex1/input/\n",
+      "user": "anonymous",
+      "dateUpdated": "2021-11-04 01:41:28.501",
+      "progress": 0,
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "sh",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": false
+        },
+        "editorMode": "ace/mode/sh"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "Deleted hdfs://ip-172-31-89-172:9000/lab12/ex1/input\n"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1605148730631_2134326290",
+      "id": "paragraph_1605148730631_2134326290",
+      "dateCreated": "2020-11-12 10:38:50.631",
+      "dateStarted": "2021-11-03 14:27:27.150",
+      "dateFinished": "2021-11-03 14:27:35.948",
+      "status": "FINISHED"
+    },
+    {
+      "text": "%md\n**[CODE CHANGE REQUIRED]** \nComplete the following PySpark script so that it performs the above-mentioned transformation.\n\n\n\u003cstyle\u003e\n    div.hidecode + pre {display: none}\n\u003c/style\u003e\n\u003cscript\u003e\ndoclick\u003dfunction(e) {\n    e.nextSibling.nextSibling.style.display\u003d\"block\";\n}\n\u003c/script\u003e\n\n\u003cdiv class\u003d\"hidecode\" onclick\u003d\"doclick(this);\"\u003e[Show Hint]\u003c/div\u003e\n\n```text\nLet r be an RDD, r.map(f) applies f to all elements in r and return a new RDD.\nr.filter(p) fitlers out elements e from r that satisfying p(e).\nr.saveAsTextFile(\"hdfs://...\") will save an RDD into hdfs.\n```",
+      "user": "anonymous",
+      "dateUpdated": "2021-11-04 01:45:48.293",
+      "progress": 0,
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "markdown",
+          "editOnDblClick": true,
+          "completionKey": "TAB",
+          "completionSupport": false
+        },
+        "editorMode": "ace/mode/markdown",
+        "editorHide": false,
+        "tableHide": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "HTML",
+            "data": "\u003cdiv class\u003d\"markdown-body\"\u003e\n\u003cp\u003e\u003cstrong\u003e[CODE CHANGE REQUIRED]\u003c/strong\u003e\u003cbr /\u003e\nComplete the following PySpark script so that it performs the above-mentioned transformation.\u003c/p\u003e\n\u003cstyle\u003e\n    div.hidecode + pre {display: none}\n\u003c/style\u003e\n\u003cscript\u003e\ndoclick\u003dfunction(e) {\n    e.nextSibling.nextSibling.style.display\u003d\"block\";\n}\n\u003c/script\u003e\n\u003cdiv class\u003d\"hidecode\" onclick\u003d\"doclick(this);\"\u003e[Show Hint]\u003c/div\u003e\n\u003cpre\u003e\u003ccode class\u003d\"language-text\"\u003eLet r be an RDD, r.map(f) applies f to all elements in r and return a new RDD.\nr.filter(p) fitlers out elements e from r that satisfying p(e).\nr.saveAsTextFile(\u0026quot;hdfs://...\u0026quot;) will save an RDD into hdfs.\n\u003c/code\u003e\u003c/pre\u003e\n\n\u003c/div\u003e"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1605149080983_1581046384",
+      "id": "paragraph_1605149080983_1581046384",
+      "dateCreated": "2020-11-12 10:44:40.983",
+      "dateStarted": "2020-11-13 15:42:24.719",
+      "dateFinished": "2020-11-13 15:42:24.726",
+      "status": "FINISHED"
+    },
+    {
+      "text": "%pyspark\n\nfrom pyspark.sql import SparkSession\nsparkSession \u003d SparkSession.builder.appName(\"Transformation notebook\").getOrCreate()\nsc \u003d sparkSession.sparkContext\n\nhdfs_nn \u003d \"ip-172-31-89-172\"\ndef join(tokenized):\n    x \u003d (tokenized[1].split(\":\"))[1] \n    y \u003d (tokenized[2].split(\":\"))[1]\n    return \"\\t\".join([x,y])\n\nsc.appName \u003d \"ETL (Transform) Example\"\n\ninput \u003d sc.textFile(\"hdfs://%s:9000/lab12/ex1/input/\" % hdfs_nn) \n\ntokenizeds \u003d input.map(lambda line : line.split(\" \")) \ntokenizeds.persist()\n\nones \u003d tokenizeds.filter(lambda tokenized : tokenized[0] \u003d\u003d \"1\").map(join)\nones.saveAsTextFile(\"hdfs://%s:9000/lab12/ex1/output/ones\" % hdfs_nn)\n\nzeros \u003d None # TODO: fix me\nzeros.saveAsTextFile(\"hdfs://%s:9000/lab12/ex1/output/zeros\" %hdfs_nn) \n\nsc.stop()\n\n",
+      "user": "anonymous",
+      "dateUpdated": "2021-11-04 01:45:15.277",
+      "progress": 0,
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "python",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/python"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": []
+      },
+      "apps": [],
+      "runtimeInfos": {
+        "jobUrl": {
+          "propertyName": "jobUrl",
+          "label": "SPARK JOB",
+          "tooltip": "View in Spark web UI",
+          "group": "spark",
+          "values": [
+            {
+              "jobUrl": "http://ec2-18-212-36-170.compute-1.amazonaws.com:4040/jobs/job?id\u003d0"
+            },
+            {
+              "jobUrl": "http://ec2-18-212-36-170.compute-1.amazonaws.com:4040/jobs/job?id\u003d1"
+            }
+          ],
+          "interpreterSettingId": "spark"
+        }
+      },
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1605149384444_1243575301",
+      "id": "paragraph_1605149384444_1243575301",
+      "dateCreated": "2020-11-12 10:49:44.445",
+      "dateStarted": "2021-11-03 14:18:40.812",
+      "dateFinished": "2021-11-03 14:18:48.885",
+      "status": "FINISHED"
+    },
+    {
+      "text": "%md \n### Sample answer\n\n\u003cdiv class\u003d\"hidecode\" onclick\u003d\"doclick(this);\"\u003e[Show Hint]\u003c/div\u003e\n\n\n```python\n\nzeros \u003d tokenizeds.filter(lambda tokenized : tokenized[0] \u003d\u003d \"0\").map(join)\n\n```\n",
+      "user": "anonymous",
+      "dateUpdated": "2021-11-04 01:45:23.486",
+      "progress": 0,
+      "config": {
+        "tableHide": true,
+        "editorSetting": {
+          "language": "markdown",
+          "editOnDblClick": true,
+          "completionKey": "TAB",
+          "completionSupport": false
+        },
+        "colWidth": 12.0,
+        "editorMode": "ace/mode/markdown",
+        "fontSize": 9.0,
+        "editorHide": false,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "HTML",
+            "data": "\u003cdiv class\u003d\"markdown-body\"\u003e\n\u003ch3\u003eSample answer\u003c/h3\u003e\n\u003cdiv class\u003d\"hidecode\" onclick\u003d\"doclick(this);\"\u003e[Show Hint]\u003c/div\u003e\n\u003cpre\u003e\u003ccode class\u003d\"language-python\"\u003e\nzeros \u003d tokenizeds.filter(lambda tokenized : tokenized[0] \u003d\u003d \u0026quot;0\u0026quot;).map(join)\n\n\u003c/code\u003e\u003c/pre\u003e\n\n\u003c/div\u003e"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1635990128269_2004029264",
+      "id": "paragraph_1635990128269_2004029264",
+      "dateCreated": "2021-11-04 01:42:08.269",
+      "dateStarted": "2021-11-04 01:45:14.311",
+      "dateFinished": "2021-11-04 01:45:18.930",
+      "status": "FINISHED"
+    },
+    {
+      "text": "%md\n\n## Test case\n\nRun the fulling bash cell to check the results\n\nIt should be something like the following \n\n```text\n20/11/12 18:51:34 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable\n124\t253\n145\t255\n5\t63\n1\t168\n121\t254\n166\t222\n178\t255\n7\t176\n68\t45\n...\n```\n\nand \n\n```text\n124\t253\n145\t255\n5\t63\n1\t168\n121\t254\n166\t222\n178\t255\n7\t176\n68\t45\n64\t191\n...\n```\n",
+      "user": "anonymous",
+      "dateUpdated": "2021-11-04 01:45:39.792",
+      "progress": 0,
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "markdown",
+          "editOnDblClick": true,
+          "completionKey": "TAB",
+          "completionSupport": false
+        },
+        "editorMode": "ace/mode/markdown",
+        "editorHide": true,
+        "tableHide": false
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "HTML",
+            "data": "\u003cdiv class\u003d\"markdown-body\"\u003e\n\u003ch2\u003eTest case\u003c/h2\u003e\n\u003cp\u003eRun the fulling bash cell to check the results\u003c/p\u003e\n\u003cp\u003eIt should be something like the following\u003c/p\u003e\n\u003cpre\u003e\u003ccode class\u003d\"language-text\"\u003e20/11/12 18:51:34 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable\n124\t253\n145\t255\n5\t63\n1\t168\n121\t254\n166\t222\n178\t255\n7\t176\n68\t45\n...\n\u003c/code\u003e\u003c/pre\u003e\n\u003cp\u003eand\u003c/p\u003e\n\u003cpre\u003e\u003ccode class\u003d\"language-text\"\u003e124\t253\n145\t255\n5\t63\n1\t168\n121\t254\n166\t222\n178\t255\n7\t176\n68\t45\n64\t191\n...\n\u003c/code\u003e\u003c/pre\u003e\n\n\u003c/div\u003e"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1605149620841_1143671331",
+      "id": "paragraph_1605149620841_1143671331",
+      "dateCreated": "2020-11-12 10:53:40.841",
+      "dateStarted": "2021-11-04 01:45:39.799",
+      "dateFinished": "2021-11-04 01:45:39.866",
+      "status": "FINISHED"
+    },
+    {
+      "text": "%sh\nexport PATH\u003d$PATH:/home/ec2-user/hadoop/bin/\n\nnamenode\u003dip-172-31-89-172\n\nhdfs dfs -cat hdfs://$namenode:9000/lab12/ex1/output/ones/* \n",
+      "user": "anonymous",
+      "dateUpdated": "2021-11-03 14:29:41.144",
+      "progress": 0,
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "sh",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": false
+        },
+        "editorMode": "ace/mode/sh"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "124\t253\n145\t255\n5\t63\n1\t168\n121\t254\n166\t222\n178\t255\n7\t176\n68\t45\n64\t191\n26\t240\n42\t228\n62\t254\n85\t255\n94\t132\n32\t253\n39\t254\n58\t139\n28\t247\n114\t206\n73\t253\n85\t253\n15\t200\n202\t253\n73\t253\n111\t255\n29\t197\n31\t210\n159\t255\n53\t250\n255\t253\n24\t150\n155\t253\n102\t252\n20\t254\n166\t255\n117\t128\n159\t142\n101\t222\n232\t255\n63\t128\n131\t255\n226\t247\n166\t253\n17\t206\n218\t253\n102\t180\n134\t230\n29\t85\n149\t255\n79\t203\n94\t254\n42\t232\n60\t229\n11\t150\n218\t170\n116\t255\n"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1605178053978_1884234955",
+      "id": "paragraph_1605178053978_1884234955",
+      "dateCreated": "2020-11-12 18:47:33.978",
+      "dateStarted": "2021-11-03 14:29:41.160",
+      "dateFinished": "2021-11-03 14:29:44.288",
+      "status": "FINISHED"
+    },
+    {
+      "text": "%sh\nexport PATH\u003d$PATH:/home/ec2-user/hadoop/bin/\n\nnamenode\u003dip-172-31-89-172\n\nhdfs dfs -cat hdfs://$namenode:9000/lab12/ex1/output/zeros/* \n",
+      "user": "anonymous",
+      "dateUpdated": "2021-11-03 14:30:04.685",
+      "progress": 0,
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "sh",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": false
+        },
+        "editorMode": "ace/mode/sh"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "51\t159\n64\t253\n53\t255\n73\t253\n46\t105\n56\t105\n21\t176\n29\t170\n203\t254\n62\t91\n28\t195\n8\t76\n68\t254\n59\t55\n13\t6\n28\t164\n105\t255\n22\t183\n32\t57\n42\t235\n70\t255\n92\t191\n63\t176\n12\t136\n23\t167\n120\t253\n88\t127\n37\t141\n32\t134\n20\t121\n40\t37\n66\t254\n41\t254\n56\t247\n19\t164\n57\t255\n12\t105\n87\t208\n46\t105\n45\t254\n218\t253\n60\t96\n32\t202\n"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1605178240739_1909567912",
+      "id": "paragraph_1605178240739_1909567912",
+      "dateCreated": "2020-11-12 18:50:40.739",
+      "dateStarted": "2021-11-03 14:30:04.700",
+      "dateFinished": "2021-11-03 14:30:08.157",
+      "status": "FINISHED"
+    },
+    {
+      "text": "%md\n\n## Cleaning up\n\nModify the following bash cell to clean HDFS",
+      "user": "anonymous",
+      "dateUpdated": "2021-11-04 01:45:45.008",
+      "progress": 0,
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "markdown",
+          "editOnDblClick": true,
+          "completionKey": "TAB",
+          "completionSupport": false
+        },
+        "editorMode": "ace/mode/markdown",
+        "editorHide": true,
+        "tableHide": false
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "HTML",
+            "data": "\u003cdiv class\u003d\"markdown-body\"\u003e\n\u003ch2\u003eCleaning up\u003c/h2\u003e\n\u003cp\u003eModify the following bash cell to clean HDFS\u003c/p\u003e\n\n\u003c/div\u003e"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1605246164394_1767951865",
+      "id": "paragraph_1605246164394_1767951865",
+      "dateCreated": "2020-11-13 13:42:44.394",
+      "dateStarted": "2021-11-04 01:45:45.013",
+      "dateFinished": "2021-11-04 01:45:45.037",
+      "status": "FINISHED"
+    },
+    {
+      "text": "%sh\nexport PATH\u003d$PATH:/home/ec2-user/hadoop/bin/\n\nnamenode\u003dip-172-31-89-172\n\nhdfs dfs -rm -r hdfs://$namenode:9000/lab12/ex1",
+      "user": "anonymous",
+      "dateUpdated": "2021-11-03 14:30:55.733",
+      "progress": 0,
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "sh",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": false
+        },
+        "editorMode": "ace/mode/sh"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "Deleted hdfs://ip-172-31-89-172:9000/lab12/ex1\n"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1605246161986_1380501748",
+      "id": "paragraph_1605246161986_1380501748",
+      "dateCreated": "2020-11-13 13:42:41.987",
+      "dateStarted": "2021-11-03 14:30:55.742",
+      "dateFinished": "2021-11-03 14:30:58.564",
+      "status": "FINISHED"
+    },
+    {
+      "text": "%md \n\n## End of Exercise 1\n",
+      "user": "anonymous",
+      "dateUpdated": "2020-11-12 18:53:20.505",
+      "progress": 0,
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "markdown",
+          "editOnDblClick": true,
+          "completionKey": "TAB",
+          "completionSupport": false
+        },
+        "editorMode": "ace/mode/markdown",
+        "editorHide": true,
+        "tableHide": false
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "HTML",
+            "data": "\u003cdiv class\u003d\"markdown-body\"\u003e\n\u003ch2\u003eEnd of Exercise 1\u003c/h2\u003e\n\n\u003c/div\u003e"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1605178314504_1959204932",
+      "id": "paragraph_1605178314504_1959204932",
+      "dateCreated": "2020-11-12 18:51:54.504",
+      "dateStarted": "2020-11-12 18:53:20.505",
+      "dateFinished": "2020-11-12 18:53:20.510",
+      "status": "FINISHED"
+    },
+    {
+      "text": "%md\n",
+      "user": "anonymous",
+      "dateUpdated": "2020-11-12 18:53:20.504",
+      "progress": 0,
+      "config": {},
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1605178400504_1118597037",
+      "id": "paragraph_1605178400504_1118597037",
+      "dateCreated": "2020-11-12 18:53:20.504",
+      "status": "READY"
+    }
+  ],
+  "name": "Exercise1",
+  "id": "2FS3XUEZY",
+  "defaultInterpreterGroup": "spark",
+  "version": "0.9.0-preview2",
+  "noteParams": {},
+  "noteForms": {},
+  "angularObjects": {},
+  "config": {
+    "isZeppelinNotebookCronEnable": false
+  },
+  "info": {}
+}
