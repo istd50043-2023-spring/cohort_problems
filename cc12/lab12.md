@@ -139,7 +139,7 @@ II) make sure you have some data in the HDFS folder `/input/` before running the
 
 # The rest of this lab
 
-1. Change the Notebook Repo by updating the config file for permanant effect `/home/ec2-user/zeppelin-0.9.0-bin-all/conf/zeppelin-site.xml`
+1. Change the Notebook Repo by updating the config file for permanant effect `/home/ec2-user/zeppelin-0.9.0-bin-all/conf/zeppelin-site.xml`. You can also change it from the top right dropbox 'NB repos'. Alternatively, you can import the notebooks manually from the interface. 
 
 ```xml
 <property>
@@ -155,7 +155,7 @@ Then restart the zeppelin daemon
 /home/ec2-user/zeppelin-0.9.0-bin-all/bin/zeppelin-daemon.sh restart
 ```
 
-2. Solve the questions in the Zeppelin notebooks.
+2. **Solve the questions in the Zeppelin notebooks.** The solutions are provided as hints. In some cases they are hidden (bug), so just click the original source content of the cell to unveil. 
 
 
 
@@ -235,13 +235,13 @@ c. Start the Zeppelin daemon
 $ /opt/zeppelin-0.10.0-bin-all/bin/zeppelin-daemon.sh start
 ```
 
-    d. Change the security group setting to allow  port 9090 to be accessed from the public 
+    d. Change the security group setting to allow  port 9090 to be accessed from the public. In the EC2 console, find 'Security Group' on the left, and add an incoming TCP rule for incoming IPv4 (anywhere). 
 
     e. Use your browser to access `<ip_addr_of_your_VM_running_zeppelin>:9090` , you should be able to see
 
 	![](./images/zeppelin.png)
 
-    f. Create a new Notebook via `Notebook -> + Create new note`
+    f. Create a new Notebook in the web UI via `Notebook -> + Create new note`
 
     g. Create two cells, with the first cell as
 

@@ -81,9 +81,9 @@ $ hdfs dfs -cat /output/*
 
 # Exercise 1
 
-Write a PySpark application which takes a (set of) Comma-seperated-value (CSV) file(s) with 2 columns and output a CSV file with first two columns same as the input file, and the third column captures the values obtained by splitting the first column by using the second column as delimiter.
+Write a PySpark application which takes a (set of) Comma-seperated-value (CSV) file(s) with 2 columns and output a CSV file with first two columns same as the input file, and the third column contains the values obtained by splitting the first column using the second column as delimiter.
 
-For example, given input from a HDFS file
+For example, given input from a HDFS file: 
 
 ```
 50000.0#0#0#,#
@@ -102,14 +102,14 @@ the program should output
 1000.00^Test_string,^,[u'1000.00', u'Test_string']
 ```
 
-back to the HDFS
+back to the HDFS. 
 
 # Exercise 2 
 
 
-Write PySpark application which aggregates a (set of) CSV file(s) with 4 columns based on its third column, (the destination IP). 
+Write PySpark application which aggregates a (set of) CSV file(s) with 4 columns based on its third column, the destination IP. 
 
-Given input
+Given input 
 
 ```
 05:49:56.604899, 10.0.0.2.54880, 10.0.0.3.5001, 2
@@ -143,7 +143,7 @@ the program should output
 
 # Exercise 3
 
-Given the same input as the Exercise 2, write a PySpark application which outputs the following
+Given the same input as Exercise 2, write a PySpark application which outputs the following: 
 
 ```
 05:49:56.604899,10.0.0.2.54880, 10.0.0.3.5001, 2, 13
