@@ -153,5 +153,4 @@ Buffer size M=30​
 $R$ is sorted​
 
 1. What is the cost of sort-merge join the two relations?​
-2. Suppose that $S$ has an unclustered B+-tree index on the join attribute, and the entire index is in memory. Consider a merge join variation which scans the index of $S$ during merge, what is the cost of sort-merge? ​
-    * Each tuple in $R$ can join with `k` tuples in $S$​
+2. Suppose that $S$ has an unclustered B+-tree index on the join attribute, and the entire index is in memory.  Consider a index loop join, ​where each tuple in $R$ can join with $j$ tuples in S​. Assume the B+tree allows duplicate keys stored on the leaf nodes.
