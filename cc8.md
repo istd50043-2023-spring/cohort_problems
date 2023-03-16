@@ -155,9 +155,9 @@ $$
 
 Consider two relation $X(A,B)$ and $Y(B,C)$ with the following statistics:​
 
-* $N(X) = 200, V(A,X) = 100, V(B,X) = 20$​
+* $|X| = 200, V(A,X) = 100, V(B,X) = 20$​
 
-* $N(Y) = 1000, V(B,Y) = 10, V(C,Y) = 1000$​
+* $|Y| = 1000, V(B,Y) = 10, V(C,Y) = 1000$​
 
 * $min(A,X) = 0, max(A,X)= 100$
 
