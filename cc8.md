@@ -211,7 +211,7 @@ d("&bowtie;<br/> nested loop join") --- f("Reserves <br/> heap scan")
 
 ### Question 3.2 - What is the cost of the following plan?
 
-Assuming iterator model is used
+Assuming iterator model is used, left sub relation is used as outer relation.
 
 ```mermaid
 graph
@@ -224,7 +224,8 @@ d("&bowtie;<br/> nested loop join") --- f("Reserves <br/> heap scan")
 
 ### Question 3.3 - What is the cost of the following plan?
 
-Assuming iterator model is used
+Assuming iterator model is used, left sub relation is used as outer relation.
+
 
 ```mermaid
 graph
@@ -238,7 +239,8 @@ b("&sigma;<sub>bid = 100</sub>")  --- f("Reserves <br/> heap scan")
 
 ### Question 3.4 - What is the cost of the following plan?
 
-Assuming iterator model is used
+Assuming iterator model is used, left sub relation is used as outer relation.
+
 
 ```mermaid
 graph
@@ -251,7 +253,8 @@ c("&sigma;<sub>rating >= 5</sub>") --- e("Sailor <br/> heap scan")
 
 ### Question 3.5 - What is the cost of the following plan?
 
-Assuming iterator model is used, except node being materialized.
+Assuming iterator model is used, except node being materialized, left sub relation is used as outer relation.
+
  
 ```mermaid
 graph
@@ -266,7 +269,8 @@ b("&sigma;<sub>bid = 100</sub>  <br/> Materialized")  --- f("Reserves <br/> heap
 
 ### Question 3.6 - What is the cost of the following plan?
 
-Assuming iterator model is used, except node being materialized.
+Assuming iterator model is used, except node being materialized, left sub relation is used as outer relation.
+
 
 
 ```mermaid
@@ -280,7 +284,8 @@ b("&sigma;<sub>bid = 100</sub>  <br/> Materialized")  --- f("Reserves <br/> heap
 
 ### Question 3.7 - What is the cost of the following plan?
 
-Assuming iterator model is used.
+Assuming iterator model is used, left sub relation is used as outer relation.
+
 
 
 ```mermaid
@@ -296,7 +301,8 @@ h("&sigma;<sub>rating >= 5</sub>") --- e("Sailor <br/> heap scan")
 
 ### Question 3.8 - Suppose Reserves has a clustered B+ tree index, Sailor has an unclustered B+ Tree index, both indices are in the memory. What is the cost of the following plan?
 
-Assuming iterator model is used
+Assuming iterator model is used, left sub relation is used as outer relation.
+
 
 ```mermaid
 graph
