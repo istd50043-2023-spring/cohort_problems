@@ -197,6 +197,8 @@ d("&bowtie;") --- f("Reserves")
 
 ### Question 3.1 - What is the cost of the following plan?
 
+Assuming iterator model is used
+
 ```mermaid
 graph
 a("&Pi;<sub>sname</sub>") --- b
@@ -209,6 +211,7 @@ d("&bowtie;<br/> nested loop join") --- f("Reserves <br/> heap scan")
 
 ### Question 3.2 - What is the cost of the following plan?
 
+Assuming iterator model is used
 
 ```mermaid
 graph
@@ -221,7 +224,7 @@ d("&bowtie;<br/> nested loop join") --- f("Reserves <br/> heap scan")
 
 ### Question 3.3 - What is the cost of the following plan?
 
-
+Assuming iterator model is used
 
 ```mermaid
 graph
@@ -235,6 +238,7 @@ b("&sigma;<sub>bid = 100</sub>")  --- f("Reserves <br/> heap scan")
 
 ### Question 3.4 - What is the cost of the following plan?
 
+Assuming iterator model is used
 
 ```mermaid
 graph
@@ -247,6 +251,7 @@ c("&sigma;<sub>rating >= 5</sub>") --- e("Sailor <br/> heap scan")
 
 ### Question 3.5 - What is the cost of the following plan?
 
+Assuming iterator model is used, except node being materialized.
  
 ```mermaid
 graph
@@ -261,6 +266,9 @@ b("&sigma;<sub>bid = 100</sub>  <br/> Materialized")  --- f("Reserves <br/> heap
 
 ### Question 3.6 - What is the cost of the following plan?
 
+Assuming iterator model is used, except node being materialized.
+
+
 ```mermaid
 graph
 a("&Pi;<sub>sname</sub>") --- d
@@ -271,6 +279,9 @@ b("&sigma;<sub>bid = 100</sub>  <br/> Materialized")  --- f("Reserves <br/> heap
 ```
 
 ### Question 3.7 - What is the cost of the following plan?
+
+Assuming iterator model is used.
+
 
 ```mermaid
 graph
@@ -284,6 +295,8 @@ h("&sigma;<sub>rating >= 5</sub>") --- e("Sailor <br/> heap scan")
 ```
 
 ### Question 3.8 - Suppose Reserves has a clustered B+ tree index, Sailor has an unclustered B+ Tree index, both indices are in the memory. What is the cost of the following plan?
+
+Assuming iterator model is used
 
 ```mermaid
 graph
