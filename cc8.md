@@ -144,7 +144,7 @@ $$
 
 
 1. $\Pi_{name}(\sigma_{salary>100}(People))$
-1. $\Pi_{name}(\sigma_{salary>100}(\Pi_{name}(People)))$
+1. $\Pi_{name}(\sigma_{salary>100}(\Pi_{salary}(People)))$
 1. $\sigma_{salary>100}(\Pi_{name,salary}(People))$
 1. $\sigma_{salary>100}(\Pi_{name}(\Pi_{name,salary}(People)))$
 1. $\Pi_{name}(\sigma_{salary>100}(\Pi_{name}(\Pi_{salary}(People))))$
@@ -211,7 +211,7 @@ d("&bowtie;<br/> nested loop join") --- f("Reserves <br/> heap scan")
 
 ### Question 3.2 - What is the cost of the following plan?
 
-Assuming iterator model is used, left sub relation is used as outer relation.
+Assuming iterator model is used, left sub relation is used as outer relation, values are uniformly distributed, there is no correlation among attributes.
 
 ```mermaid
 graph
@@ -224,7 +224,7 @@ d("&bowtie;<br/> nested loop join") --- f("Reserves <br/> heap scan")
 
 ### Question 3.3 - What is the cost of the following plan?
 
-Assuming iterator model is used, left sub relation is used as outer relation.
+Assuming iterator model is used, left sub relation is used as outer relation, values are uniformly distributed, there is no correlation among attributes,
 
 
 ```mermaid
@@ -239,7 +239,7 @@ b("&sigma;<sub>bid = 100</sub>")  --- f("Reserves <br/> heap scan")
 
 ### Question 3.4 - What is the cost of the following plan?
 
-Assuming iterator model is used, left sub relation is used as outer relation.
+Assuming iterator model is used, left sub relation is used as outer relation, values are uniformly distributed, there is no correlation among attributes.
 
 
 ```mermaid
@@ -253,7 +253,7 @@ c("&sigma;<sub>rating >= 5</sub>") --- e("Sailor <br/> heap scan")
 
 ### Question 3.5 - What is the cost of the following plan?
 
-Assuming iterator model is used, except node being materialized, left sub relation is used as outer relation.
+Assuming iterator model is used, except node being materialized, left sub relation is used as outer relation, values are uniformly distributed, there is no correlation among attributes.
 
  
 ```mermaid
@@ -269,7 +269,7 @@ b("&sigma;<sub>bid = 100</sub>  <br/> Materialized")  --- f("Reserves <br/> heap
 
 ### Question 3.6 - What is the cost of the following plan?
 
-Assuming iterator model is used, except node being materialized, left sub relation is used as outer relation.
+Assuming iterator model is used, except node being materialized, left sub relation is used as outer relation, values are uniformly distributed, there is no correlation among attributes.
 
 
 
@@ -284,7 +284,7 @@ b("&sigma;<sub>bid = 100</sub>  <br/> Materialized")  --- f("Reserves <br/> heap
 
 ### Question 3.7 - What is the cost of the following plan?
 
-Assuming iterator model is used, left sub relation is used as outer relation, `sid` size is 4 bytes.
+Assuming iterator model is used, left sub relation is used as outer relation, `sid` size is 4 bytes, values are uniformly distributed, there is no correlation among attributes.
 
 
 
@@ -301,7 +301,7 @@ h("&sigma;<sub>rating >= 5</sub>") --- e("Sailor <br/> heap scan")
 
 ### Question 3.8 - Suppose Reserves has a clustered B+ tree index, Sailor has a clustered B+ Tree index, both indices are in the memory. What is the cost of the following plan?
 
-Assuming iterator model is used, left sub relation is used as outer relation.
+Assuming iterator model is used, left sub relation is used as outer relation, values are uniformly distributed, there is no correlation among attributes.
 
 
 ```mermaid
