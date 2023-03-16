@@ -284,7 +284,7 @@ b("&sigma;<sub>bid = 100</sub>  <br/> Materialized")  --- f("Reserves <br/> heap
 
 ### Question 3.7 - What is the cost of the following plan?
 
-Assuming iterator model is used, left sub relation is used as outer relation.
+Assuming iterator model is used, left sub relation is used as outer relation, `sid` size is 4 bytes.
 
 
 
