@@ -162,6 +162,7 @@ Consider two relation $X(A,B)$ and $Y(B,C)$ with the following statistics:​
 * $min(A,X) = 0, max(A,X)= 100$
 
 Assuming all values of $B$ that appear in $Y$ also appear in $X$.
+Values are uniformly distributed. There is no correlation among attributes.
 
 1. estimate the number of tuples $\sigma_{A=10}(X)$
 2. estimate the number of tuples $X \bowtie Y$
