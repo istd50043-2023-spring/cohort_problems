@@ -299,7 +299,7 @@ c("&Pi;<sub>sid,name</sub>") --- h
 h("&sigma;<sub>rating >= 5</sub>") --- e("Sailor <br/> heap scan")
 ```
 
-### Question 3.8 - Suppose Reserves has a clustered B+ tree index, Sailor has a clustered B+ Tree index, both indices are in the memory. What is the cost of the following plan?
+### Question 3.8 - Suppose Reserves has a clustered B+ tree index on `bid`, Sailor has a clustered B+ Tree index on `sid`, both indices are in the memory. What is the cost of the following plan?
 
 Assuming iterator model is used, left sub relation is used as outer relation, values are uniformly distributed, there is no correlation among attributes.
 
