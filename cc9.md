@@ -45,7 +45,7 @@ They are executed using *undo logging*, with the log content (on disk) below
 
 
 
-* Qusstion 1.1 - Fill in the `XXX` in the log.
+* Question 1.1 - Fill in the `XXX` in the log.
 * Question 1.2 - The system crashes and recovers. What are values of A,B,C on disk after recovery,
     1. If the log when the crash happened contains line 1-10​
     2. If the log when the crash happened contains line 1-7​
@@ -86,8 +86,8 @@ They are executed using *redo logging*, with the log content (on disk) above​
 11. <T3, B, XXX>​
 ```
 
-* Qusstion 2.1 - Fill in the `XXX` in the log.
-* Question 2.2 - The system crashes and recovers. What are values of A,B,C on disk after recovery,
+* Question 2.1 - Fill in the `XXX` in the log.
+* Question 2.2 - The system crashes. What are values of A,B,C on disk when the crash happened,
     1. If the log when the crash happened contains line 1-10​
     2. If the log when the crash happened contains line 1-3
 * Question 2.3 - The system crashes and recovers. What can you say about values of A,B,C on disk after recovery, if​
