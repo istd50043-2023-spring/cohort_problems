@@ -1,0 +1,1924 @@
+﻿{
+  "paragraphs": [
+    {
+      "text": "%md\n\n# Exercise 3\n\nIn this exercise, we are going to implement the KMeans clustering algorithm using Spark RDD.\n\nFor parts marked with **[CODE CHANGE REQUIRED]** you need to modify or complete the code before execution.\nFor parts without **[CODE CHANGE REQUIRED]** , you can just run the given code.\n",
+      "user": "anonymous",
+      "dateUpdated": "2023-04-05T04:40:55+0000",
+      "progress": 0,
+      "config": {
+        "tableHide": false,
+        "editorSetting": {
+          "language": "markdown",
+          "editOnDblClick": true,
+          "completionKey": "TAB",
+          "completionSupport": false
+        },
+        "colWidth": 12,
+        "editorMode": "ace/mode/markdown",
+        "fontSize": 9,
+        "editorHide": true,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "HTML",
+            "data": "<div class=\"markdown-body\">\n<h1>Exercise 3</h1>\n<p>In this exercise, we are going to implement the KMeans clustering algorithm using Spark RDD.</p>\n<p>For parts marked with <strong>[CODE CHANGE REQUIRED]</strong> you need to modify or complete the code before execution.<br />\nFor parts without <strong>[CODE CHANGE REQUIRED]</strong> , you can just run the given code.</p>\n\n</div>"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1680669655224_472723298",
+      "id": "paragraph_1604300241188_1434174859",
+      "dateCreated": "2023-04-05T04:40:55+0000",
+      "status": "READY",
+      "focus": true,
+      "$$hashKey": "object:184"
+    },
+    {
+      "text": "%md\n\n## KMeans clustering algorithm\n\nKMeans clustering algorithm is an unsupervised machine learning algorithm which groups data points into *cluster*s (or groups) based on their similarity, e.g. product their likes, movies their likes, brands they follow, TV programs and movies they watched, university and colleages they attended. \n\nAssume all the attributes of the subjects in the analysis can be represented using some scalar values, we can conduct the analysis in the following steps.\n\n1. The user/programmer specifies how many clusters he/she would like to group all the data points under. Let's say it is `K`\n2. Randomly generate `K` data points, we call them *centroids*, `c1, c2, ..., cK`.\n3. For each data point `p`, we compute the distances between `p` and `c1`, `p` and `c2`, ... Find the centroid `ci`, to which `p` is closest, we conclude `p` is in cluster `i`.\n4. For each cluster `i`, we retrieve all the data points falling in this cluster, and compute the mean. The mean will be new centroid for cluster `i`, say `ci'`\n5. Compare `c1` with `c1'`, `c2` with `c2'`, ..., `cK` with `cK'`. If all of them remains unchanged (or the differnce is lower than a threshold), we are done. Otherwise, update `c1 = c1'`, ..., `cK = cK` and go back to step 3.\n\n\nPoint to note, clusters might be disappear, i.e. some centroid has zero data point inside. \n\n![](https://i.stack.imgur.com/ibYKU.png)",
+      "user": "anonymous",
+      "dateUpdated": "2023-04-05T04:40:55+0000",
+      "progress": 0,
+      "config": {
+        "tableHide": false,
+        "editorSetting": {
+          "language": "markdown",
+          "editOnDblClick": true,
+          "completionKey": "TAB",
+          "completionSupport": false
+        },
+        "colWidth": 12,
+        "editorMode": "ace/mode/markdown",
+        "fontSize": 9,
+        "editorHide": true,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "HTML",
+            "data": "<div class=\"markdown-body\">\n<h2>KMeans clustering algorithm</h2>\n<p>KMeans clustering algorithm is an unsupervised machine learning algorithm which groups data points into <em>cluster</em>s (or groups) based on their similarity, e.g. product their likes, movies their likes, brands they follow, TV programs and movies they watched, university and colleages they attended.</p>\n<p>Assume all the attributes of the subjects in the analysis can be represented using some scalar values, we can conduct the analysis in the following steps.</p>\n<ol>\n<li>The user/programmer specifies how many clusters he/she would like to group all the data points under. Let&rsquo;s say it is <code>K</code></li>\n<li>Randomly generate <code>K</code> data points, we call them <em>centroids</em>, <code>c1, c2, ..., cK</code>.</li>\n<li>For each data point <code>p</code>, we compute the distances between <code>p</code> and <code>c1</code>, <code>p</code> and <code>c2</code>, &hellip; Find the centroid <code>ci</code>, to which <code>p</code> is closest, we conclude <code>p</code> is in cluster <code>i</code>.</li>\n<li>For each cluster <code>i</code>, we retrieve all the data points falling in this cluster, and compute the mean. The mean will be new centroid for cluster <code>i</code>, say <code>ci'</code></li>\n<li>Compare <code>c1</code> with <code>c1'</code>, <code>c2</code> with <code>c2'</code>, &hellip;, <code>cK</code> with <code>cK'</code>. If all of them remains unchanged (or the differnce is lower than a threshold), we are done. Otherwise, update <code>c1 = c1'</code>, &hellip;, <code>cK = cK</code> and go back to step 3.</li>\n</ol>\n<p>Point to note, clusters might be disappear, i.e. some centroid has zero data point inside.</p>\n<p><img src=\"https://i.stack.imgur.com/ibYKU.png\" alt=\"\" /></p>\n\n</div>"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1680669655224_185768164",
+      "id": "paragraph_1604300294607_1616400427",
+      "dateCreated": "2023-04-05T04:40:55+0000",
+      "status": "READY",
+      "$$hashKey": "object:185"
+    },
+    {
+      "text": "%md\n\nInstead of using real data, we use a python script to generate the data. The python script is already written for you. It can be found in the git-cloned repo `/cohort_problemst/cc12/data/ex3/data/generate.py` \n\n```python\nimport sys\nimport random\ndef gen(num_of_records, filename):\n    with open(filename,'w') as f:\n        for i in range(0,int(num_of_records)):\n            x = random.uniform(-100,100)\n            y = random.uniform(-100,100) \n            f.write(\"%.2f\\t%.2f\\n\" % (x,y))\n    f.close()\n\nif __name__ == \"__main__\":\n    if len(sys.argv) > 2:\n        sys.exit(gen(sys.argv[1],sys.argv[2]))\n    else:\n        print(\"USAGE: python3 generate.py <number_of_records> <file_name>\")\n```",
+      "user": "anonymous",
+      "dateUpdated": "2023-04-05T05:10:47+0000",
+      "progress": 0,
+      "config": {
+        "tableHide": false,
+        "editorSetting": {
+          "language": "markdown",
+          "editOnDblClick": true,
+          "completionKey": "TAB",
+          "completionSupport": false
+        },
+        "colWidth": 12,
+        "editorMode": "ace/mode/markdown",
+        "fontSize": 9,
+        "editorHide": true,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "HTML",
+            "data": "<div class=\"markdown-body\">\n<p>Instead of using real data, we use a python script to generate the data. The python script is already written for you. It can be found in the git-cloned repo <code>/cohort_problemst/cc12/data/ex3/data/generate.py</code></p>\n<pre><code class=\"language-python\">import sys\nimport random\ndef gen(num_of_records, filename):\n    with open(filename,'w') as f:\n        for i in range(0,int(num_of_records)):\n            x = random.uniform(-100,100)\n            y = random.uniform(-100,100) \n            f.write(&quot;%.2f\\t%.2f\\n&quot; % (x,y))\n    f.close()\n\nif __name__ == &quot;__main__&quot;:\n    if len(sys.argv) &gt; 2:\n        sys.exit(gen(sys.argv[1],sys.argv[2]))\n    else:\n        print(&quot;USAGE: python3 generate.py &lt;number_of_records&gt; &lt;file_name&gt;&quot;)\n</code></pre>\n\n</div>"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1680669655224_708017851",
+      "id": "paragraph_1604300692325_1199987989",
+      "dateCreated": "2023-04-05T04:40:55+0000",
+      "dateStarted": "2023-04-05T05:10:47+0000",
+      "dateFinished": "2023-04-05T05:10:47+0000",
+      "status": "FINISHED",
+      "$$hashKey": "object:186"
+    },
+    {
+      "text": "%md\n\n **[CODE CHANGE REQUIRED]**\nModify the bash command in the next cell accordingly to execute the above script.\n\n",
+      "user": "anonymous",
+      "dateUpdated": "2023-04-05T04:40:55+0000",
+      "progress": 0,
+      "config": {
+        "tableHide": false,
+        "editorSetting": {
+          "language": "markdown",
+          "editOnDblClick": true,
+          "completionKey": "TAB",
+          "completionSupport": false
+        },
+        "colWidth": 12,
+        "editorMode": "ace/mode/markdown",
+        "fontSize": 9,
+        "editorHide": true,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "HTML",
+            "data": "<div class=\"markdown-body\">\n<p><strong>[CODE CHANGE REQUIRED]</strong><br />\nModify the bash command in the next cell accordingly to execute the above script.</p>\n\n</div>"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1680669655224_2077814277",
+      "id": "paragraph_1604302627135_1473009007",
+      "dateCreated": "2023-04-05T04:40:55+0000",
+      "status": "READY",
+      "$$hashKey": "object:187"
+    },
+    {
+      "text": "%sh\n\npython3 /home/ec2-user/git/cohort_problems/cc12/data/ex3/generate.py 1000 points.tsv\npython3 /home/ec2-user/git/cohort_problems/cc12/data/ex3/generate.py 10 centroids.tsv\n",
+      "user": "anonymous",
+      "dateUpdated": "2023-04-05T05:10:39+0000",
+      "progress": 0,
+      "config": {
+        "editorSetting": {
+          "language": "sh",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": false
+        },
+        "colWidth": 12,
+        "editorMode": "ace/mode/sh",
+        "fontSize": 9,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": []
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1680669655224_1614299123",
+      "id": "paragraph_1604302923412_438367352",
+      "dateCreated": "2023-04-05T04:40:55+0000",
+      "status": "READY",
+      "$$hashKey": "object:188"
+    },
+    {
+      "text": "%md\n\n## Exercise 3.1\n\n **[CODE CHANGE REQUIRED]**\n \nModify the following bash command and execute it, so that we can upload the points in the HDFS",
+      "user": "anonymous",
+      "dateUpdated": "2023-04-05T04:40:55+0000",
+      "progress": 0,
+      "config": {
+        "tableHide": false,
+        "editorSetting": {
+          "language": "markdown",
+          "editOnDblClick": true,
+          "completionKey": "TAB",
+          "completionSupport": false
+        },
+        "colWidth": 12,
+        "editorMode": "ace/mode/markdown",
+        "fontSize": 9,
+        "editorHide": true,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "HTML",
+            "data": "<div class=\"markdown-body\">\n<h2>Exercise 3.1</h2>\n<p><strong>[CODE CHANGE REQUIRED]</strong></p>\n<p>Modify the following bash command and execute it, so that we can upload the points in the HDFS</p>\n\n</div>"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1680669655224_243485385",
+      "id": "paragraph_1604303088499_283049258",
+      "dateCreated": "2023-04-05T04:40:55+0000",
+      "status": "READY",
+      "$$hashKey": "object:189"
+    },
+    {
+      "text": "%sh\n\nexport PATH=$PATH:/home/ec2-user/hadoop/bin/\n\nnamenode=ip-172-31-86-18 # TODO:change me\n\nhdfs dfs -rm -r hdfs://$namenode:9000/lab12/ex3/\nhdfs dfs -mkdir -p hdfs://$namenode:9000/lab12/ex3/input/points\nhdfs dfs -put points.tsv hdfs://$namenode:9000/lab12/ex3/input/points/\nhdfs dfs -mkdir -p hdfs://$namenode:9000/lab12/ex3/input/centroids/\nhdfs dfs -put centroids.tsv hdfs://$namenode:9000/lab12/ex3/input/centroids/",
+      "user": "anonymous",
+      "dateUpdated": "2023-04-05T04:40:55+0000",
+      "progress": 0,
+      "config": {
+        "editorSetting": {
+          "language": "sh",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": false
+        },
+        "colWidth": 12,
+        "editorMode": "ace/mode/sh",
+        "fontSize": 9,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "rm: `hdfs://ip-172-31-86-18:9000/lab12/ex3/': No such file or directory\n2021-11-04 01:51:16,036 WARN hdfs.DataStreamer: Caught exception\njava.lang.InterruptedException\n\tat java.lang.Object.wait(Native Method)\n\tat java.lang.Thread.join(Thread.java:1252)\n\tat java.lang.Thread.join(Thread.java:1326)\n\tat org.apache.hadoop.hdfs.DataStreamer.closeResponder(DataStreamer.java:986)\n\tat org.apache.hadoop.hdfs.DataStreamer.endBlock(DataStreamer.java:640)\n\tat org.apache.hadoop.hdfs.DataStreamer.run(DataStreamer.java:810)\n"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1680669655224_1025994211",
+      "id": "paragraph_1604303030704_1412370830",
+      "dateCreated": "2023-04-05T04:40:55+0000",
+      "status": "READY",
+      "$$hashKey": "object:190"
+    },
+    {
+      "text": "%md \n\nWe load the spark session to create the spark context",
+      "user": "anonymous",
+      "dateUpdated": "2023-04-05T04:40:55+0000",
+      "progress": 0,
+      "config": {
+        "tableHide": false,
+        "editorSetting": {
+          "language": "markdown",
+          "editOnDblClick": true,
+          "completionKey": "TAB",
+          "completionSupport": false
+        },
+        "colWidth": 12,
+        "editorMode": "ace/mode/markdown",
+        "fontSize": 9,
+        "editorHide": true,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "HTML",
+            "data": "<div class=\"markdown-body\">\n<p>We load the spark session to create the spark context</p>\n\n</div>"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1680669655224_573425349",
+      "id": "paragraph_1604472421759_1057850216",
+      "dateCreated": "2023-04-05T04:40:55+0000",
+      "status": "READY",
+      "$$hashKey": "object:191"
+    },
+    {
+      "text": "%pyspark\nfrom pyspark.sql import SparkSession\nsparkSession = SparkSession.builder.appName(\"KMeans notebook\").getOrCreate()\nsc = sparkSession.sparkContext",
+      "user": "anonymous",
+      "dateUpdated": "2023-04-05T04:40:55+0000",
+      "progress": 0,
+      "config": {
+        "editorSetting": {
+          "language": "python",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "colWidth": 12,
+        "editorMode": "ace/mode/python",
+        "fontSize": 9,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": []
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1680669655224_2035453667",
+      "id": "paragraph_1604470368334_170115562",
+      "dateCreated": "2023-04-05T04:40:55+0000",
+      "status": "READY",
+      "$$hashKey": "object:192"
+    },
+    {
+      "text": "%md \n\n## Exercise 3.2\n\n **[CODE CHANGE REQUIRED]**\n\nComplete the definition of the following function `load_points_into_rdd`, which load the TSV data into an RDD given the namenode and the HDFS path (e.g. `/lab12/ex3/input/points`).\n\nEach item in the RDD is a tuple of two float values.\n\n<style>\n    div.hidecode + pre {display: none}\n</style>\n<script>\ndoclick=function(e) {\n    e.nextSibling.nextSibling.style.display=\"block\";\n}\n</script>\n\n<div class=\"hidecode\" onclick=\"doclick(this);\">[Show Hint]</div>\n\n```python\nnamenode = \"127.0.0.1:9000\"\n\ndef load_points_into_rdd(namenode, path): # TODO\n    return sc.textFile(\"hdfs://%s/%s\" % (namenode,path)).map(lambda ln:ln.strip().split(\"\\t\")).map(lambda l:(float(l[0]), float(l[1])))\n```",
+      "user": "anonymous",
+      "dateUpdated": "2023-04-05T04:40:55+0000",
+      "progress": 0,
+      "config": {
+        "tableHide": false,
+        "editorSetting": {
+          "language": "markdown",
+          "editOnDblClick": true,
+          "completionKey": "TAB",
+          "completionSupport": false
+        },
+        "colWidth": 12,
+        "editorMode": "ace/mode/markdown",
+        "fontSize": 9,
+        "editorHide": true,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "HTML",
+            "data": "<div class=\"markdown-body\">\n<h2>Exercise 3.2</h2>\n<p><strong>[CODE CHANGE REQUIRED]</strong></p>\n<p>Complete the definition of the following function <code>load_points_into_rdd</code>, which load the TSV data into an RDD given the namenode and the HDFS path (e.g. <code>/lab12/ex3/input/points</code>).</p>\n<p>Each item in the RDD is a tuple of two float values.</p>\n<style>\n    div.hidecode + pre {display: none}\n</style>\n<script>\ndoclick=function(e) {\n    e.nextSibling.nextSibling.style.display=\"block\";\n}\n</script>\n<div class=\"hidecode\" onclick=\"doclick(this);\">[Show Hint]</div>\n<pre><code class=\"language-python\">namenode = &quot;127.0.0.1:9000&quot;\n\ndef load_points_into_rdd(namenode, path): # TODO\n    return sc.textFile(&quot;hdfs://%s/%s&quot; % (namenode,path)).map(lambda ln:ln.strip().split(&quot;\\t&quot;)).map(lambda l:(float(l[0]), float(l[1])))\n</code></pre>\n\n</div>"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1680669655225_1259416015",
+      "id": "paragraph_1604303126395_1074291387",
+      "dateCreated": "2023-04-05T04:40:55+0000",
+      "status": "READY",
+      "$$hashKey": "object:193"
+    },
+    {
+      "text": "%pyspark \n\nnamenode = \"127.0.0.1:9000\"\n\ndef load_points_into_rdd(namenode, path): # TODO\n    return None\n\n",
+      "user": "anonymous",
+      "dateUpdated": "2023-04-05T04:40:55+0000",
+      "progress": 0,
+      "config": {
+        "editorSetting": {
+          "language": "python",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "colWidth": 12,
+        "editorMode": "ace/mode/python",
+        "fontSize": 9,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": []
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1680669655225_1249002765",
+      "id": "paragraph_1604303992869_883692923",
+      "dateCreated": "2023-04-05T04:40:55+0000",
+      "status": "READY",
+      "$$hashKey": "object:194"
+    },
+    {
+      "text": "%md\n\n### Sample answer\n\n<style>\n    div.hidecode + pre {display: none}\n</style>\n<script>\ndoclick=function(e) {\n    e.nextSibling.nextSibling.style.display=\"block\";\n}\n</script>\n\n<div class=\"hidecode\" onclick=\"doclick(this);\">[Show Hint]</div>\n\n\n```python\n\ndef load_points_into_rdd(namenode, path): # TODO\n    return sc.textFile(\"hdfs://%s/%s\" % (namenode,path)).map(lambda ln:ln.strip().split(\"\\t\")).map(lambda l:(float(l[0]), float(l[1])))\n\n```\n",
+      "user": "anonymous",
+      "dateUpdated": "2023-04-05T04:40:55+0000",
+      "progress": 0,
+      "config": {
+        "editorSetting": {
+          "language": "markdown",
+          "editOnDblClick": true,
+          "completionKey": "TAB",
+          "completionSupport": false
+        },
+        "colWidth": 12,
+        "editorMode": "ace/mode/markdown",
+        "fontSize": 9,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "HTML",
+            "data": "<div class=\"markdown-body\">\n<h3>Sample answer</h3>\n<style>\n    div.hidecode + pre {display: none}\n</style>\n<script>\ndoclick=function(e) {\n    e.nextSibling.nextSibling.style.display=\"block\";\n}\n</script>\n<div class=\"hidecode\" onclick=\"doclick(this);\">[Show Hint]</div>\n<pre><code class=\"language-python\">\ndef load_points_into_rdd(namenode, path): # TODO\n    return sc.textFile(&quot;hdfs://%s/%s&quot; % (namenode,path)).map(lambda ln:ln.strip().split(&quot;\\t&quot;)).map(lambda l:(float(l[0]), float(l[1])))\n\n</code></pre>\n\n</div>"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1680669655225_1702039002",
+      "id": "paragraph_1635990891310_795541385",
+      "dateCreated": "2023-04-05T04:40:55+0000",
+      "status": "READY",
+      "$$hashKey": "object:195"
+    },
+    {
+      "text": "%md\n\n## Test case 3.2\n\nRun the following you should see, (the actual numeric values might differ, but the structure should be the same) \n```python\n[(61.4, -33.87), (19.57, -20.85), (22.95, -49.32), (42.81, 29.71), (-65.89, -75.57), (13.48, 71.92), (-17.28, -21.7), (1.79, 43.8), (11.58, -32.18), (1.73, -54.43)]\n```\n",
+      "user": "anonymous",
+      "dateUpdated": "2023-04-05T04:40:55+0000",
+      "progress": 0,
+      "config": {
+        "tableHide": false,
+        "editorSetting": {
+          "language": "markdown",
+          "editOnDblClick": true,
+          "completionKey": "TAB",
+          "completionSupport": false
+        },
+        "colWidth": 12,
+        "editorMode": "ace/mode/markdown",
+        "fontSize": 9,
+        "editorHide": true,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "HTML",
+            "data": "<div class=\"markdown-body\">\n<h2>Test case 3.2</h2>\n<p>Run the following you should see, (the actual numeric values might differ, but the structure should be the same)</p>\n<pre><code class=\"language-python\">[(61.4, -33.87), (19.57, -20.85), (22.95, -49.32), (42.81, 29.71), (-65.89, -75.57), (13.48, 71.92), (-17.28, -21.7), (1.79, 43.8), (11.58, -32.18), (1.73, -54.43)]\n</code></pre>\n\n</div>"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1680669655225_1019853306",
+      "id": "paragraph_1604471712909_75789156",
+      "dateCreated": "2023-04-05T04:40:55+0000",
+      "status": "READY",
+      "$$hashKey": "object:196"
+    },
+    {
+      "text": "%pyspark\n\n# test case 1\npoints = load_points_into_rdd(namenode, \"/lab12/ex3/input/points\")\npoints.take(10)",
+      "user": "anonymous",
+      "dateUpdated": "2023-04-05T04:40:55+0000",
+      "progress": 0,
+      "config": {
+        "editorSetting": {
+          "language": "python",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "colWidth": 12,
+        "editorMode": "ace/mode/python",
+        "fontSize": 9,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "[(-41.59, -83.66), (10.63, -69.99), (82.67, 66.63), (-62.98, -13.81), (74.79, -66.9), (53.98, 98.3), (-52.21, -36.42), (-38.23, 17.55), (-53.04, -71.29), (-52.2, 89.43)]\n"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1680669655225_1561278456",
+      "id": "paragraph_1604470696760_1475948702",
+      "dateCreated": "2023-04-05T04:40:55+0000",
+      "status": "READY",
+      "$$hashKey": "object:197"
+    },
+    {
+      "text": "%md \n\n## Exercise 3.3\n **[CODE CHANGE REQUIRED]**\nComplete the following function `euc_dist` which compute the euclidean distance between two points\n\n\n$$eucdist((x_1,y_1),(x_2,y_2)) = \\sqrt{ (x_1 - x_2)^2 + (y_1 - y_2)^2  }$$\n\n",
+      "user": "anonymous",
+      "dateUpdated": "2023-04-05T04:40:55+0000",
+      "progress": 0,
+      "config": {
+        "tableHide": false,
+        "editorSetting": {
+          "language": "markdown",
+          "editOnDblClick": true,
+          "completionKey": "TAB",
+          "completionSupport": false
+        },
+        "colWidth": 12,
+        "editorMode": "ace/mode/markdown",
+        "fontSize": 9,
+        "editorHide": true,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "HTML",
+            "data": "<div class=\"markdown-body\">\n<h2>Exercise 3.3</h2>\n<p><strong>[CODE CHANGE REQUIRED]</strong><br />\nComplete the following function <code>euc_dist</code> which compute the euclidean distance between two points</p>\n<p>$$eucdist((x_1,y_1),(x_2,y_2)) = \\sqrt{ (x_1 - x_2)^2 + (y_1 - y_2)^2  }$$</p>\n\n</div>"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1680669655225_174053258",
+      "id": "paragraph_1604472756075_825467179",
+      "dateCreated": "2023-04-05T04:40:55+0000",
+      "status": "READY",
+      "$$hashKey": "object:198"
+    },
+    {
+      "text": "%pyspark\nimport math\ndef euc_dist(p1,p2): \n    '''\n    inpput\n    p1, p2: points\n    output\n    euclidean distance between p1 and p2\n    '''\n    # TODO\n    return 0\n",
+      "user": "anonymous",
+      "dateUpdated": "2023-04-05T04:40:55+0000",
+      "progress": 0,
+      "config": {
+        "editorSetting": {
+          "language": "python",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "colWidth": 12,
+        "editorMode": "ace/mode/python",
+        "fontSize": 9,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": []
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1680669655225_1376504566",
+      "id": "paragraph_1604911194211_158067040",
+      "dateCreated": "2023-04-05T04:40:55+0000",
+      "status": "READY",
+      "$$hashKey": "object:199"
+    },
+    {
+      "text": "%md\n\n### Sample answer\n\n<style>\n    div.hidecode + pre {display: none}\n</style>\n<script>\ndoclick=function(e) {\n    e.nextSibling.nextSibling.style.display=\"block\";\n}\n</script>\n\n<div class=\"hidecode\" onclick=\"doclick(this);\">[Show Hint]</div>\n\n\n```python\nimport math\ndef euc_dist(p1,p2): \n    '''\n    inpput\n    p1, p2: points\n    output\n    euclidean distance between p1 and p2\n    '''\n    # ANSWER\n    return math.sqrt((p1[0]-p2[0])**2 + (p1[1] - p2[1])**2)\n\n```\n",
+      "user": "anonymous",
+      "dateUpdated": "2023-04-05T04:40:55+0000",
+      "progress": 0,
+      "config": {
+        "editorSetting": {
+          "language": "markdown",
+          "editOnDblClick": true,
+          "completionKey": "TAB",
+          "completionSupport": false
+        },
+        "colWidth": 12,
+        "editorMode": "ace/mode/markdown",
+        "fontSize": 9,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "HTML",
+            "data": "<div class=\"markdown-body\">\n<h3>Sample answer</h3>\n<style>\n    div.hidecode + pre {display: none}\n</style>\n<script>\ndoclick=function(e) {\n    e.nextSibling.nextSibling.style.display=\"block\";\n}\n</script>\n<div class=\"hidecode\" onclick=\"doclick(this);\">[Show Hint]</div>\n<pre><code class=\"language-python\">import math\ndef euc_dist(p1,p2): \n    '''\n    inpput\n    p1, p2: points\n    output\n    euclidean distance between p1 and p2\n    '''\n    # ANSWER\n    return math.sqrt((p1[0]-p2[0])**2 + (p1[1] - p2[1])**2)\n\n</code></pre>\n\n</div>"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1680669655225_1330466824",
+      "id": "paragraph_1635991015355_1853734163",
+      "dateCreated": "2023-04-05T04:40:55+0000",
+      "status": "READY",
+      "$$hashKey": "object:200"
+    },
+    {
+      "text": "%md\n\n## Test case 3.3\n\nRun the following you should see, \n\n```text\n1.4142135623730951\n```\n",
+      "user": "anonymous",
+      "dateUpdated": "2023-04-05T04:40:55+0000",
+      "progress": 0,
+      "config": {
+        "tableHide": false,
+        "editorSetting": {
+          "language": "markdown",
+          "editOnDblClick": true,
+          "completionKey": "TAB",
+          "completionSupport": false
+        },
+        "colWidth": 12,
+        "editorMode": "ace/mode/markdown",
+        "fontSize": 9,
+        "editorHide": true,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "HTML",
+            "data": "<div class=\"markdown-body\">\n<h2>Test case 3.3</h2>\n<p>Run the following you should see,</p>\n<pre><code class=\"language-text\">1.4142135623730951\n</code></pre>\n\n</div>"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1680669655225_1714481961",
+      "id": "paragraph_1604911213220_1209819269",
+      "dateCreated": "2023-04-05T04:40:55+0000",
+      "status": "READY",
+      "$$hashKey": "object:201"
+    },
+    {
+      "text": "%pyspark\n\np1 = (3.0, 1.0)\np2 = (2.0, 2.0)\n\neuc_dist(p1,p2)",
+      "user": "anonymous",
+      "dateUpdated": "2023-04-05T04:40:55+0000",
+      "progress": 0,
+      "config": {
+        "editorSetting": {
+          "language": "python",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "colWidth": 12,
+        "editorMode": "ace/mode/python",
+        "fontSize": 9,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "0\n"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1680669655225_1177865480",
+      "id": "paragraph_1604911209792_50002499",
+      "dateCreated": "2023-04-05T04:40:55+0000",
+      "status": "READY",
+      "$$hashKey": "object:202"
+    },
+    {
+      "text": "%md \n\n## Exercise 3.4\n **[CODE CHANGE REQUIRED]**\n \nComplete the following function which computes the mean of of an iterator/list of points.\n\n\n`mean()` functions takes a plain python iterator of points, not an RDD of points.\nThe mean of two points are defined as \n\n$$\nmean((x_1,y_1),(x_2,y_2)) = (( x_1 + x_2) / 2, (y_1 + y_2) / 2)\n$$\n\n",
+      "user": "anonymous",
+      "dateUpdated": "2023-04-05T04:40:55+0000",
+      "progress": 0,
+      "config": {
+        "tableHide": false,
+        "editorSetting": {
+          "language": "markdown",
+          "editOnDblClick": true,
+          "completionKey": "TAB",
+          "completionSupport": false
+        },
+        "colWidth": 12,
+        "editorMode": "ace/mode/markdown",
+        "fontSize": 9,
+        "editorHide": true,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "HTML",
+            "data": "<div class=\"markdown-body\">\n<h2>Exercise 3.4</h2>\n<p><strong>[CODE CHANGE REQUIRED]</strong></p>\n<p>Complete the following function which computes the mean of of an iterator/list of points.</p>\n<p><code>mean()</code> functions takes a plain python iterator of points, not an RDD of points.<br />\nThe mean of two points are defined as</p>\n<p>$$<br />\nmean((x_1,y_1),(x_2,y_2)) = (( x_1 + x_2) / 2, (y_1 + y_2) / 2)<br />\n$$</p>\n\n</div>"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1680669655225_1602710215",
+      "id": "paragraph_1604911428871_779336258",
+      "dateCreated": "2023-04-05T04:40:55+0000",
+      "status": "READY",
+      "$$hashKey": "object:203"
+    },
+    {
+      "text": "%pyspark\n\ndef mean(points):\n    '''\n    input\n    an iterator of points\n    output\n    a point that is the means of all the points in the input. if the input list is empty, return None\n    '''\n    # TODO\n    return None",
+      "user": "anonymous",
+      "dateUpdated": "2023-04-05T04:40:55+0000",
+      "progress": 0,
+      "config": {
+        "editorSetting": {
+          "language": "python",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "colWidth": 12,
+        "editorMode": "ace/mode/python",
+        "fontSize": 9,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": []
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1680669655226_472785496",
+      "id": "paragraph_1604925023941_1334331625",
+      "dateCreated": "2023-04-05T04:40:55+0000",
+      "status": "READY",
+      "$$hashKey": "object:204"
+    },
+    {
+      "text": "%md\n\n### Sample answer\n\n```python\n\ndef mean(points):\n    '''\n    input\n    an iterator of points\n    output\n    a point that is the means of all the points in the input. if the input list is empty, return None\n    '''\n    # ANSWER\n    pts = list(points)\n    count = len(pts)\n    if count == 0:\n        return None\n    else:\n        xs = map(lambda p:p[0], pts)\n        ys = map(lambda p:p[1], pts)\n        return (sum(xs)/len(pts), sum(ys)/len(pts))\n```\n",
+      "user": "anonymous",
+      "dateUpdated": "2023-04-05T04:40:55+0000",
+      "progress": 0,
+      "config": {
+        "editorSetting": {
+          "language": "markdown",
+          "editOnDblClick": true,
+          "completionKey": "TAB",
+          "completionSupport": false
+        },
+        "colWidth": 12,
+        "editorMode": "ace/mode/markdown",
+        "fontSize": 9,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "HTML",
+            "data": "<div class=\"markdown-body\">\n<h3>Sample answer</h3>\n<pre><code class=\"language-python\">\ndef mean(points):\n    '''\n    input\n    an iterator of points\n    output\n    a point that is the means of all the points in the input. if the input list is empty, return None\n    '''\n    # ANSWER\n    pts = list(points)\n    count = len(pts)\n    if count == 0:\n        return None\n    else:\n        xs = map(lambda p:p[0], pts)\n        ys = map(lambda p:p[1], pts)\n        return (sum(xs)/len(pts), sum(ys)/len(pts))\n</code></pre>\n\n</div>"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1680669655226_1772440623",
+      "id": "paragraph_1635991316621_910332845",
+      "dateCreated": "2023-04-05T04:40:55+0000",
+      "status": "READY",
+      "$$hashKey": "object:205"
+    },
+    {
+      "text": "%md\n\n## Test case 3\n\nRun the following you should see,\n\n```text\n(4,5)\n```\n",
+      "user": "anonymous",
+      "dateUpdated": "2023-04-05T04:40:55+0000",
+      "progress": 0,
+      "config": {
+        "tableHide": false,
+        "editorSetting": {
+          "language": "markdown",
+          "editOnDblClick": true,
+          "completionKey": "TAB",
+          "completionSupport": false
+        },
+        "colWidth": 12,
+        "editorMode": "ace/mode/markdown",
+        "fontSize": 9,
+        "editorHide": true,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "HTML",
+            "data": "<div class=\"markdown-body\">\n<h2>Test case 3</h2>\n<p>Run the following you should see,</p>\n<pre><code class=\"language-text\">(4,5)\n</code></pre>\n\n</div>"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1680669655226_1528476709",
+      "id": "paragraph_1604925149733_448385187",
+      "dateCreated": "2023-04-05T04:40:55+0000",
+      "status": "READY",
+      "$$hashKey": "object:206"
+    },
+    {
+      "text": "%pyspark\npoints = ((x,y) for x in range(0, 10) for y in range(1,11))\n\nmean(points)",
+      "user": "anonymous",
+      "dateUpdated": "2023-04-05T04:40:55+0000",
+      "progress": 0,
+      "config": {
+        "editorSetting": {
+          "language": "python",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "colWidth": 12,
+        "editorMode": "ace/mode/python",
+        "fontSize": 9,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "(4, 5)\n"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1680669655226_1777714822",
+      "id": "paragraph_1604925068845_2079747109",
+      "dateCreated": "2023-04-05T04:40:55+0000",
+      "status": "READY",
+      "$$hashKey": "object:207"
+    },
+    {
+      "text": "%md\n\n## Exercise 3.5\n **[CODE CHANGE REQUIRED]**\nComplete the following function which finds the nearest centroids for each points in the RDD.\n<style>\n    div.hidecode + pre {display: none}\n</style>\n<script>\ndoclick=function(e) {\n    e.nextSibling.nextSibling.style.display=\"block\";\n}\n</script>\n\n<div class=\"hidecode\" onclick=\"doclick(this);\">[Show Hint]</div>\n\n```text\nLet r1 and r2 be RDDs, r1.cartesion(r2) produces the cartesian product of r1 and r2. \nWhen finding the nearest centroid w.r.t to a point from a list of centroids, it is useful to think of it as a reduce operation.\n```\n",
+      "user": "anonymous",
+      "dateUpdated": "2023-04-05T04:40:55+0000",
+      "progress": 0,
+      "config": {
+        "tableHide": false,
+        "editorSetting": {
+          "language": "markdown",
+          "editOnDblClick": true,
+          "completionKey": "TAB",
+          "completionSupport": false
+        },
+        "colWidth": 12,
+        "editorMode": "ace/mode/markdown",
+        "fontSize": 9,
+        "editorHide": true,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "HTML",
+            "data": "<div class=\"markdown-body\">\n<h2>Exercise 3.5</h2>\n<p><strong>[CODE CHANGE REQUIRED]</strong><br />\nComplete the following function which finds the nearest centroids for each points in the RDD.</p>\n<style>\n    div.hidecode + pre {display: none}\n</style>\n<script>\ndoclick=function(e) {\n    e.nextSibling.nextSibling.style.display=\"block\";\n}\n</script>\n<div class=\"hidecode\" onclick=\"doclick(this);\">[Show Hint]</div>\n<pre><code class=\"language-text\">Let r1 and r2 be RDDs, r1.cartesion(r2) produces the cartesian product of r1 and r2. \nWhen finding the nearest centroid w.r.t to a point from a list of centroids, it is useful to think of it as a reduce operation.\n</code></pre>\n\n</div>"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1680669655226_641950468",
+      "id": "paragraph_1604925533567_2073844019",
+      "dateCreated": "2023-04-05T04:40:55+0000",
+      "status": "READY",
+      "$$hashKey": "object:208"
+    },
+    {
+      "text": "%pyspark\n\ndef nearest(points, centroids):\n    '''\n    inputs\n    points: an RDD of points\n    centroids: an RDD of the current centroids\n    \n    output:\n    point_and_nearestcentroids : an RDD of pairs, each pair consists of a point and the nearest centroid it belongs to\n    '''\n    # TODO\n    point_and_nearcentroids = None\n    return point_and_nearcentroids",
+      "user": "anonymous",
+      "dateUpdated": "2023-04-05T04:40:55+0000",
+      "progress": 0,
+      "config": {
+        "editorSetting": {
+          "language": "python",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "colWidth": 12,
+        "editorMode": "ace/mode/python",
+        "fontSize": 9,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": []
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1680669655226_1121456546",
+      "id": "paragraph_1604925587575_389377723",
+      "dateCreated": "2023-04-05T04:40:55+0000",
+      "status": "READY",
+      "$$hashKey": "object:209"
+    },
+    {
+      "text": "%md\n\n### Sample Answer\n\n```python\ndef nearest(points, centroids):\n    '''\n    inputs\n    points: an RDD of points\n    centroids: an RDD of the current centroids\n    \n    output:\n    point_and_nearestcentroids : an RDD of pairs, each pair consists of a point and the nearest centroid it belongs to\n    '''\n    # ANSWER\n    point_cross_centroids = points.cartesian(centroids)\n    point_cross_centroids_distance = point_cross_centroids.map(lambda pc: (pc[0],(pc[1],euc_dist(pc[0],pc[1]))))\n    point_and_nearcentroids = point_cross_centroids_distance.reduceByKey(lambda cd1, cd2:  cd1 if cd1[1] < cd2[1] else cd2 ).map(lambda pc: (pc[0], pc[1][0]))\n    return point_and_nearcentroids\n\n```\n",
+      "user": "anonymous",
+      "dateUpdated": "2023-04-05T04:40:55+0000",
+      "progress": 0,
+      "config": {
+        "editorSetting": {
+          "language": "markdown",
+          "editOnDblClick": true,
+          "completionKey": "TAB",
+          "completionSupport": false
+        },
+        "colWidth": 12,
+        "editorMode": "ace/mode/markdown",
+        "fontSize": 9,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "HTML",
+            "data": "<div class=\"markdown-body\">\n<h3>Sample Answer</h3>\n<pre><code class=\"language-python\">def nearest(points, centroids):\n    '''\n    inputs\n    points: an RDD of points\n    centroids: an RDD of the current centroids\n    \n    output:\n    point_and_nearestcentroids : an RDD of pairs, each pair consists of a point and the nearest centroid it belongs to\n    '''\n    # ANSWER\n    point_cross_centroids = points.cartesian(centroids)\n    point_cross_centroids_distance = point_cross_centroids.map(lambda pc: (pc[0],(pc[1],euc_dist(pc[0],pc[1]))))\n    point_and_nearcentroids = point_cross_centroids_distance.reduceByKey(lambda cd1, cd2:  cd1 if cd1[1] &lt; cd2[1] else cd2 ).map(lambda pc: (pc[0], pc[1][0]))\n    return point_and_nearcentroids\n\n</code></pre>\n\n</div>"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1680669655226_184806801",
+      "id": "paragraph_1635991495419_879609555",
+      "dateCreated": "2023-04-05T04:40:55+0000",
+      "status": "READY",
+      "$$hashKey": "object:210"
+    },
+    {
+      "text": "%md\n## Test Case 3.5\n\nRun the following you should see, (the actual numeric values might differ, but the structure should be the same)\n\n\n```text\n\n[((31.34, 39.54), (10.94, 64.76)), ((63.18, -54.98), (78.66, -91.58)), ((-96.53, 54.69), (-53.93, 76.38)), ((-89.91, 9.5), (-42.27, 24.16)), ((95.43, 57.26), (10.94, 64.76)), ((74.38, -61.52), (78.66, -91.58)), ((77.21, -69.08), (78.66, -91.58)), ((-84.04, -74.41), (11.81, -27.94)), ((7.44, 45.33), (10.94, 64.76)), ((30.63, 52.08), (10.94, 64.76))]\n```",
+      "user": "anonymous",
+      "dateUpdated": "2023-04-05T04:40:55+0000",
+      "progress": 0,
+      "config": {
+        "tableHide": false,
+        "editorSetting": {
+          "language": "markdown",
+          "editOnDblClick": true,
+          "completionKey": "TAB",
+          "completionSupport": false
+        },
+        "colWidth": 12,
+        "editorMode": "ace/mode/markdown",
+        "fontSize": 9,
+        "editorHide": true,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "HTML",
+            "data": "<div class=\"markdown-body\">\n<h2>Test Case 3.5</h2>\n<p>Run the following you should see, (the actual numeric values might differ, but the structure should be the same)</p>\n<pre><code class=\"language-text\">\n[((31.34, 39.54), (10.94, 64.76)), ((63.18, -54.98), (78.66, -91.58)), ((-96.53, 54.69), (-53.93, 76.38)), ((-89.91, 9.5), (-42.27, 24.16)), ((95.43, 57.26), (10.94, 64.76)), ((74.38, -61.52), (78.66, -91.58)), ((77.21, -69.08), (78.66, -91.58)), ((-84.04, -74.41), (11.81, -27.94)), ((7.44, 45.33), (10.94, 64.76)), ((30.63, 52.08), (10.94, 64.76))]\n</code></pre>\n\n</div>"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1680669655226_741869697",
+      "id": "paragraph_1604925635506_94905254",
+      "dateCreated": "2023-04-05T04:40:55+0000",
+      "status": "READY",
+      "$$hashKey": "object:211"
+    },
+    {
+      "text": "%pyspark\n\npoints = load_points_into_rdd(namenode, \"/lab12/ex3/input/points\")\ncentroids = load_points_into_rdd(namenode, \"/lab12/ex3/input/centroids\")\n\nnearest(points, centroids).take(10)",
+      "user": "anonymous",
+      "dateUpdated": "2023-04-05T04:40:55+0000",
+      "progress": 0,
+      "config": {
+        "editorSetting": {
+          "language": "python",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "colWidth": 12,
+        "editorMode": "ace/mode/python",
+        "fontSize": 9,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "[((-96.04, -16.67), (-91.26, -5.24)), ((-63.18, -26.83), (-58.81, -3.79)), ((46.68, 33.93), (52.75, 52.47)), ((28.03, 66.32), (52.75, 52.47)), ((28.22, 26.38), (16.24, 1.49)), ((-0.73, -91.22), (7.72, -63.54)), ((60.02, 40.83), (52.75, 52.47)), ((5.57, 31.52), (16.24, 1.49)), ((31.6, 8.94), (16.24, 1.49)), ((-51.85, -48.72), (-58.81, -3.79))]\n"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1680669655226_1229870289",
+      "id": "paragraph_1604925653513_1532948632",
+      "dateCreated": "2023-04-05T04:40:55+0000",
+      "status": "READY",
+      "$$hashKey": "object:212"
+    },
+    {
+      "text": "%md\n\n## Exercise 3.6\n\n **[CODE CHANGE REQUIRED]**\n\nComplete the following function which executes one iteration of the K-Means algorithm.\n\n<style>\n    div.hidecode + pre {display: none}\n</style>\n<script>\ndoclick=function(e) {\n    e.nextSibling.nextSibling.style.display=\"block\";\n}\n</script>\n\n<div class=\"hidecode\" onclick=\"doclick(this);\">[Show Hint]</div>\n\n```text\nRecall the difference between reduceByKey and groupByKey\n```",
+      "user": "anonymous",
+      "dateUpdated": "2023-04-05T04:40:55+0000",
+      "progress": 0,
+      "config": {
+        "tableHide": false,
+        "editorSetting": {
+          "language": "markdown",
+          "editOnDblClick": true,
+          "completionKey": "TAB",
+          "completionSupport": false
+        },
+        "colWidth": 12,
+        "editorMode": "ace/mode/markdown",
+        "fontSize": 9,
+        "editorHide": true,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "HTML",
+            "data": "<div class=\"markdown-body\">\n<h2>Exercise 3.6</h2>\n<p><strong>[CODE CHANGE REQUIRED]</strong></p>\n<p>Complete the following function which executes one iteration of the K-Means algorithm.</p>\n<style>\n    div.hidecode + pre {display: none}\n</style>\n<script>\ndoclick=function(e) {\n    e.nextSibling.nextSibling.style.display=\"block\";\n}\n</script>\n<div class=\"hidecode\" onclick=\"doclick(this);\">[Show Hint]</div>\n<pre><code class=\"language-text\">Recall the difference between reduceByKey and groupByKey\n</code></pre>\n\n</div>"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1680669655226_663316044",
+      "id": "paragraph_1604925769574_1522232337",
+      "dateCreated": "2023-04-05T04:40:55+0000",
+      "status": "READY",
+      "$$hashKey": "object:213"
+    },
+    {
+      "text": "%pyspark\n\n    \ndef iteration(points, centroids):\n    '''\n    inputs\n    points: an RDD of points\n    centroids: an RDD of the current centroids\n    \n    output\n    current_and_new_centroids: an RDD of pairs, each pair consists of a current centroid and the new centroid\n    '''\n    # Step a: for each point, compute the euclidean_dinstance with each centroid, find the nearest centroid\n    point_and_nearcentroids = nearest(points, centroids)\n    # Step b: flip the pairs from step b, and create an RDD of nearest centroid and points (note: the nearest centroids are still the current centroids)\n    # TODO\n    nearcentroid_and_points = None\n    # Step c: compute the new centroids\n    # TODO\n    current_and_newcentroids = None\n    return current_and_newcentroids\n    \n\n    ",
+      "user": "anonymous",
+      "dateUpdated": "2023-04-05T04:40:55+0000",
+      "progress": 0,
+      "config": {
+        "editorSetting": {
+          "language": "python",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "colWidth": 12,
+        "editorMode": "ace/mode/python",
+        "fontSize": 9,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": []
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1680669655226_385643166",
+      "id": "paragraph_1604471832429_328831829",
+      "dateCreated": "2023-04-05T04:40:55+0000",
+      "status": "READY",
+      "$$hashKey": "object:214"
+    },
+    {
+      "text": "%md\n\n### Sample answer\n\n<style>\n    div.hidecode + pre {display: none}\n</style>\n<script>\ndoclick=function(e) {\n    e.nextSibling.nextSibling.style.display=\"block\";\n}\n</script>\n\n<div class=\"hidecode\" onclick=\"doclick(this);\">[Show Hint]</div>\n\n\n```python\ndef iteration(points, centroids):\n    '''\n    inputs\n    points: an RDD of points\n    centroids: an RDD of the current centroids\n    \n    output\n    current_and_new_centroids: an RDD of pairs, each pair consists of a current centroid and the new centroid\n    '''\n    # Step a: for each point, compute the euclidean_dinstance with each centroid, find the nearest centroid\n    point_and_nearcentroids = nearest(points, centroids)\n    # Step b: flip the pairs from step b, and create an RDD of nearest centroid and points (note: the nearest centroids are still the current centroids)\n    nearcentroid_and_points = point_and_nearcentroids.map(lambda p: (p[1], p[0]))\n    # Step c: compute the new centroids\n    current_and_newcentroids = nearcentroid_and_points.groupByKey().map(lambda kvs: (kvs[0], mean(kvs[1])))\n    return current_and_newcentroids\n\n\n```\n",
+      "user": "anonymous",
+      "dateUpdated": "2023-04-05T04:40:55+0000",
+      "progress": 0,
+      "config": {
+        "editorSetting": {
+          "language": "markdown",
+          "editOnDblClick": true,
+          "completionKey": "TAB",
+          "completionSupport": false
+        },
+        "colWidth": 12,
+        "editorMode": "ace/mode/markdown",
+        "fontSize": 9,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "HTML",
+            "data": "<div class=\"markdown-body\">\n<h3>Sample answer</h3>\n<style>\n    div.hidecode + pre {display: none}\n</style>\n<script>\ndoclick=function(e) {\n    e.nextSibling.nextSibling.style.display=\"block\";\n}\n</script>\n<div class=\"hidecode\" onclick=\"doclick(this);\">[Show Hint]</div>\n<pre><code class=\"language-python\">def iteration(points, centroids):\n    '''\n    inputs\n    points: an RDD of points\n    centroids: an RDD of the current centroids\n    \n    output\n    current_and_new_centroids: an RDD of pairs, each pair consists of a current centroid and the new centroid\n    '''\n    # Step a: for each point, compute the euclidean_dinstance with each centroid, find the nearest centroid\n    point_and_nearcentroids = nearest(points, centroids)\n    # Step b: flip the pairs from step b, and create an RDD of nearest centroid and points (note: the nearest centroids are still the current centroids)\n    nearcentroid_and_points = point_and_nearcentroids.map(lambda p: (p[1], p[0]))\n    # Step c: compute the new centroids\n    current_and_newcentroids = nearcentroid_and_points.groupByKey().map(lambda kvs: (kvs[0], mean(kvs[1])))\n    return current_and_newcentroids\n\n\n</code></pre>\n\n</div>"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1680669655226_1379562492",
+      "id": "paragraph_1635991649092_805865637",
+      "dateCreated": "2023-04-05T04:40:55+0000",
+      "status": "READY",
+      "$$hashKey": "object:215"
+    },
+    {
+      "text": "%md\n\n## Test case 3.6\n\nRun the following you should see, (the actual numeric values might differ, but the structure should be the same)\n\n```text\n[((-42.27, 24.16), (-63.50617346938779, -4.715561224489797)), ((34.19, -5.47), (65.24037313432835, 4.253208955223882)), ((73.78, -94.16), (43.22766666666668, -84.53166666666665)), ((78.66, -91.58), (83.09037735849053, -62.727924528301884)), ((11.81, -27.94), (-18.85223809523809, -62.081285714285706)), ((-55.65, 97.37), (-42.820499999999996, 94.566)), ((11.1, 2.86), (8.047450980392156, 10.851764705882351)), ((10.94, 64.76), (38.894331550802164, 69.78598930481279)), ((-68.4, 93.57), (-83.12192307692308, 83.44)), ((-53.93, 76.38), (-56.9511111111111, 63.98825396825399))]\n```",
+      "user": "anonymous",
+      "dateUpdated": "2023-04-05T04:40:55+0000",
+      "progress": 0,
+      "config": {
+        "tableHide": false,
+        "editorSetting": {
+          "language": "markdown",
+          "editOnDblClick": true,
+          "completionKey": "TAB",
+          "completionSupport": false
+        },
+        "colWidth": 12,
+        "editorMode": "ace/mode/markdown",
+        "fontSize": 9,
+        "editorHide": true,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "HTML",
+            "data": "<div class=\"markdown-body\">\n<h2>Test case 3.6</h2>\n<p>Run the following you should see, (the actual numeric values might differ, but the structure should be the same)</p>\n<pre><code class=\"language-text\">[((-42.27, 24.16), (-63.50617346938779, -4.715561224489797)), ((34.19, -5.47), (65.24037313432835, 4.253208955223882)), ((73.78, -94.16), (43.22766666666668, -84.53166666666665)), ((78.66, -91.58), (83.09037735849053, -62.727924528301884)), ((11.81, -27.94), (-18.85223809523809, -62.081285714285706)), ((-55.65, 97.37), (-42.820499999999996, 94.566)), ((11.1, 2.86), (8.047450980392156, 10.851764705882351)), ((10.94, 64.76), (38.894331550802164, 69.78598930481279)), ((-68.4, 93.57), (-83.12192307692308, 83.44)), ((-53.93, 76.38), (-56.9511111111111, 63.98825396825399))]\n</code></pre>\n\n</div>"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1680669655226_544081252",
+      "id": "paragraph_1604926520939_372587766",
+      "dateCreated": "2023-04-05T04:40:55+0000",
+      "status": "READY",
+      "$$hashKey": "object:216"
+    },
+    {
+      "text": "%pyspark\n\npoints = load_points_into_rdd(namenode, \"/lab12/ex3/input/points/\")\ncentroids = load_points_into_rdd(namenode, \"/lab12/ex3/input/centroids\")\nr = iteration(points,centroids)\nr.take(10)",
+      "user": "anonymous",
+      "dateUpdated": "2023-04-05T04:40:55+0000",
+      "progress": 0,
+      "config": {
+        "editorSetting": {
+          "language": "python",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "colWidth": 12,
+        "editorMode": "ace/mode/python",
+        "fontSize": 9,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "[((-58.81, -3.79), (-50.26375000000002, -25.71312499999999)), ((73.5, -61.37), (70.93567164179106, -58.58104477611941)), ((16.24, 1.49), (15.604044117647064, 2.3513235294117654)), ((-79.93, 23.48), (-79.51918918918919, 33.3045945945946)), ((92.58, 32.65), (82.45016129032257, 23.021451612903228)), ((-41.61, 51.75), (-30.84777777777779, 58.74230158730158)), ((-88.67, 76.11), (-78.9824, 80.43560000000002)), ((52.75, 52.47), (49.55086956521739, 64.11065217391304)), ((-91.26, -5.24), (-86.02938461538459, -50.81969230769231)), ((7.72, -63.54), (-10.341538461538462, -66.59961538461538))]\n"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1680669655226_1754561354",
+      "id": "paragraph_1604473598116_1344787227",
+      "dateCreated": "2023-04-05T04:40:55+0000",
+      "status": "READY",
+      "$$hashKey": "object:217"
+    },
+    {
+      "text": "%md \n\n## KMeans \n\nTo define KMeans, we just need two more actions, \n\n1. `forAll(rdd,p)` which checks whether all elements in `rdd` satisfy the predicate `p`.\n2. `no_change(no_change(centroid_and_newcentroids,tolerance)` which applies a conditional check to all pairs of current and new centroids. It yields True if none of the new centroids is `None`, and the euclidean distances between the currents and new centroids are less than the tolerance.\n\n\n",
+      "user": "anonymous",
+      "dateUpdated": "2023-04-05T04:40:55+0000",
+      "progress": 0,
+      "config": {
+        "tableHide": false,
+        "editorSetting": {
+          "language": "markdown",
+          "editOnDblClick": true,
+          "completionKey": "TAB",
+          "completionSupport": false
+        },
+        "colWidth": 12,
+        "editorMode": "ace/mode/markdown",
+        "fontSize": 9,
+        "editorHide": true,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "HTML",
+            "data": "<div class=\"markdown-body\">\n<h2>KMeans</h2>\n<p>To define KMeans, we just need two more actions,</p>\n<ol>\n<li><code>forAll(rdd,p)</code> which checks whether all elements in <code>rdd</code> satisfy the predicate <code>p</code>.</li>\n<li><code>no_change(no_change(centroid_and_newcentroids,tolerance)</code> which applies a conditional check to all pairs of current and new centroids. It yields True if none of the new centroids is <code>None</code>, and the euclidean distances between the currents and new centroids are less than the tolerance.</li>\n</ol>\n\n</div>"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1680669655226_479736028",
+      "id": "paragraph_1604926615117_703818171",
+      "dateCreated": "2023-04-05T04:40:55+0000",
+      "status": "READY",
+      "$$hashKey": "object:218"
+    },
+    {
+      "text": "%md\n### Exercise 3.7\n\nComplete the `forAll` function. You don't need to change `no_change` function. \n\n **[CODE CHANGE REQUIRED]**\n\nComplete the following function which executes one iteration of the K-Means algorithm.\n\n<style>\n    div.hidecode + pre {display: none}\n</style>\n<script>\ndoclick=function(e) {\n    e.nextSibling.nextSibling.style.display=\"block\";\n}\n</script>\n\n<div class=\"hidecode\" onclick=\"doclick(this);\">[Show Hint]</div>\n\n```text\nYou can implement it using \n1. the aggregate function or\n2. map and reduce functions.\n```",
+      "user": "anonymous",
+      "dateUpdated": "2023-04-05T04:40:55+0000",
+      "progress": 0,
+      "config": {
+        "tableHide": false,
+        "editorSetting": {
+          "language": "markdown",
+          "editOnDblClick": true,
+          "completionKey": "TAB",
+          "completionSupport": false
+        },
+        "colWidth": 12,
+        "editorMode": "ace/mode/markdown",
+        "fontSize": 9,
+        "editorHide": true,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "HTML",
+            "data": "<div class=\"markdown-body\">\n<h3>Exercise 3.7</h3>\n<p>Complete the <code>forAll</code> function. You don&rsquo;t need to change <code>no_change</code> function.</p>\n<p><strong>[CODE CHANGE REQUIRED]</strong></p>\n<p>Complete the following function which executes one iteration of the K-Means algorithm.</p>\n<style>\n    div.hidecode + pre {display: none}\n</style>\n<script>\ndoclick=function(e) {\n    e.nextSibling.nextSibling.style.display=\"block\";\n}\n</script>\n<div class=\"hidecode\" onclick=\"doclick(this);\">[Show Hint]</div>\n<pre><code class=\"language-text\">You can implement it using \n1. the aggregate function or\n2. map and reduce functions.\n</code></pre>\n\n</div>"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1680669655226_156305928",
+      "id": "paragraph_1605242726423_664724582",
+      "dateCreated": "2023-04-05T04:40:55+0000",
+      "status": "READY",
+      "$$hashKey": "object:219"
+    },
+    {
+      "text": "%pyspark\n\ndef forAll(rdd, p):\n    '''\n    input:\n    rdd : an RDD\n    p : a predicate, a lambda function that takes a value and return a boolean. p will be applied to all elements in rdd\n    \n    output:\n    True or False\n    '''\n    # TODO:\n    return False\n\n\ndef no_change(centroid_and_newcentroids,tolerance):\n    return forAll(centroid_and_newcentroids, lambda p:  p[1] is not None and euc_dist(p[0], p[1]) < tolerance)\n",
+      "user": "anonymous",
+      "dateUpdated": "2023-04-05T04:40:55+0000",
+      "progress": 0,
+      "config": {
+        "editorSetting": {
+          "language": "python",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "colWidth": 12,
+        "editorMode": "ace/mode/python",
+        "fontSize": 9,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": []
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1680669655227_1751734166",
+      "id": "paragraph_1605242543775_1217462354",
+      "dateCreated": "2023-04-05T04:40:55+0000",
+      "status": "READY",
+      "$$hashKey": "object:220"
+    },
+    {
+      "text": "%md\n\n### Sample answer\n\n<style>\n    div.hidecode + pre {display: none}\n</style>\n<script>\ndoclick=function(e) {\n    e.nextSibling.nextSibling.style.display=\"block\";\n}\n</script>\n\n<div class=\"hidecode\" onclick=\"doclick(this);\">[Show Hint]</div>\n\n\n```python\ndef forAll(rdd, p):\n    '''\n    input:\n    rdd : an RDD\n    p : a predicate, a lambda function that takes a value and return a boolean. p will be applied to all elements in rdd\n    \n    output:\n    True or False\n    '''\n    # ANSWER\n    return rdd.map(p).reduce(lambda x,y: x and y)\n\n```\n",
+      "user": "anonymous",
+      "dateUpdated": "2023-04-05T04:40:55+0000",
+      "progress": 0,
+      "config": {
+        "editorSetting": {
+          "language": "markdown",
+          "editOnDblClick": true,
+          "completionKey": "TAB",
+          "completionSupport": false
+        },
+        "colWidth": 12,
+        "editorMode": "ace/mode/markdown",
+        "fontSize": 9,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "HTML",
+            "data": "<div class=\"markdown-body\">\n<h3>Sample answer</h3>\n<style>\n    div.hidecode + pre {display: none}\n</style>\n<script>\ndoclick=function(e) {\n    e.nextSibling.nextSibling.style.display=\"block\";\n}\n</script>\n<div class=\"hidecode\" onclick=\"doclick(this);\">[Show Hint]</div>\n<pre><code class=\"language-python\">def forAll(rdd, p):\n    '''\n    input:\n    rdd : an RDD\n    p : a predicate, a lambda function that takes a value and return a boolean. p will be applied to all elements in rdd\n    \n    output:\n    True or False\n    '''\n    # ANSWER\n    return rdd.map(p).reduce(lambda x,y: x and y)\n\n</code></pre>\n\n</div>"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1680669655227_505776521",
+      "id": "paragraph_1635991751996_443868909",
+      "dateCreated": "2023-04-05T04:40:55+0000",
+      "status": "READY",
+      "$$hashKey": "object:221"
+    },
+    {
+      "text": "%md\n\n### Test Case 3.7\n\nRun the following, we should see `True`\n",
+      "user": "anonymous",
+      "dateUpdated": "2023-04-05T04:40:55+0000",
+      "progress": 0,
+      "config": {
+        "tableHide": false,
+        "editorSetting": {
+          "language": "markdown",
+          "editOnDblClick": true,
+          "completionKey": "TAB",
+          "completionSupport": false
+        },
+        "colWidth": 12,
+        "editorMode": "ace/mode/markdown",
+        "fontSize": 9,
+        "editorHide": true,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "HTML",
+            "data": "<div class=\"markdown-body\">\n<h3>Test Case 3.7</h3>\n<p>Run the following, we should see <code>True</code></p>\n\n</div>"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1680669655227_950032572",
+      "id": "paragraph_1605242853968_1069644759",
+      "dateCreated": "2023-04-05T04:40:55+0000",
+      "status": "READY",
+      "$$hashKey": "object:222"
+    },
+    {
+      "text": "%pyspark\n\ntest_vs = sc.parallelize([2,4,0,6])\nforAll(test_vs ,lambda x:x % 2 == 0)",
+      "user": "anonymous",
+      "dateUpdated": "2023-04-05T04:40:55+0000",
+      "progress": 0,
+      "config": {
+        "editorSetting": {
+          "language": "python",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "colWidth": 12,
+        "editorMode": "ace/mode/python",
+        "fontSize": 9,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "True\n"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1680669655227_1652071244",
+      "id": "paragraph_1605242844186_723030809",
+      "dateCreated": "2023-04-05T04:40:55+0000",
+      "status": "READY",
+      "$$hashKey": "object:223"
+    },
+    {
+      "text": "%md\nLastly, the `kmeans` function is defined by a for-loop in which \n\n1. we call `iteration` to compute the new centroids, \n2. then check whether there is any change between the current and new centroids via `no_change`. \n    2.1. If there is changes, it goes back to the loop by sending the new centroids to be current centroids, \n    2.2. otherwise it exits the loop and compute the membership between the points and the lastest centroids.\n\nNote the use of `.persist()`. try to re-run it again by commenting away the statements using `.persist()`, it will take a longer time to converge.\n\nThe code is written for you, you don't need to change anything unless you want to experiement with `.persist()` and without.",
+      "user": "anonymous",
+      "dateUpdated": "2023-04-05T04:40:55+0000",
+      "progress": 0,
+      "config": {
+        "tableHide": false,
+        "editorSetting": {
+          "language": "markdown",
+          "editOnDblClick": true,
+          "completionKey": "TAB",
+          "completionSupport": false
+        },
+        "colWidth": 12,
+        "editorMode": "ace/mode/markdown",
+        "fontSize": 9,
+        "editorHide": true,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "HTML",
+            "data": "<div class=\"markdown-body\">\n<p>Lastly, the <code>kmeans</code> function is defined by a for-loop in which</p>\n<ol>\n<li>we call <code>iteration</code> to compute the new centroids,</li>\n<li>then check whether there is any change between the current and new centroids via <code>no_change</code>.<br />\n2.1. If there is changes, it goes back to the loop by sending the new centroids to be current centroids,<br />\n2.2. otherwise it exits the loop and compute the membership between the points and the lastest centroids.</li>\n</ol>\n<p>Note the use of <code>.persist()</code>. try to re-run it again by commenting away the statements using <code>.persist()</code>, it will take a longer time to converge.</p>\n<p>The code is written for you, you don&rsquo;t need to change anything unless you want to experiement with <code>.persist()</code> and without.</p>\n\n</div>"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1680669655227_32790253",
+      "id": "paragraph_1605242521609_40258181",
+      "dateCreated": "2023-04-05T04:40:55+0000",
+      "status": "READY",
+      "$$hashKey": "object:224"
+    },
+    {
+      "text": "%pyspark\n\n\ndef kmeans(points, centroids, num_iters, tolerance=2):\n    points.persist()\n    for i in range(0, num_iters):\n        centroid_and_newcentroids = iteration(points,centroids)\n        if no_change(centroid_and_newcentroids,tolerance):\n            break;\n        centroids = centroid_and_newcentroids.map(lambda p:p[1]).filter(lambda c: c is not None)\n        centroids.persist()\n        # print(i,centroids.collect())\n    \n    return nearest(points, centroids)\n    \n    \n        ",
+      "user": "anonymous",
+      "dateUpdated": "2023-04-05T04:40:55+0000",
+      "progress": 0,
+      "config": {
+        "editorSetting": {
+          "language": "python",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "colWidth": 12,
+        "editorMode": "ace/mode/python",
+        "fontSize": 9,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": []
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1680669655227_1051005676",
+      "id": "paragraph_1604542167306_468497878",
+      "dateCreated": "2023-04-05T04:40:55+0000",
+      "status": "READY",
+      "$$hashKey": "object:225"
+    },
+    {
+      "text": "%pyspark\n\npoints = load_points_into_rdd(namenode, \"/lab12/ex3/input/points/\")\ncentroids = load_points_into_rdd(namenode, \"/lab12/ex3/input/centroids\")\n\nclusters = kmeans(points, centroids, 100, 2)\n\nclusters.take(100)",
+      "user": "anonymous",
+      "dateUpdated": "2023-04-05T04:40:55+0000",
+      "progress": 0,
+      "config": {
+        "editorSetting": {
+          "language": "python",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "colWidth": 12,
+        "editorMode": "ace/mode/python",
+        "fontSize": 9,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "[((41.26, -61.14), (66.40033898305084, -67.21677966101696)), ((-47.09, -54.24), (-65.36224999999996, -67.61274999999999)), ((29.17, 66.61), (62.00221311475408, 64.63909836065572)), ((24.08, 2.63), (11.867966101694915, -0.22499999999999984)), ((-1.04, -11.59), (11.867966101694915, -0.22499999999999984)), ((-72.31, -24.43), (-48.517058823529396, -18.18117647058823)), ((91.37, -19.11), (73.19760869565215, 0.1807608695652171)), ((86.65, 30.6), (73.19760869565215, 0.1807608695652171)), ((-90.51, 48.53), (-69.44909090909094, 36.65102272727272)), ((-42.74, -26.69), (-48.517058823529396, -18.18117647058823)), ((-49.49, -22.69), (-48.517058823529396, -18.18117647058823)), ((53.63, -5.73), (73.19760869565215, 0.1807608695652171)), ((-15.17, 92.4), (-10.155689655172411, 61.510689655172435)), ((-53.43, 34.2), (-69.44909090909094, 36.65102272727272)), ((96.79, -92.6), (66.40033898305084, -67.21677966101696)), ((-27.78, 75.57), (-10.155689655172411, 61.510689655172435)), ((89.22, -95.13), (66.40033898305084, -67.21677966101696)), ((84.22, -53.69), (66.40033898305084, -67.21677966101696)), ((-62.09, 46.81), (-69.44909090909094, 36.65102272727272)), ((56.45, 52.33), (62.00221311475408, 64.63909836065572)), ((-96.56, 67.18), (-73.22903846153847, 83.47750000000002)), ((-34.53, 75.43), (-10.155689655172411, 61.510689655172435)), ((76.89, -42.82), (66.40033898305084, -67.21677966101696)), ((-50.0, -31.78), (-48.517058823529396, -18.18117647058823)), ((67.63, 58.84), (62.00221311475408, 64.63909836065572)), ((67.6, -43.5), (66.40033898305084, -67.21677966101696)), ((-24.33, 76.45), (-10.155689655172411, 61.510689655172435)), ((89.82, -42.1), (66.40033898305084, -67.21677966101696)), ((-24.78, 38.63), (-10.155689655172411, 61.510689655172435)), ((84.49, -33.76), (73.19760869565215, 0.1807608695652171)), ((-62.62, -11.0), (-48.517058823529396, -18.18117647058823)), ((-9.22, 96.87), (-10.155689655172411, 61.510689655172435)), ((34.96, -21.06), (11.867966101694915, -0.22499999999999984)), ((99.77, -4.39), (73.19760869565215, 0.1807608695652171)), ((67.34, 56.56), (62.00221311475408, 64.63909836065572)), ((20.1, -59.44), (3.3662921348314607, -64.58516853932584)), ((-37.12, 55.13), (-10.155689655172411, 61.510689655172435)), ((-31.81, 44.13), (-10.155689655172411, 61.510689655172435)), ((-87.68, 74.04), (-73.22903846153847, 83.47750000000002)), ((-60.27, -57.1), (-65.36224999999996, -67.61274999999999)), ((0.98, -79.59), (3.3662921348314607, -64.58516853932584)), ((-79.56, 10.2), (-69.44909090909094, 36.65102272727272)), ((27.43, -87.84), (3.3662921348314607, -64.58516853932584)), ((-98.85, 81.3), (-73.22903846153847, 83.47750000000002)), ((-84.86, -44.43), (-65.36224999999996, -67.61274999999999)), ((46.68, 33.93), (62.00221311475408, 64.63909836065572)), ((14.38, 66.89), (-10.155689655172411, 61.510689655172435)), ((40.07, -98.96), (66.40033898305084, -67.21677966101696)), ((-57.81, -82.17), (-65.36224999999996, -67.61274999999999)), ((44.6, -37.29), (66.40033898305084, -67.21677966101696)), ((-39.06, -58.52), (-65.36224999999996, -67.61274999999999)), ((58.78, 25.63), (73.19760869565215, 0.1807608695652171)), ((50.34, -93.76), (66.40033898305084, -67.21677966101696)), ((16.63, -47.35), (3.3662921348314607, -64.58516853932584)), ((-61.8, -42.52), (-65.36224999999996, -67.61274999999999)), ((95.32, -25.08), (73.19760869565215, 0.1807608695652171)), ((-62.91, 69.32), (-73.22903846153847, 83.47750000000002)), ((25.4, 30.12), (11.867966101694915, -0.22499999999999984)), ((-78.56, -26.99), (-48.517058823529396, -18.18117647058823)), ((15.34, -38.89), (3.3662921348314607, -64.58516853932584)), ((-69.82, -78.08), (-65.36224999999996, -67.61274999999999)), ((52.73, -60.26), (66.40033898305084, -67.21677966101696)), ((11.62, -31.88), (11.867966101694915, -0.22499999999999984)), ((14.05, 39.38), (-10.155689655172411, 61.510689655172435)), ((49.99, -73.05), (66.40033898305084, -67.21677966101696)), ((39.37, -58.2), (66.40033898305084, -67.21677966101696)), ((-60.93, -2.61), (-48.517058823529396, -18.18117647058823)), ((-75.11, -13.69), (-48.517058823529396, -18.18117647058823)), ((-98.64, 11.89), (-69.44909090909094, 36.65102272727272)), ((-43.43, -55.73), (-65.36224999999996, -67.61274999999999)), ((5.96, 14.62), (11.867966101694915, -0.22499999999999984)), ((-7.83, -30.46), (3.3662921348314607, -64.58516853932584)), ((-67.2, 94.0), (-73.22903846153847, 83.47750000000002)), ((-81.82, -72.92), (-65.36224999999996, -67.61274999999999)), ((77.57, -11.05), (73.19760869565215, 0.1807608695652171)), ((87.32, -21.35), (73.19760869565215, 0.1807608695652171)), ((21.02, -81.63), (3.3662921348314607, -64.58516853932584)), ((84.08, -59.16), (66.40033898305084, -67.21677966101696)), ((67.95, 79.93), (62.00221311475408, 64.63909836065572)), ((83.0, -89.65), (66.40033898305084, -67.21677966101696)), ((20.8, 21.92), (11.867966101694915, -0.22499999999999984)), ((10.4, 35.34), (-10.155689655172411, 61.510689655172435)), ((-89.59, 32.33), (-69.44909090909094, 36.65102272727272)), ((-18.35, -0.99), (11.867966101694915, -0.22499999999999984)), ((-93.84, 96.41), (-73.22903846153847, 83.47750000000002)), ((49.26, -71.05), (66.40033898305084, -67.21677966101696)), ((-33.3, 11.52), (-48.517058823529396, -18.18117647058823)), ((66.08, -49.14), (66.40033898305084, -67.21677966101696)), ((0.24, 53.92), (-10.155689655172411, 61.510689655172435)), ((-71.15, -75.7), (-65.36224999999996, -67.61274999999999)), ((-69.9, -67.45), (-65.36224999999996, -67.61274999999999)), ((-16.87, -46.45), (3.3662921348314607, -64.58516853932584)), ((37.35, -7.62), (11.867966101694915, -0.22499999999999984)), ((47.81, 7.63), (73.19760869565215, 0.1807608695652171)), ((67.12, 97.83), (62.00221311475408, 64.63909836065572)), ((5.57, 31.52), (11.867966101694915, -0.22499999999999984)), ((85.06, -68.14), (66.40033898305084, -67.21677966101696)), ((41.38, 71.51), (62.00221311475408, 64.63909836065572)), ((65.66, -41.2), (66.40033898305084, -67.21677966101696)), ((-32.58, 66.9), (-10.155689655172411, 61.510689655172435))]\n"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1680669655227_787264410",
+      "id": "paragraph_1604926949574_943969476",
+      "dateCreated": "2023-04-05T04:40:55+0000",
+      "status": "READY",
+      "$$hashKey": "object:226"
+    },
+    {
+      "text": "%md\n\n## modify and run the following to clean up the HDFS\n\n **[CODE CHANGE REQUIRED]**",
+      "user": "anonymous",
+      "dateUpdated": "2023-04-05T04:40:55+0000",
+      "progress": 0,
+      "config": {
+        "tableHide": false,
+        "editorSetting": {
+          "language": "markdown",
+          "editOnDblClick": true,
+          "completionKey": "TAB",
+          "completionSupport": false
+        },
+        "colWidth": 12,
+        "editorMode": "ace/mode/markdown",
+        "fontSize": 9,
+        "editorHide": true,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "HTML",
+            "data": "<div class=\"markdown-body\">\n<h2>modify and run the following to clean up the HDFS</h2>\n<p><strong>[CODE CHANGE REQUIRED]</strong></p>\n\n</div>"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1680669655227_536365362",
+      "id": "paragraph_1604303996114_657466269",
+      "dateCreated": "2023-04-05T04:40:55+0000",
+      "status": "READY",
+      "$$hashKey": "object:227"
+    },
+    {
+      "text": "%sh\nexport PATH=$PATH:/home/ec2-user/hadoop/bin/\n\nnamenode=ip-172-31-86-18 # TODO:change me\n\nhdfs dfs -rm -r hdfs://$namenode:9000/lab12/ex3/",
+      "user": "anonymous",
+      "dateUpdated": "2023-04-05T04:40:55+0000",
+      "progress": 0,
+      "config": {
+        "editorSetting": {
+          "language": "sh",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": false
+        },
+        "colWidth": 12,
+        "editorMode": "ace/mode/sh",
+        "fontSize": 9,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "20/11/13 13:29:12 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable\nDeleted /lab13/ex3\n"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1680669655227_1569430473",
+      "id": "paragraph_1604303850030_1635476743",
+      "dateCreated": "2023-04-05T04:40:55+0000",
+      "status": "READY",
+      "$$hashKey": "object:228"
+    },
+    {
+      "text": "%pyspark\nsc.stop()",
+      "user": "anonymous",
+      "dateUpdated": "2023-04-05T04:40:55+0000",
+      "progress": 0,
+      "config": {
+        "editorSetting": {
+          "language": "python",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "colWidth": 12,
+        "editorMode": "ace/mode/python",
+        "fontSize": 9,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": []
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1680669655227_1498934599",
+      "id": "paragraph_1604471450955_336932916",
+      "dateCreated": "2023-04-05T04:40:55+0000",
+      "status": "READY",
+      "$$hashKey": "object:229"
+    },
+    {
+      "text": "%md\n\n# End of Exercise 3\n",
+      "user": "anonymous",
+      "dateUpdated": "2023-04-05T04:40:55+0000",
+      "progress": 0,
+      "config": {
+        "editorSetting": {
+          "language": "markdown",
+          "editOnDblClick": true,
+          "completionKey": "TAB",
+          "completionSupport": false
+        },
+        "colWidth": 12,
+        "editorMode": "ace/mode/markdown",
+        "fontSize": 9,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "HTML",
+            "data": "<div class=\"markdown-body\">\n<h1>End of Exercise 3</h1>\n\n</div>"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1680669655227_462761843",
+      "id": "paragraph_1605245366868_1675704294",
+      "dateCreated": "2023-04-05T04:40:55+0000",
+      "status": "READY",
+      "$$hashKey": "object:230"
+    },
+    {
+      "text": "%md\n",
+      "user": "anonymous",
+      "dateUpdated": "2023-04-05T04:40:55+0000",
+      "progress": 0,
+      "config": {
+        "colWidth": 12,
+        "fontSize": 9,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1680669655227_994416195",
+      "id": "paragraph_1635991915030_1878218514",
+      "dateCreated": "2023-04-05T04:40:55+0000",
+      "status": "READY",
+      "$$hashKey": "object:231"
+    }
+  ],
+  "name": "Exercise3",
+  "id": "2HVS78RNQ",
+  "defaultInterpreterGroup": "spark",
+  "version": "0.9.0",
+  "noteParams": {},
+  "noteForms": {},
+  "angularObjects": {},
+  "config": {
+    "isZeppelinNotebookCronEnable": false,
+    "looknfeel": "default",
+    "personalizedMode": "false"
+  },
+  "info": {},
+  "path": "/Exercise3"
+}

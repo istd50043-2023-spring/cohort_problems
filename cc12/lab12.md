@@ -113,6 +113,7 @@ $ ssh -i ~/.ssh/ec2lab.pem -L 9090:127.0.0.1:9090 ec2-user@<public_ip_of_zepplin
 ```
 Then navigate to `http://127.0.0.1:9090/`.
 
+*If you use this step, use this IP address later on in the exercises.* 
    
 6. Under "anonymous -> Interpreter -> spark", change the configuration setting `zeppelin.spark.enableSupportedVersionCheck` from true to false.
 
@@ -139,7 +140,7 @@ II) make sure you have some data in the HDFS folder `/input/` before running the
 
 # The rest of this lab
 
-1. Change the Notebook Repo by updating the config file for permanant effect `/home/ec2-user/zeppelin-0.9.0-bin-all/conf/zeppelin-site.xml`. You can also change it from the top right dropbox 'NB repos'. Alternatively, you can import the notebooks manually from the interface. 
+1. Change the Notebook Repo by updating the config file for permanant effect `/home/ec2-user/zeppelin-0.9.0-bin-all/conf/zeppelin-site.xml`. You can also change it from the top right dropbox 'NB repos'. Alternatively, you can import the notebooks manually from the interface as I do in the video. *In this case you can skip all the below.*
 
 ```xml
 <property>
